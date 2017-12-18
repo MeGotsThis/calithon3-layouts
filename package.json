@@ -1,10 +1,9 @@
 {
-  "name": "sgdq17-layouts",
-  "description": "The on-stream graphics used during Awesome Games Done Quick 2017.",
+  "name": "calithon",
+  "description": "The on-stream graphics used during Calithon.",
   "version": "1.0.0",
   "contributors": [
-    "Alex Van Camp <email@alexvan.camp>",
-    "Chris Hanel <chrishanel@gmail.com>"
+    "MeGotsThis <megotsthis@gmail.com>"
   ],
   "dependencies": {
     "bluebird": "^3.4.0",
@@ -42,7 +41,7 @@
     "istanbul": "^0.4.3",
     "mocha": "^3.4.2"
   },
-  "homepage": "https://gamesdonequick.com/",
+  "homepage": "https://twitch.tv/calithon",
   "license": "Apache-2.0",
   "nodecg": {
     "compatibleRange": "~0.9.0",
@@ -263,10 +262,6 @@
         ]
       }
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/GamesDoneQuick/sgdq17-layouts.git"
   },
   "scripts": {
     "static": "eslint ./**/*.js ./**/*.html --ignore-path .eslintignore",
