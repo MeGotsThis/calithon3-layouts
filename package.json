@@ -8,7 +8,6 @@
   "dependencies": {
     "bluebird": "^3.4.0",
     "bower-npm-resolver": "^0.8.1",
-    "casparcg-connection": "^2.2.0",
     "cheerio": "^1.0.0-rc.1",
     "clone": "^2.1.1",
     "deep-diff": "^0.3.4",
@@ -22,7 +21,6 @@
     "nodecg-utility-obs": "^3.0.2",
     "numeral": "^2.0.6",
     "object-path": "^0.11.3",
-    "osc": "^2.1.0",
     "q": "^1.4.1",
     "request": "^2.67.0",
     "request-promise": "^4.2.1",
