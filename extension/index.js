@@ -73,13 +73,6 @@ module.exports = function (nodecg) {
 			'Behringer X32 OSC integration will be disabled.');
 	}
 
-	if (nodecg.bundleConfig.firebase && Object.keys(nodecg.bundleConfig.firebase).length > 0) {
-		require('./interview');
-	} else {
-		nodecg.log.warn('"firebase" is not defined in cfg/sgdq17-layouts.json! ' +
-			'The interview question system (Lightning Round) will be disabled.');
-	}
-
 	// Fetch the login page, and run the response body through cheerio
 	// so we can extract the CSRF token from the hidden input field.
 	// Then, POST with our username, password, and the csrfmiddlewaretoken.

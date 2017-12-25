@@ -13,7 +13,6 @@
     "clone": "^2.1.1",
     "deep-diff": "^0.3.4",
     "deep-equal": "^1.0.1",
-    "firebase-admin": "^5.0.0",
     "gamepad": "^1.4.2",
     "json-schema-defaults": "^0.3.0",
     "lodash.assign": "^4.0.9",
