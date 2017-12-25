@@ -66,13 +66,6 @@ module.exports = function (nodecg) {
 			'Twitter integration will be disabled.');
 	}
 
-	if (nodecg.bundleConfig.osc && nodecg.bundleConfig.osc.address) {
-		require('./mixer');
-	} else {
-		nodecg.log.warn('"osc" is not defined in cfg/sgdq17-layouts.json! ' +
-			'Behringer X32 OSC integration will be disabled.');
-	}
-
 	// Fetch the login page, and run the response body through cheerio
 	// so we can extract the CSRF token from the hidden input field.
 	// Then, POST with our username, password, and the csrfmiddlewaretoken.
