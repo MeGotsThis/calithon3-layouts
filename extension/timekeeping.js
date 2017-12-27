@@ -59,60 +59,6 @@ nodecg.listenFor('resumeRunner', index => {
 });
 nodecg.listenFor('editTime', editTime);
 
-if (nodecg.bundleConfig.footpedal.enabled) {
-	const gamepad = require('gamepad');
-	gamepad.init();
-
-	// Poll for events
-	setInterval(gamepad.processEvents, 16);
-	// Scan for new gamepads as a slower rate
-	// TODO: this breaks USB audio devices lmao
-	setInterval(gamepad.detectDevices, 1000);
-
-	// Listen for buttonId down event from our target gamepad.
-	gamepad.on('down', (id, num) => {
-		if (num !== nodecg.bundleConfig.footpedal.buttonId) {
-			return;
-		}
-
-		if (stopwatch.value.state === 'running') {
-			// If this is a race, don't let the pedal finish the timer.
-			if (currentRun.value.runners.length > 1 && !currentRun.value.coop) {
-				nodecg.log.warn('Footpedal was hit to finish the timer, but this is a race so no action will be taken.');
-				return;
-			}
-
-			nodecg.log.info('Footpedal hit, finishing timer.');
-
-			// Finish all runners.
-			currentRun.value.runners.forEach((runner, index) => {
-				if (!runner) {
-					return;
-				}
-
-				completeRunner({index, forfeit: false});
-			});
-		} else {
-			if (!checklistComplete.value) {
-				nodecg.log.warn('Footpedal was hit to start the timer, but the checklist is not complete so no action will be taken.');
-				return;
-			}
-
-			nodecg.log.info('Footpedal hit, starting timer.');
-			start();
-
-			// Resume all runners.
-			currentRun.value.runners.forEach((runner, index) => {
-				if (!runner) {
-					return;
-				}
-
-				resumeRunner(index);
-			});
-		}
-	});
-}
-
 /**
  * Starts the timer.
  * @param {Boolean} [force=false] - Forces the timer to start again, even if already running.

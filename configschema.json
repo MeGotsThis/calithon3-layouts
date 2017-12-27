@@ -78,19 +78,6 @@
 			"required": ["channelId", "oauthToken", "clientId", "bitsOffset", "debug"],
 			"default": null
 		},
-		"footpedal": {
-			"type": "object",
-			"properties": {
-				"enabled": {
-					"type": "boolean",
-					"default": true
-				},
-				"buttonId": {
-					"type": "number",
-					"default": 31
-				}
-			}
-		},
 		"tracker": {
 			"type": ["object", "null"],
 			"properties": {
