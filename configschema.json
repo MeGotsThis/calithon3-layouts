@@ -13,33 +13,6 @@
 			"description": "How long (in seconds) most things show on-screen for.",
 			"default": 10
 		},
-		"osc": {
-			"type": ["object", "null"],
-			"properties": {
-				"address": {
-					"type": "string",
-					"description": "The IP address or hostname of a Behringer X32 digital mixer."
-				},
-				"gameAudioChannels": {
-					"type": "array",
-					"items": {
-						"type": "object",
-						"properties": {
-							"sd": {
-								"type": ["integer", "null"]
-							},
-							"hd": {
-								"type": ["integer", "null"]
-							}
-						}
-					},
-					"minItems": 4,
-					"maxItems": 4
-				}
-			},
-			"required": ["address", "gameAudioChannels"],
-			"default": null
-		},
 		"twitter": {
 			"type": ["object", "null"],
 			"properties": {
@@ -118,45 +91,6 @@
 				}
 			}
 		},
-		"firebase": {
-			"type": ["object", "null"],
-			"description": "Credentials used to log into Firebase, which is what hosts Lightning Round.",
-			"properties": {
-				"type": {
-					"type": "string"
-				},
-				"project_id": {
-					"type": "string"
-				},
-				"private_key_id": {
-					"type": "string"
-				},
-				"private_key": {
-					"type": "string"
-				},
-				"client_email": {
-					"type": "string"
-				},
-				"client_id": {
-					"type": "string"
-				},
-				"auth_uri": {
-					"type": "string"
-				},
-				"token_uri": {
-					"type": "string"
-				},
-				"auth_provider_x509_cert_url": {
-					"type": "string"
-				},
-				"client_x509_cert_url": {
-					"type": "string"
-				}
-			},
-			"required": ["project_id", "private_key", "client_email"],
-			"additionalProperties": false,
-			"default": null
-		},
 		"tracker": {
 			"type": ["object", "null"],
 			"properties": {
@@ -176,34 +110,6 @@
 		},
 		"donationSocketUrl": {
 			"type": "string"
-		},
-		"casparcg": {
-			"type": "object",
-			"additionalProperties": false,
-			"properties": {
-				"host": {
-					"type": "string",
-					"default": "localhost"
-				},
-				"port": {
-					"type": "number",
-					"default": 5250
-				},
-				"lockSecret": {
-					"type": "string",
-					"default": "defaultLockSecret"
-				},
-				"localOscPort": {
-					"type": "number",
-					"default": 6250
-				}
-			},
-			"required": ["host", "port", "lockSecret", "localOscPort"]
 		}
-	},
-	"adsPath": {
-		"type": "string"
-	},
-
-	"required": ["tracker", "adsPath"]
+	}
 }
