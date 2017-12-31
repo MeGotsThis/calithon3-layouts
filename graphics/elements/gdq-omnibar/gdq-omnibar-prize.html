@@ -4,73 +4,73 @@
 <link rel="import" href="../gdq-stepped-gradient/gdq-stepped-gradient.html">
 
 <dom-module id="gdq-omnibar-prize">
-	<template>
-		<style include="gdq-text-styles">
-			:host {
-				height: 100%;
-				position: relative;
-				padding: 0 8px;
-				z-index: 2;
-				box-sizing: border-box;
-			}
+  <template>
+    <style include="gdq-text-styles">
+      :host {
+        height: 100%;
+        position: relative;
+        padding: 0 8px;
+        z-index: 2;
+        box-sizing: border-box;
+      }
 
-			#background {
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				top: 0;
-				left: 0;
-			}
+      #background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
 
-			#text {
-				position: relative;
-				height: 100%;
-				z-index: 4;
-				font-family: Montserrat;
-				color: white;
-				font-weight: 700;
-				transform: translateY(-100%);
-				@apply --layout-vertical;
-				@apply --layout-around-justified;
-			}
+      #text {
+        position: relative;
+        height: 100%;
+        z-index: 4;
+        font-family: Montserrat;
+        color: white;
+        font-weight: 700;
+        transform: translateY(-100%);
+        @apply --layout-vertical;
+        @apply --layout-around-justified;
+      }
 
-			#description,
-			#bidAmount {
-				position: relative;
-			}
+      #description,
+      #bidAmount {
+        position: relative;
+      }
 
-			#description {
-				font-size: 20px;
-			}
+      #description {
+        font-size: 20px;
+      }
 
-			#bidAmount {
-				font-size: 15px;
-				bottom: 4px;
-				text-shadow:
-					-1px -1px 0 #000,
-					1px -1px 0 #000,
-					-1px 1px 0 #000,
-					1px 1px 0 #000,
-					0 0 5px rgba(0, 0, 0, 0.32);
-			}
-		</style>
+      #bidAmount {
+        font-size: 15px;
+        bottom: 4px;
+        text-shadow:
+          -1px -1px 0 #000,
+          1px -1px 0 #000,
+          -1px 1px 0 #000,
+          1px 1px 0 #000,
+          0 0 5px rgba(0, 0, 0, 0.32);
+      }
+    </style>
 
-		<gdq-stepped-gradient
-			id="background"
-			steps="3"
-			start-color="#8b84c2"
-			end-color="#413a8b"></gdq-stepped-gradient>
+    <gdq-stepped-gradient
+      id="background"
+      steps="3"
+      start-color="#8b84c2"
+      end-color="#413a8b"></gdq-stepped-gradient>
 
-		<div id="text">
-			<div id="description" class="shadow">[[prize.description]]</div>
-			<gdq-stepped-gradient-text
-				id="bidAmount"
-				text="[[calcBidAmountText(prize)]]"
-				steps="3"
-				start-color="#e4ffff"
-				end-color="#94d9d0"></gdq-stepped-gradient-text>
-		</div>
-	</template>
+    <div id="text">
+      <div id="description" class="shadow">[[prize.description]]</div>
+      <gdq-stepped-gradient-text
+        id="bidAmount"
+        text="[[calcBidAmountText(prize)]]"
+        steps="3"
+        start-color="#e4ffff"
+        end-color="#94d9d0"></gdq-stepped-gradient-text>
+    </div>
+  </template>
 
-	<script src="gdq-omnibar-prize.js"></script>
+  <script src="gdq-omnibar-prize.js"></script>
 </dom-module>

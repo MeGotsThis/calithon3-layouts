@@ -1,8 +1,8 @@
 {
-	"rules": {
-		"func-names": [
-			"error",
-			"as-needed"
-		]
-	}
+  "rules": {
+    "func-names": [
+      "error",
+      "as-needed"
+    ]
+  }
 }

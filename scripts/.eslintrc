@@ -1,6 +1,6 @@
 {
-	"rules": {
-		"require-jsdoc": "off",
-		"valid-jsdoc": ["error"]
-	}
+  "rules": {
+    "require-jsdoc": "off",
+    "valid-jsdoc": ["error"]
+  }
 }

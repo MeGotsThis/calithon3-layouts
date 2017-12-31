@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-	formatDollars: require('./format-dollars')
+  formatDollars: require('./format-dollars'),
 };

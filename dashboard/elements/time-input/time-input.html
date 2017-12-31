@@ -5,47 +5,47 @@
 <link rel="import" href="../time-validator/time-validator.html">
 
 <dom-module id="time-input">
-	<template>
-		<style>
-			:host {
-				display: inline-block;
-			}
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
 
-			iron-input {
-				min-width: 1px;
-				@apply --layout-flex;
-			}
+      iron-input {
+        min-width: 1px;
+        @apply --layout-flex;
+      }
 
-			iron-input input {
-				font: inherit;
-				outline: none;
-				box-shadow: none;
-				border: none;
-				text-align: center;
-				width: 100%;
-				@apply --time-input-style;
-			}
+      iron-input input {
+        font: inherit;
+        outline: none;
+        box-shadow: none;
+        border: none;
+        text-align: center;
+        width: 100%;
+        @apply --time-input-style;
+      }
 
-			#container {
-				align-items: baseline;
-				@apply --layout-horizontal;
-			}
-		</style>
+      #container {
+        align-items: baseline;
+        @apply --layout-horizontal;
+      }
+    </style>
 
-		<time-validator></time-validator>
+    <time-validator></time-validator>
 
-		<div id="container">
-			<iron-input bind-value="{{_minutes}}">
-				<input maxlength="2" size="2" aria-label="Minutes">
-			</iron-input>
+    <div id="container">
+      <iron-input bind-value="{{_minutes}}">
+        <input maxlength="2" size="2" aria-label="Minutes">
+      </iron-input>
 
-			<span>:</span>
+      <span>:</span>
 
-			<iron-input bind-value="{{_seconds}}">
-				<input maxlength="2" size="2" aria-label="Seconds">
-			</iron-input>
-		</div>
-	</template>
+      <iron-input bind-value="{{_seconds}}">
+        <input maxlength="2" size="2" aria-label="Seconds">
+      </iron-input>
+    </div>
+  </template>
 
-	<script src="time-input.js"></script>
+  <script src="time-input.js"></script>
 </dom-module>

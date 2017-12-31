@@ -2,12 +2,12 @@
 @import 'font/gdqpixel.css';
 
 body {
-	font-family: montserrat, sans-serif;
-	margin: 0;
-	opacity: 0;
+  font-family: montserrat, sans-serif;
+  margin: 0;
+  opacity: 0;
 }
 
 #container {
-	position: absolute;
-	overflow: hidden;
+  position: absolute;
+  overflow: hidden;
 }

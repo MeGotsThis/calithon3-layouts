@@ -1,5 +1,5 @@
 {
-	"resolvers": [
-		"bower-npm-resolver"
-	]
+  "resolvers": [
+    "bower-npm-resolver"
+  ]
 }

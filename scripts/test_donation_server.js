@@ -1,4 +1,4 @@
-/* eslint-disable new-cap */
+/* eslint-disable new-cap, no-console */
 'use strict';
 
 const io = require('socket.io')(22341);
@@ -7,20 +7,20 @@ let totalInCents = 0;
 generateAndEmitDonation();
 
 function generateAndEmitDonation() {
-	const rawAmountInCents = randomInt(100, 2000);
-	totalInCents += rawAmountInCents;
+  const rawAmountInCents = randomInt(100, 2000);
+  totalInCents += rawAmountInCents;
 
-	const data = {
-		rawAmount: String(rawAmountInCents / 100),
-		newTotal: String(totalInCents / 100)
-	};
+  const data = {
+    rawAmount: String(rawAmountInCents / 100),
+    newTotal: String(totalInCents / 100),
+  };
 
-	io.emit('donation', data);
-	console.log('Emitted donation:', data);
+  io.emit('donation', data);
+  console.log('Emitted donation:', data);
 
-	setTimeout(generateAndEmitDonation, randomInt(100, 3000));
+  setTimeout(generateAndEmitDonation, randomInt(100, 3000));
 }
 
 function randomInt(min, max) {
-	return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
