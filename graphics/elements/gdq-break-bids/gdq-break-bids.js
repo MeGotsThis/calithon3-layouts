@@ -1,4 +1,3 @@
-/* global SplitText */
 (function() {
   'use strict';
 
@@ -94,7 +93,6 @@
 
       this._lastBottomTest = text;
       document.getElementById('screen-donateURL').innerHTML = text;
-      this._typeAnim(document.getElementById('screen-donateURL'));
     }
 
     /**
@@ -191,41 +189,6 @@
       }
 
       const newRunName = this._formatRunName(bid.speedrun);
-      this.tl.call(() => {
-        if (!this.$['runName-content'].innerText
-            && !this.$['bidDescription-content'].innerText) {
-          return;
-        }
-
-        this.tl.pause();
-
-        let changingRunName = false;
-        if (this.$['runName-content'].innerText !== newRunName
-            && this.$['runName-content'].split) {
-          changingRunName = true;
-          this._untypeAnim(this.$['runName-content'])
-            .then(checkDone.bind(this));
-        }
-
-        if (this.$['bidDescription-content'].split) {
-          this._untypeAnim(this.$['bidDescription-content'])
-            .then(checkDone.bind(this));
-        }
-
-        let counter = 0;
-
-        /* eslint-disable no-invalid-this */
-        /**
-         * Resolves the promise once all the untype anims have finished.
-         * @return {undefined}
-         */
-        function checkDone() {
-          counter++;
-          if (!changingRunName || counter >= 2) {
-            this.tl.resume();
-          }
-        }
-      });
 
       // Tween the height of the description area, if appropriate.
       // Otherwise, just hard set it or don't do anything, to minimize dead
@@ -248,7 +211,6 @@
 
       this.tl.call(() => {
         this.$['runName-content'].innerHTML = newRunName;
-        this._typeAnim(this.$['runName-content']);
         this.bidType = bid.type;
       }, null, null, `+=${TYPE_INTERVAL}`);
 
@@ -260,8 +222,6 @@
         }
 
         this.$['bidDescription-content'].innerHTML = newDescription;
-        this._typeAnim(
-          this.$['bidDescription-content'], {splitType: 'chars,words,lines'});
       }, null, null, `+=${TYPE_INTERVAL}`);
 
       this.tl.fromTo(this.$.body, 0.333, {
@@ -276,26 +236,6 @@
 
       switch (bid.type) {
         case 'choice-binary': {
-          this.tl.call(() => {
-            this._typeAnim(
-              this.shadowRoot.querySelector('#tug-left .tug-option-desc'));
-          }, null, null, `+=${TYPE_INTERVAL}`);
-
-          this.tl.call(() => {
-            this._typeAnim(
-              this.shadowRoot.querySelector('#tug-left .tug-option-total'));
-          }, null, null, `+=${TYPE_INTERVAL}`);
-
-          this.tl.call(() => {
-            this._typeAnim(
-              this.shadowRoot.querySelector('#tug-right .tug-option-total'));
-          }, null, null, `+=${TYPE_INTERVAL}`);
-
-          this.tl.call(() => {
-            this._typeAnim(
-              this.shadowRoot.querySelector('#tug-right .tug-option-desc'));
-          }, null, null, `+=${TYPE_INTERVAL}`);
-
           const maxPips = CHALLENGE_BAR_WIDTH / BIG_PIP_WIDTH;
           let leftPips =
             Math.floor(maxPips * (bid.options[0].rawTotal / bid.rawTotal));
@@ -347,17 +287,6 @@
         case 'choice-many': {
           const rows = Array.from(
             this.$.choice.querySelectorAll('.choice-row'));
-
-          rows.forEach((row) => {
-            this.tl.call(() => {
-              this._typeAnim(row.querySelector('.choice-row-label'));
-            }, null, null, `+=${TYPE_INTERVAL}`);
-
-            this.tl.call(() => {
-              this._typeAnim(
-                row.querySelector('.choice-row-amount'), {splitType: 'chars'});
-            }, null, null, `+=${TYPE_INTERVAL}`);
-          });
 
           const maxPips = CHOICE_BAR_WIDTH / SMALL_PIP_WIDTH;
           this.tl.add('barFills', '+=0.3');
@@ -414,10 +343,6 @@
         }
 
         case 'challenge': {
-          this.tl.call(() => {
-            this._typeAnim(this.$['challenge-goal'], {splitType: 'chars'});
-          }, null, null, `+=${TYPE_INTERVAL}`);
-
           const maxPips = CHALLENGE_BAR_WIDTH / BIG_PIP_WIDTH;
           let numPips = Math.floor(maxPips * (bid.rawTotal / bid.rawGoal));
           numPips = Math.min(numPips, maxPips);
@@ -520,69 +445,6 @@
         }
       });
       return bidsToDisplay;
-    }
-
-    _typeAnim($el, {splitType = 'chars,words'} = {}) {
-      const tl = new TimelineLite();
-      const split = new SplitText($el, {
-        type: splitType,
-        charsClass: 'character style-scope gdq-break-bids',
-        linesClass: 'line style-scope gdq-break-bids',
-      });
-      $el.split = split;
-
-      switch (splitType) {
-        case 'chars':
-          tl.staggerFrom(split.chars, 0.001, {
-            visibility: 'hidden',
-          }, TYPE_INTERVAL);
-
-          break;
-        case 'chars,words':
-        case 'chars,words,lines':
-          split.words.forEach((word) => {
-            tl.staggerFrom(word.children, 0.001, {
-              visibility: 'hidden',
-            }, TYPE_INTERVAL);
-
-            tl.to(EMPTY_OBJ, TYPE_INTERVAL, EMPTY_OBJ);
-          });
-          break;
-        default:
-          throw new Error(`Unexpected splitType "${splitType}"`);
-      }
-
-      return tl;
-    }
-
-    _untypeAnim($el) {
-      return new Promise((resolve) => {
-        if (!$el.split) {
-          return setTimeout(resolve, 0);
-        }
-
-        const tl = new TimelineLite({
-          onComplete: resolve,
-        });
-
-        const split = $el.split;
-
-        if (split.words) {
-          split.words.forEach((word) => {
-            tl.staggerTo(word.children, 0.001, {
-              visibility: 'hidden',
-            }, TYPE_INTERVAL);
-
-            tl.to(EMPTY_OBJ, TYPE_INTERVAL, EMPTY_OBJ);
-          });
-        } else {
-          tl.staggerFrom(split.chars, 0.001, {
-            visibility: 'hidden',
-          }, TYPE_INTERVAL);
-        }
-
-        return tl;
-      });
     }
   }
 

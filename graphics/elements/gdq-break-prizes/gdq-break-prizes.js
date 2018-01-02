@@ -1,5 +1,4 @@
-/* global SplitText */
-(function() {
+  (function() {
   'use strict';
 
   const TYPE_INTERVAL = 0.03;
@@ -148,59 +147,12 @@
         });
       }, null, null, '+=0.1');
 
-      let changingProvider = true;
       this.tl.call(() => {
-        if (!this.$['provider-wrap'].innerText
-            && !this.$['prize-name'].innerText) {
-          return;
-        }
-
-        this.tl.pause();
-
-        let counter = 0;
-
-        /* eslint-disable no-invalid-this */
-        /**
-         * Resolves the promise once all the untype anims have finished.
-         * @return {undefined}
-         */
-        function checkDone() {
-          counter++;
-          if (!changingProvider && counter >= 2) {
-            this.tl.resume();
-          } else if (counter >= 3) {
-            this.tl.resume();
-          }
-        }
-
-        changingProvider = false;
-        if (!this.$['provider-wrap'].innerText.trim().endsWith(prize.provided)
-            && this.$['provider-wrap'].split) {
-          changingProvider = true;
-          this._untypeAnim(this.$['provider-wrap']).then(checkDone.bind(this));
-        }
-
-        if (this.$['prize-name'].split) {
-          this._untypeAnim(this.$['prize-name']).then(checkDone.bind(this));
-        }
-
-        if (this.$['prize-minbid'].split) {
-          this._untypeAnim(this.$['prize-minbid']).then(checkDone.bind(this));
-        }
-      });
-
-      this.tl.call(() => {
-        if (!changingProvider) {
-          return;
-        }
-
         this.$['provider-wrap'].innerText = `Provided by: ${prize.provided}`;
-        this._typeAnim(this.$['provider-wrap']);
       }, null, null, '+=0.1');
 
       this.tl.call(() => {
         this.$['prize-name'].innerText = prize.description;
-        this._typeAnim(this.$['prize-name']);
       }, null, null, '+=0.1');
 
       this.tl.call(() => {
@@ -213,7 +165,6 @@
             `<div id="prize-minbid-amount">${prize.minimumbid}</div>`
             + `&#x2005;Single&#x2005;Donation`;
         }
-        this._typeAnim(this.$['prize-minbid']);
       }, null, null, '+=0.1');
 
       this.tl.to(this.$['prize-image-next'], 0.667, {
@@ -258,39 +209,6 @@
 
     _calcPrizesToDisplay(prizesArray) {
       return prizesArray.slice(0);
-    }
-
-    _typeAnim($el, {splitType = 'chars,words'} = {}) {
-      const tl = new TimelineLite();
-      const split = new SplitText($el, {
-        type: splitType,
-        charsClass: 'character style-scope gdq-break-bids',
-        linesClass: 'line style-scope gdq-break-bids',
-      });
-      $el.split = split;
-
-      switch (splitType) {
-        case 'chars':
-          tl.staggerFrom(split.chars, 0.001, {
-            visibility: 'hidden',
-          }, TYPE_INTERVAL);
-
-          break;
-        case 'chars,words':
-        case 'chars,words,lines':
-          split.words.forEach((word) => {
-            tl.staggerFrom(word.children, 0.001, {
-              visibility: 'hidden',
-            }, TYPE_INTERVAL);
-
-            tl.to(EMPTY_OBJ, TYPE_INTERVAL, EMPTY_OBJ);
-          });
-          break;
-        default:
-          throw new Error(`Unexpected splitType "${splitType}"`);
-      }
-
-      return tl;
     }
 
     _untypeAnim($el) {

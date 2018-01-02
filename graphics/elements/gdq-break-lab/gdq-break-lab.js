@@ -1,4 +1,3 @@
-/* global SplitText */
 (function() {
   'use strict';
 
@@ -108,19 +107,6 @@
 
       tl.call(() => {
         this.$['tweet-body-text'].innerHTML = tweet.text;
-        const splitTL = new TimelineLite();
-
-        // eslint-disable-next-line no-new
-        new SplitText(this.$['tweet-body-text'], {
-          type: 'words,chars',
-          charsClass: 'character style-scope gdq-break-lab',
-        });
-
-        const charsAndEmoji =
-          this.$['tweet-body-text'].querySelectorAll('.character, .emoji');
-        splitTL.staggerFrom(charsAndEmoji, 0.001, {
-          visibility: 'hidden',
-        }, TYPE_INTERVAL);
       }, null, null, 'enter');
 
       tl.to(this.$['tweet-name'], 0.446, {

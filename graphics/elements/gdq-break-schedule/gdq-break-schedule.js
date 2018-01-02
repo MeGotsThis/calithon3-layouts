@@ -1,4 +1,3 @@
-/* global SplitText */
 (function() {
   'use strict';
 
@@ -117,23 +116,10 @@
 
       const $runName = $parent.querySelector('.run-name');
       const $runDetails = $parent.querySelector('.run-details');
-      const processWord = function(word) {
-        tl.staggerFrom(word.children, 0.001, {
-          visibility: 'hidden',
-        }, TYPE_INTERVAL);
-
-        tl.to(EMPTY_OBJ, TYPE_INTERVAL, EMPTY_OBJ);
-      };
 
       $runName.innerHTML = this._formatRunName(run.name);
       const text = `${run.category} - ${this.concatRunners(run.runners)}`;
       $runDetails.innerText = text;
-
-      const nameSplit = new SplitText($runName, {type: 'chars,words'});
-      const categoryAndRunnerSplit = new SplitText(
-        $runDetails, {type: 'chars,words'});
-      nameSplit.words.forEach(processWord);
-      categoryAndRunnerSplit.words.forEach(processWord);
 
       return tl;
     }
