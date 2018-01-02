@@ -32,7 +32,6 @@ module.exports = function(nodecg) {
   require('./prizes');
   require('./bids');
   require('./total');
-  require('./nowplaying');
   require('./countdown');
 
   require('./google-play-music-desktop-replicants');
