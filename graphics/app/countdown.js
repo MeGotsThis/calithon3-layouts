@@ -10,7 +10,7 @@
   const logo = document.getElementById('logo');
   const countdownTime = nodecg.Replicant('countdown');
   const countdownRunning = nodecg.Replicant('countdownRunning');
-  const nowPlaying = nodecg.Replicant('nowPlaying');
+  const gmpd = nodecg.Replicant('gmpd');
 
   const colonFlashAnim = new TimelineMax({repeatDelay: 0.5});
   colonFlashAnim.set(countdownColon, {visibility: 'visible'});
@@ -53,16 +53,21 @@
     }
   });
 
-  nowPlaying.on('change', (newVal) => {
+  gmpd.on('change', (newVal) => {
     TweenLite.to(nowPlayingDisplay, 0.33, {
       opacity: 0,
       ease: Power1.easeInOut,
       onComplete() {
-        if (!newVal || !newVal.title || !newVal.game) {
+        if (!newVal || !newVal.playState || !newVal.track) {
           return;
         }
 
-        nowPlayingDisplay.innerText = `${newVal.title} - ${newVal.game}`;
+        let {title, album} = value.track;
+        if (album) {
+          nowPlayingDisplay.innerText = `${title} - ${album}`;
+        } else {
+          nowPlayingDisplay.innerText = `${title}`;
+        }
 
         const width = nowPlayingDisplay.scrollWidth;
         if (width > MAX_NOW_PLAYING_WIDTH) {

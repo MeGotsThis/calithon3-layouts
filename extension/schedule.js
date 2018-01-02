@@ -13,7 +13,7 @@ const request = require('request-promise').defaults({
 const nodecg = require('./util/nodecg-api-context').get();
 const {calcOriginalValues, mergeChangesFromTracker} = require('./lib/diff-run');
 
-const POLL_INTERVAL = 60 * 1000;
+const POLL_INTERVAL = 60000 * 1000;
 let adBreakIdCounter = 0;
 let updateInterval;
 
@@ -318,7 +318,7 @@ function update() {
     if (response && response.statusCode === 403) {
       nodecg.log.warn(
         '[schedule] Permission denied, refreshing session and trying again...');
-      emitter.emit('permissionDenied');
+      // emitter.emit('permissionDenied');
     } else if (response) {
       nodecg.log.error(
         '[schedule] Failed to update, got status code', response.statusCode);

@@ -8,10 +8,10 @@ const CONNECTION_FREQUENCY = 1000;
 
 let connection = null;
 
-const gmpdConnected = nodecg.Replicant('gmpd-connected');
-const gmpd = nodecg.Replicant('gmpd');
+const gpmdConnected = nodecg.Replicant('gpmd-connected');
+const gpmd = nodecg.Replicant('gpmd');
 
-gmpdConnected.on('change', (v) => {
+gpmdConnected.on('change', (v) => {
   nodecg.log.info('gmpdConnected changed to ' + v);
 });
 
@@ -29,17 +29,17 @@ function checkGoogleMusicPlayerDesktop() {
   let port = 5672;
   connection = new WebSocket(`ws://${address}:${port}/`);
   connection.on('open', function() {
-    gmpdConnected.value = true;
+    gpmdConnected.value = true;
   }).on('message', function(data) {
     let jData = JSON.parse(data);
-    if ((typeof gmpd.value[jData.channel]) != 'undefined') {
-      gmpd.value[jData.channel] = jData.payload;
+    if ((typeof gpmd.value[jData.channel]) !== 'undefined') {
+      gpmd.value[jData.channel] = jData.payload;
     }
   }).on('error', function(err) {
-    gmpdConnected.value = false;
+    gpmdConnected.value = false;
     connection = null;
   }).on('close', function() {
-    gmpdConnected.value = false;
+    gpmdConnected.value = false;
     connection = null;
   });
 }

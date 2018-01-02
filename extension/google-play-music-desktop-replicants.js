@@ -2,11 +2,11 @@
 
 const nodecg = require('./util/nodecg-api-context').get();
 
-const gmpdConnected = nodecg.Replicant('gmpd-connected', {
+const gpmdConnected = nodecg.Replicant('gpmd-connected', {
   defaultValue: false,
   persistent: false,
 });
-const gmpd = nodecg.Replicant('gmpd', {
+const gpmd = nodecg.Replicant('gpmd', {
   defaultValue: {
     playState: false,
     time: null,
