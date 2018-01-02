@@ -35,6 +35,14 @@ module.exports = function(nodecg) {
   require('./nowplaying');
   require('./countdown');
 
+  require('./google-play-music-desktop-replicants');
+  if (nodecg.bundleConfig.googlePlayMusic) {
+    require('./google-play-music-desktop');
+  } else {
+    nodecg.log.warn('"googlePlayMusic" is not defined in cfg! ' +
+        'Google Play Music Desktop Player integration will be disabled.');
+  }
+
   loginToTracker().then(() => {
     const schedule = require('./schedule');
     schedule.on('permissionDenied', () => {

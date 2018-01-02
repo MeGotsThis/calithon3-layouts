@@ -97,6 +97,11 @@
     },
     "donationSocketUrl": {
       "type": "string"
+    },
+    "googlePlayMusic": {
+      "type": "boolean",
+      "description": "Allow connecting to Google Play Music Desktop player",
+      "default": false
     }
   }
 }

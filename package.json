@@ -26,7 +26,8 @@
     "socket.io-client": "^2.0.1",
     "twemoji": "^2.0.5",
     "twitchps": "^0.5.5",
-    "twitter-stream-api": "^0.5.0"
+    "twitter-stream-api": "^0.5.0",
+    "ws": "^3.3.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
