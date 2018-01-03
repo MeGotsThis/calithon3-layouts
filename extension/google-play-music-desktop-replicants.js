@@ -14,3 +14,6 @@ const gpmd = nodecg.Replicant('gpmd', {
   },
   persistent: false,
 });
+const gpmdAuthorizationCode = nodecg.Replicant('gpmd-authorization-code', {
+  defaultValue: null,
+});
