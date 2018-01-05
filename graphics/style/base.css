@@ -1,8 +1,9 @@
 @import 'font/montserrat.css';
 @import 'font/gdqpixel.css';
+@import 'font/tubular.css';
 
 body {
-  font-family: montserrat, sans-serif;
+  font-family: 'tubular', sans-serif;
   margin: 0;
   opacity: 0;
 }
