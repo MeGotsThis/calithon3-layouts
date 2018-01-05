@@ -53,23 +53,25 @@
         return;
       }
 
-      let currentItems = [currentRun.value];
+      let currentItems = currentRun.value.name ? [currentRun.value] : [];
       if (currentIntermission.value.preOrPost === 'pre') {
         currentItems = currentIntermission.value.content.concat(currentItems);
       } else {
         currentItems = currentItems.concat(currentIntermission.value.content);
       }
 
+      const sched = schedule.value || [];
+
       // Start after whatever the last item was in currentItems.
       const lastCurrentItem = currentItems[currentItems.length - 1];
-      const startIndex = schedule.value.findIndex((item) => {
+      const startIndex = sched.findIndex((item) => {
         return item.id === lastCurrentItem.id
             && item.type === lastCurrentItem.type;
       }) + 1;
       let numFoundRuns = 0;
       let endIndex = startIndex;
       let lastRunOrder = currentRun.value.order;
-      schedule.value.slice(startIndex).some((item, index) => {
+      sched.slice(startIndex).some((item, index) => {
         if (numFoundRuns < NUM_RUNS_TO_SHOW_IN_RUNDOWN) {
           if (item.type === 'run') {
             lastRunOrder = item.order;
@@ -91,8 +93,8 @@
 
       this.currentItems = currentItems;
       this.remainderItems = typeof endIndex === 'number' ?
-        schedule.value.slice(startIndex, startIndex + endIndex + 1) :
-        schedule.value.slice(startIndex);
+        sched.slice(startIndex, startIndex + endIndex + 1) :
+        sched.slice(startIndex);
     }
   }
 

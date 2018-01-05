@@ -170,7 +170,7 @@
       if (currentRun.value) {
         // If there is any run in the schedule with an earlier order than
         // currentRun, then there must be a prevRun.
-        const prevRunExists = schedule.value.find((run) => {
+        const prevRunExists = schedule.value && schedule.value.find((run) => {
           return run.order < currentRun.value.order;
         });
         if (!prevRunExists) {
