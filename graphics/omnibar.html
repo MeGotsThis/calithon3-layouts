@@ -5,17 +5,99 @@
   <title>Omnibar</title>
   <link rel="stylesheet" href="style/base.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/gdq-omnibar/gdq-omnibar.html">
+  <link rel="import" href="elements/cali-omnibar/cali-omnibar-total.html">
   <style>
     #container {
       width: 1280px;
+      height: 88px;
+    }
+
+    #bar {
+      position: absolute;
+      bottom: 4px;
+      left: 0px;
+      width: 1269px;
+
       height: 55px;
+      border-radius: 10px;
+      background: #21212B;
+      opacity: 0.8;
+    }
+
+    #total {
+      position: absolute;
+      top: 24px;
+      bottom: 0px;
+      left: 0px;
+      width: 292px;
+
+      border-radius: 10px;
+      background: linear-gradient(to right, #2184A2 0%, #459997 100%);
+    }
+
+    #marathon {
+      position: absolute;
+      bottom: 4px;
+      left: 276px;
+      width: 269px;
+      height: 55px;
+    }
+
+    #marathonBorder {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    #marathonName {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      display: flex;
+      align-items: center;
+
+      padding-left: calc(13px + 0.2em);
+      font-family: cursive;
+      font-size: 36px;
+      color: white;
+    }
+
+    #totalText {
+      color: #1990BE;
+      font-size: 28px;
+      margin-top: -0.2em;
+      margin-left: 0.2em;
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <gdq-omnibar></gdq-omnibar>
+    <div id="totalText">Total:</div>
+    <div id="bar"></div>
+    <div id="marathon">
+      <svg id="marathonBorder">
+        <defs>
+          <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#459997"/>
+            <stop offset="75%"   stop-color="#459997"/>
+            <stop offset="100%" stop-color="#52A093"/>
+          </linearGradient>
+        </defs>
+        <rect x="1.5" y="1.5" rx="10" ry="10" width="266" height="52"
+          style="stroke: url(#stroke); stroke-width: 3; fill: none"
+          />
+      </svg>
+      <div id="marathonName">
+        <span>Calithon</span>
+      </div>
+    </div>
+    <div id="total">
+      <cali-omnibar-total></cali-omnibar-total>
+    </div>
   </div>
 
   <script>
