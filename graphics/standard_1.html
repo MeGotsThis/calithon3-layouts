@@ -5,17 +5,28 @@
   <title>Standard, 1 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/gdq-nameplate/gdq-nameplate.html">
+  <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
   <link rel="import" href="elements/gdq-runinfo/gdq-runinfo.html">
   <link rel="import" href="elements/gdq-timer/gdq-timer.html">
   <link rel="import" href="elements/gdq-twitter/gdq-twitter.html">
   <link rel="import" href="elements/gdq-sponsors/gdq-sponsors.html">
+
+  <custom-style>
+    <style>
+      #background {
+        -webkit-mask-image: url(img/backgrounds/standard_1_mask.svg);
+        mask-image: url(img/backgrounds/standard_1_mask.svg);
+      }
+    </style>
+  </custom-style>
 </head>
 <body>
   <div id="container">
-    <img id="background" src="img/backgrounds/standard_1_bg.png">
+    <div id="background">
+      <img src="img/backgrounds/La Jolla.png">
+      <div id="background-overlay"></div>
+    </div>
     <layout-app></layout-app>
-    <img id="foreground" src="img/backgrounds/standard_1_fg.png">
   </div>
 
   <dom-module id="layout-app">
@@ -29,13 +40,21 @@
           --gdq-runinfo-misc-height: 35px;
         }
 
-        #bottomLeft {
+        #left {
           display: flex;
           flex-direction: column;
           position: absolute;
-          top: 385px;
-          width: 393px;
-          height: 280px;
+          top: 5px;
+          left: 12px;
+          width: 452px;
+          height: 627px;
+        }
+
+        #webcam {
+          width: 100%;
+          height: 339px;
+          box-sizing: border-box;
+          margin-bottom: -40px;
         }
 
         #runners {
@@ -43,14 +62,12 @@
           flex-direction: column;
           align-items: flex-start;
           position: relative;
-          padding-left: 8px;
-          margin-bottom: -18px;
         }
 
-        gdq-nameplate {
+        cali-nameplate {
           position: relative;
-          margin-bottom: 9px;
-          --gdq-nameplate-width: 377px;
+          height: 59px;
+          --cali-nameplate-width: 452px;
         }
 
         gdq-timer {
@@ -96,7 +113,7 @@
           margin-top: 9px;
         }
 
-        :host([num-runners="1"]) gdq-nameplate:not([index="0"]) {
+        :host([num-runners="1"]) cali-nameplate:not([index="0"]) {
           display: none;
         }
 
@@ -105,8 +122,8 @@
           margin-top: 11px;
         }
 
-        :host([num-runners="2"]) gdq-nameplate[index="2"],
-        :host([num-runners="2"]) gdq-nameplate[index="3"] {
+        :host([num-runners="2"]) cali-nameplate[index="2"],
+        :host([num-runners="2"]) cali-nameplate[index="3"] {
           display: none;
         }
 
@@ -127,12 +144,23 @@
 
 
       <gdq-runinfo max-name-size="38"></gdq-runinfo>
-      <div id="bottomLeft">
+      <div id="left">
+        <svg id="webcam">
+          <defs>
+            <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#2184A2"/>
+              <stop offset="100%" stop-color="#459997"/>
+            </linearGradient>
+          </defs>
+          <rect x="1.5" y="1.5" rx="10" ry="10" width="449" height="336"
+            style="stroke: url(#stroke); stroke-width: 3; fill: none"
+            />
+        </svg>
         <div id="runners">
-          <gdq-nameplate index="0"></gdq-nameplate>
-          <gdq-nameplate index="1"></gdq-nameplate>
-          <gdq-nameplate index="2"></gdq-nameplate>
-          <gdq-nameplate index="3"></gdq-nameplate>
+          <cali-nameplate index="0"></cali-nameplate>
+          <cali-nameplate index="1"></cali-nameplate>
+          <cali-nameplate index="2"></cali-nameplate>
+          <cali-nameplate index="3"></cali-nameplate>
         </div>
         <gdq-timer></gdq-timer>
         <div id="sponsorsAndTwitter">
