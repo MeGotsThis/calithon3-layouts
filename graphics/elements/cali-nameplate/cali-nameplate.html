@@ -1,0 +1,81 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/imports/easeljs.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+
+<dom-module id="cali-nameplate">
+  <template>
+    <style include="gdq-text-styles">
+      :host {
+        position: absolute;
+        display: flex;
+        text-transform: uppercase;
+        z-index: 1;
+        color: white;
+        background: linear-gradient(to right, #2184A2, #459997);
+        border-radius: 10px;
+      }
+
+      #main {
+        width: 100%;
+        height: 100%;
+      }
+
+      #names {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex: 1;
+        white-space: nowrap;
+        padding: 0 12px;
+      }
+
+      #namesName {
+        padding-left: 7px;
+      }
+
+      #namesTwitch {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+      }
+
+      #glitch {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 54px;
+      }
+
+      #glitch img {
+        height: 40px;
+      }
+
+      #twitch {
+        flex: 1;
+        transform-origin: left;
+      }
+
+      .hidden {
+        position: absolute;
+        visibility: hidden;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+
+    <div id="names">
+      <div id="namesName">[[name]]</div>
+      <div id="namesTwitch">
+        <div id="glitch"><img src="[[importPath]]/../../../img/twitch_white.svg" /></div>
+        <span id="twitch">[[twitch]]</span>
+      </div>
+    </div>
+  </template>
+
+  <script src="cali-nameplate.js"></script>
+</dom-module>

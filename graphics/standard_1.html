@@ -5,17 +5,103 @@
   <title>Standard, 1 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
+  <link rel="import" href="elements/cali-category/cali-category.html">
+  <link rel="import" href="elements/cali-estimate/cali-estimate.html">
+  <link rel="import" href="elements/cali-game/cali-game.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
-  <link rel="import" href="elements/gdq-runinfo/gdq-runinfo.html">
-  <link rel="import" href="elements/gdq-timer/gdq-timer.html">
-  <link rel="import" href="elements/gdq-twitter/gdq-twitter.html">
-  <link rel="import" href="elements/gdq-sponsors/gdq-sponsors.html">
+  <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
     <style>
       #background {
         -webkit-mask-image: url(img/backgrounds/standard_1_mask.svg);
         mask-image: url(img/backgrounds/standard_1_mask.svg);
+      }
+
+      #left {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 5px;
+        left: 12px;
+        width: 452px;
+        height: 627px;
+      }
+
+      #webcam {
+        width: 100%;
+        height: 339px;
+        box-sizing: border-box;
+        margin-bottom: -40px;
+      }
+
+      #game {
+        position: absolute;
+        top: 5px;
+        left: 469px;
+        width: 800px;
+        height: 600px;
+        box-sizing: border-box;
+      }
+
+      #runners {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+      }
+
+      cali-nameplate {
+        position: relative;
+        width: 452px;
+        height: 59px;
+        font-size: 42px;
+      }
+
+      cali-timer,
+      cali-estimate,
+      cali-category {
+        position: relative;
+        height: 57px;
+        width: calc(100% - 12px - 12px);
+        font-size: 42px;
+        margin-left: 12px;
+        margin-right: 12px;
+        margin-bottom: 5px;
+      }
+
+      cali-game {
+        position: absolute;
+        top: 591px;
+        left: 469px;
+        width: 800px;
+        height: 65px;
+        font-size: 48px;
+      }
+
+      /* One runner */
+      #runners[num-runners="1"] {
+        margin-top: 9px;
+      }
+
+      #runners[num-runners="1"] cali-nameplate:not([index="0"]) {
+        display: none;
+      }
+
+      /* Two runners */
+      #runners[num-runners="2"] {
+        margin-top: 11px;
+      }
+
+      #runners[num-runners="2"] cali-nameplate[index="2"],
+      #runners[num-runners="2"] cali-nameplate[index="3"] {
+        display: none;
+      }
+
+      /* Four runners */
+      #runners[num-runners="4"] {
+        margin-top: 11px;
+        margin-bottom: 5px;
       }
     </style>
   </custom-style>
@@ -26,178 +112,42 @@
       <img src="img/backgrounds/La Jolla.png">
       <div id="background-overlay"></div>
     </div>
-    <layout-app></layout-app>
-  </div>
 
-  <dom-module id="layout-app">
-    <template>
-      <style>
-        gdq-runinfo {
-          left: 0;
-          top: 0;
-          width: 397px;
-          height: 168px;
-          --gdq-runinfo-misc-height: 35px;
-        }
-
-        #left {
-          display: flex;
-          flex-direction: column;
-          position: absolute;
-          top: 5px;
-          left: 12px;
-          width: 452px;
-          height: 627px;
-        }
-
-        #webcam {
-          width: 100%;
-          height: 339px;
-          box-sizing: border-box;
-          margin-bottom: -40px;
-        }
-
-        #runners {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          position: relative;
-        }
-
-        cali-nameplate {
-          position: relative;
-          height: 59px;
-          --cali-nameplate-width: 452px;
-        }
-
-        gdq-timer {
-          position: relative;
-          height: 57px;
-          width: 100%;
-          font-size: 42px;
-          border-bottom: 1px solid #000000;
-          padding-top: 8px;
-          padding-bottom: 5px;
-        }
-
-        #sponsorsAndTwitter {
-          position: relative;
-          width: 100%;
-          flex-grow: 1;
-        }
-
-        gdq-twitter {
-          --gdq-twitter-body: {
-            font-size: 25px;
-            padding-top: 5px;
-          };
-          --gdq-twitter-namebar: {
-            width: 344px;
-            height: 50px;
-            margin-bottom: -12px;
-            padding-bottom: 12px;
-            font-size: 21px;
-          };
-        }
-
-        gdq-twitter,
-        gdq-sponsors {
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-        }
-
-        /* One runner */
-        :host([num-runners="1"]) #runners {
-          margin-top: 9px;
-        }
-
-        :host([num-runners="1"]) cali-nameplate:not([index="0"]) {
-          display: none;
-        }
-
-        /* Two runners */
-        :host([num-runners="2"]) #runners {
-          margin-top: 11px;
-        }
-
-        :host([num-runners="2"]) cali-nameplate[index="2"],
-        :host([num-runners="2"]) cali-nameplate[index="3"] {
-          display: none;
-        }
-
-        /* Four runners */
-        :host([num-runners="4"]) #runners {
-          margin-top: 11px;
-          margin-bottom: 5px;
-        }
-
-        :host([num-runners="4"]) #sponsorsAndTwitter {
-          display: none;
-        }
-
-        :host([num-runners="4"]) gdq-timer {
-          padding-top: 0;
-        }
-      </style>
-
-
-      <gdq-runinfo max-name-size="38"></gdq-runinfo>
-      <div id="left">
-        <svg id="webcam">
-          <defs>
-            <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stop-color="#2184A2"/>
-              <stop offset="100%" stop-color="#459997"/>
-            </linearGradient>
-          </defs>
-          <rect x="1.5" y="1.5" rx="10" ry="10" width="449" height="336"
-            style="stroke: url(#stroke); stroke-width: 3; fill: none"
-            />
-        </svg>
-        <div id="runners">
-          <cali-nameplate index="0"></cali-nameplate>
-          <cali-nameplate index="1"></cali-nameplate>
-          <cali-nameplate index="2"></cali-nameplate>
-          <cali-nameplate index="3"></cali-nameplate>
-        </div>
-        <gdq-timer></gdq-timer>
-        <div id="sponsorsAndTwitter">
-          <gdq-sponsors></gdq-sponsors>
-          <gdq-twitter></gdq-twitter>
-        </div>
+    <div id="left">
+      <svg id="webcam">
+        <defs>
+          <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#2184A2"/>
+            <stop offset="100%" stop-color="#459997"/>
+          </linearGradient>
+        </defs>
+        <rect x="1.5" y="1.5" rx="10" ry="10" width="449" height="336"
+          style="stroke: url(#stroke); stroke-width: 3; fill: none"
+          />
+      </svg>
+      <div id="runners">
+        <cali-nameplate index="0"></cali-nameplate>
+        <cali-nameplate index="1"></cali-nameplate>
+        <cali-nameplate index="2"></cali-nameplate>
+        <cali-nameplate index="3"></cali-nameplate>
       </div>
-    </template>
-
-    <script>
-      const currentRun = nodecg.Replicant('currentRun');
-
-      Polymer({
-        is: 'layout-app',
-
-        properties: {
-          numRunners: {
-            type: Number,
-            reflectToAttribute: true,
-            value: 1,
-          },
-        },
-
-        ready() {
-          currentRun.on('change', (newVal) => {
-            if (!newVal) {
-              return;
-            }
-
-            if (newVal.runners.length !== 3 && newVal.runners.length <= 4) {
-              this.numRunners = newVal.runners.length;
-            }
-          });
-        },
-      });
-    </script>
-  </dom-module>
+      <cali-timer></cali-timer>
+      <cali-estimate></cali-estimate>
+      <cali-category></cali-category>
+    </div>
+    <svg id="game">
+      <defs>
+        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#2184A2"/>
+          <stop offset="100%" stop-color="#459997"/>
+        </linearGradient>
+      </defs>
+      <rect x="1.5" y="1.5" width="797" height="597"
+        style="stroke: url(#stroke); stroke-width: 3; fill: none"
+        />
+    </svg>
+    <cali-game></cali-game>
+  </div>
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
@@ -205,6 +155,19 @@
         opacity: 1,
         ease: Power1.easeOut,
       });
+    });
+
+    const currentRun = nodecg.Replicant('currentRun');
+    currentRun.on('change', (newVal) => {
+      if (!newVal) {
+        return;
+      }
+
+      const runners = newVal.runners || [];
+      if (runners.length !== 3 && runners.length <= 4) {
+        document.getElementById('runners')
+          .setAttribute('num-runners', runners.length || 1);
+      }
     });
   </script>
 </body>

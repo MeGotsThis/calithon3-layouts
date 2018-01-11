@@ -30,8 +30,7 @@
   right: 0;
   bottom: 0;
 
-  background-color: #093547;
-  opacity: 0.7;
+  background-color: rgba(9, 53, 71, 0.7);
 }
 
 #container > #foreground {
