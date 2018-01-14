@@ -25,6 +25,10 @@
         box-sizing: border-box;
       }
 
+      :host([right]) #estimate {
+        flex-direction: row-reverse;
+      }
+
       #icon {
         margin-left: -16px;
         width: 54px;
@@ -35,8 +39,17 @@
         justify-content: center;
       }
 
+      :host([right]) #icon {
+        margin-right: -16px;
+        margin-left: 0;
+      }
+
       #estimate span {
         flex: 1;
+      }
+
+      :host([right]) #category {
+        text-align: right;
       }
     </style>
     <div id="estimate">

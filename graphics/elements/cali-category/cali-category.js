@@ -11,6 +11,10 @@
 
     static get properties() {
       return {
+        right: {
+          type: Boolean,
+          reflectToAttribute: true,
+        },
       };
     }
 
@@ -41,12 +45,12 @@
       if (categoryWidth > MAX_CATEGORY_WIDTH) {
         TweenLite.set(categorySpan, {
           scaleX: MAX_CATEGORY_WIDTH / categoryWidth,
-          transformOrigin: 'left',
+          transformOrigin: this.right ? 'right' : 'left',
         });
       } else {
         TweenLite.set(categorySpan, {
           scaleX: 1,
-          transformOrigin: 'left',
+          transformOrigin: this.right ? 'right' : 'left',
         });
       }
     }

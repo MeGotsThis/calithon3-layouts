@@ -9,6 +9,8 @@
       :host {
         position: absolute;
         display: flex;
+        align-items: center;
+        justify-content: flex-start;
         text-transform: uppercase;
         z-index: 1;
         color: white;
@@ -16,29 +18,33 @@
         border-radius: 10px;
       }
 
-      #main {
-        width: 100%;
-        height: 100%;
-      }
-
       #names {
         position: relative;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
+        width: 100%;
+        box-sizing: border-box;
         flex: 1;
         white-space: nowrap;
         padding: 0 12px;
       }
 
       #namesName {
-        padding-left: 7px;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      :host([right]) #namesName {
+        text-align: right;
       }
 
       #namesTwitch {
+        box-sizing: border-box;
+        width: 100%;
         @apply --layout-horizontal;
         @apply --layout-center;
+      }
+
+      :host([right]) #namesTwitch {
+        flex-direction: row-reverse;
       }
 
       #glitch {
@@ -58,6 +64,10 @@
         transform-origin: left;
       }
 
+      :host([right]) #twitch {
+        text-align: right;
+      }
+
       .hidden {
         position: absolute;
         visibility: hidden;
@@ -69,10 +79,12 @@
     </style>
 
     <div id="names">
-      <div id="namesName">[[name]]</div>
-      <div id="namesTwitch">
-        <div id="glitch"><img src="[[importPath]]/../../../img/twitch_white.svg" /></div>
-        <span id="twitch">[[twitch]]</span>
+      <div style="width: 100%; position: relative;">
+        <div id="namesName">[[name]]</div>
+        <div id="namesTwitch">
+          <div id="glitch"><img src="[[importPath]]/../../../img/twitch_white.svg" /></div>
+          <span id="twitch">[[twitch]]</span>
+        </div>
       </div>
     </div>
   </template>

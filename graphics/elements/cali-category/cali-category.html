@@ -25,6 +25,10 @@
         box-sizing: border-box;
       }
 
+      :host([right]) #category {
+        flex-direction: row-reverse;
+      }
+
       #icon {
         margin-left: -6px;
         width: 54px;
@@ -35,9 +39,18 @@
         justify-content: center;
       }
 
+      :host([right]) #icon {
+        margin-right: -6px;
+        margin-left: 0;
+      }
+
       #category span {
         flex: 1;
         white-space: nowrap;
+      }
+
+      :host([right]) #category {
+        text-align: right;
       }
     </style>
     <div id="category">

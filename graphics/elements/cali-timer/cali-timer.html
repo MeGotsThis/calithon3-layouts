@@ -40,6 +40,7 @@
         display: flex;
         align-items: center;
         padding: 0 16px;
+        box-sizing: border-box;
       }
 
       #icon {
@@ -52,8 +53,17 @@
         justify-content: center;
       }
 
+      :host([center]) #icon {
+        margin-left: 0;
+        display: none;
+      }
+
       #time span {
         flex: 1;
+      }
+
+      :host([center]) #time {
+        text-align: center;
       }
     </style>
     <div id="startFlash"></div>

@@ -1,0 +1,63 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/imports/easeljs.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+
+<!--
+Attached left, right, or none
+  No greebles on attachment side
+  Placement indicator comes out from attachment side w/ constant margin
+  Placement indicators & audio indicators only used when attached to a side
+
+Width configurable
+Height constant
+
+Audio indicator comes out from side opposide placement indicator
+-->
+
+<dom-module id="cali-finish-time">
+  <template>
+    <style include="gdq-text-styles">
+      :host {
+        position: absolute;
+        box-sizing: border-box;
+        border-radius: 10px;
+        color: white;
+        overflow: hidden;
+      }
+
+      #main {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: rgba(33, 33, 43, 0.8);
+        padding-left: 12px;
+        padding-right: 12px;
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        @apply --finish-time-style;
+      }
+
+      :host([reverse]) #main {
+        @apply --layout-horizontal-reverse;
+      }
+
+      #spacer {
+        @apply --layout-flex;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+
+    <div id="main">
+      <span id="place">[[placement]]</span>
+      <span id="spacer"></span>
+      <span id="time">[[time]]</span>
+    </div>
+  </template>
+
+  <script src="cali-finish-time.js"></script>
+</dom-module>

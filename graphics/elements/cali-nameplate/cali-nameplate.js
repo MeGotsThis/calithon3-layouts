@@ -139,12 +139,18 @@
 
     fitName() {
       Polymer.flush();
-      const MAX_NAME_WIDTH = this.$.names.clientWidth - 32;
+      const MAX_NAME_WIDTH = this.$.names.clientWidth - 24;
       const nameWidth = this.$.namesName.clientWidth;
       if (nameWidth > MAX_NAME_WIDTH) {
-        TweenLite.set(this.$.namesName, {scaleX: MAX_NAME_WIDTH / nameWidth});
+        TweenLite.set(this.$.namesName, {
+          scaleX: MAX_NAME_WIDTH / nameWidth,
+          transformOrigin: this.right ? 'right' : 'left',
+        });
       } else {
-        TweenLite.set(this.$.namesName, {scaleX: 1});
+        TweenLite.set(this.$.namesName, {
+          scaleX: 1,
+          transformOrigin: this.right ? 'right' : 'left',
+        });
       }
 
       const MAX_TWITCH_WIDTH = MAX_NAME_WIDTH - 20;
