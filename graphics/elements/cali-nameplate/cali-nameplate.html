@@ -7,7 +7,7 @@
   <template>
     <style include="gdq-text-styles">
       :host {
-        position: absolute;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -52,11 +52,12 @@
         align-items: center;
         justify-content: center;
 
-        width: 54px;
+        padding-left: 8px;
+        padding-right: 8px;
       }
 
       #glitch img {
-        height: 40px;
+        height: var(--glitch-height, 40px);
       }
 
       #twitch {

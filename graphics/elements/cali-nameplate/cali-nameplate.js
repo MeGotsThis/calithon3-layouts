@@ -153,7 +153,7 @@
         });
       }
 
-      const MAX_TWITCH_WIDTH = MAX_NAME_WIDTH - 20;
+      const MAX_TWITCH_WIDTH = MAX_NAME_WIDTH - this.$.glitch.clientWidth;
       const twitchSpan = this.$.namesTwitch.querySelector('span');
       twitchSpan.style.width = 'auto';
       const twitchWidth = twitchSpan.clientWidth;
