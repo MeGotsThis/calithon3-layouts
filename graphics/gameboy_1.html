@@ -5,76 +5,129 @@
   <title>Gameboy, 1 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/gdq-nameplate/gdq-nameplate.html">
-  <link rel="import" href="elements/gdq-runinfo/gdq-runinfo.html">
-  <link rel="import" href="elements/gdq-timer/gdq-timer.html">
-  <link rel="import" href="elements/gdq-twitter/gdq-twitter.html">
-  <link rel="import" href="elements/gdq-sponsors/gdq-sponsors.html">
+  <link rel="import" href="elements/cali-category/cali-category.html">
+  <link rel="import" href="elements/cali-estimate/cali-estimate.html">
+  <link rel="import" href="elements/cali-game/cali-game.html">
+  <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
+  <link rel="import" href="elements/cali-timer/cali-timer.html">
+
   <custom-style>
     <style>
-      gdq-nameplate {
-        top: 453px;
-        left: 85px;
-        z-index: 11;
-        --gdq-nameplate-width: 377px;
+      #background {
+        -webkit-mask-image: url(img/backgrounds/gameboy_1_mask.svg);
+        mask-image: url(img/backgrounds/gameboy_1_mask.svg);
       }
 
-      gdq-runinfo {
-        left: 0;
-        top: 0;
-        width: 542px;
-        height: 167px;
-        --gdq-runinfo-misc-height: 38px;
-
+      #webcam {
+        width: 452px;
+        height: 339px;
+        box-sizing: border-box;
+        margin-bottom: -20px;
       }
 
-      gdq-timer {
-        left: 0;
-        top: 480px;
-        height: 57px;
-        width: 541px;
+      #left {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 5px;
+        left: 12px;
+        width: 452px;
+      }
+
+      #padding {
+        display: flex;
+        flex-direction: column;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      #padding > * {
+        margin-bottom: 5px;
+      }
+
+      #game {
+        position: absolute;
+        top: 5px;
+        left: 536px;
+        width: 666px;
+        height: 600px;
+        box-sizing: border-box;
+      }
+
+      cali-nameplate {
+        width: 100%;
+        height: 59px;
         font-size: 42px;
-        border-bottom: 1px solid #000000;
-        padding-top: 8px;
-        padding-bottom: 5px;
       }
 
-      gdq-twitter {
-        bottom: 0;
-        left: 0;
-        width: 539px;
-        height: 128px;
-
-        --gdq-twitter-body: {
-          font-size: 22px;
-        };
-        --gdq-twitter-namebar: {
-          width: 316px;
-          height: 50px;
-          margin-bottom: -12px;
-          padding-bottom: 12px;
-          font-size: 21px;
-        };
+      cali-game {
+        position: absolute;
+        top: 602px;
+        left: 536px;
+        width: 666px;
+        height: 54px;
+        border-radius: 0 0 10px 10px;
+        font-size: 42px;
       }
 
-      gdq-sponsors {
-        bottom: 0;
-        left: 0;
-        width: 539px;
-        height: 124px;
+      cali-category {
+        width: 100%;
+        height: 54px;
+        font-size: 42px;
+      }
+
+      cali-estimate {
+        width: 100%;
+        height: 54px;
+        font-size: 42px;
+      }
+
+      cali-timer {
+        width: 100%;
+        height: 54px;
+        font-size: 42px;
       }
     </style>
   </custom-style>
 </head>
 <body>
   <div id="container">
-    <img id="background" src="img/backgrounds/gameboy_bg.png">
-    <gdq-runinfo max-name-size="36"></gdq-runinfo>
-    <gdq-timer></gdq-timer>
-    <gdq-sponsors></gdq-sponsors>
-    <gdq-twitter></gdq-twitter>
-    <img id="foreground" src="img/backgrounds/gameboy_fg.png">
-    <gdq-nameplate index="0"></gdq-nameplate>
+    <div id="background">
+      <img src="img/backgrounds/Catalina Island.png">
+      <div id="background-overlay"></div>
+    </div>
+    <div id="left">
+      <svg id="webcam">
+        <defs>
+          <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#2184A2"/>
+            <stop offset="100%" stop-color="#459997"/>
+          </linearGradient>
+        </defs>
+        <rect x="1.5" y="1.5" rx="10" ry="10" width="449" height="336"
+          style="stroke: url(#stroke); stroke-width: 3; fill: none"
+          />
+      </svg>
+      <cali-nameplate index="0"></cali-nameplate>
+      <div id="padding">
+        <cali-timer></cali-timer>
+        <cali-estimate></cali-estimate>
+        <cali-category></cali-category>
+      </div>
+    </div>
+
+    <svg id="game">
+      <defs>
+        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#2184A2"/>
+          <stop offset="100%" stop-color="#459997"/>
+        </linearGradient>
+      </defs>
+      <rect x="1.5" y="1.5" width="663" height="597"
+        style="stroke: url(#stroke); stroke-width: 3; fill: none"
+        />
+    </svg>
+    <cali-game></cali-game>
   </div>
 
   <script>
