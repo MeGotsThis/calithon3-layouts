@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Standard, 4 Player</title>
+  <title>Widescreen, 4 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
   <link rel="import" href="elements/cali-category/cali-category.html">
@@ -15,13 +15,13 @@
   <custom-style>
     <style>
       #background {
-        -webkit-mask-image: url(img/backgrounds/standard_4_mask.svg);
-        mask-image: url(img/backgrounds/standard_4_mask.svg);
+        -webkit-mask-image: url(img/backgrounds/widescreen_4_mask.svg);
+        mask-image: url(img/backgrounds/widescreen_4_mask.svg);
       }
 
       #webcam {
-        width: 433px;
-        height: 240px;
+        width: 374px;
+        height: 243px;
         box-sizing: border-box;
         margin-bottom: -10px;
       }
@@ -32,7 +32,7 @@
         position: absolute;
         top: 4px;
         left: 11px;
-        width: 433px;
+        width: 374px;
       }
 
       #game-1,
@@ -40,25 +40,25 @@
       #game-3,
       #game-4 {
         position: absolute;
-        width: 406px;
-        height: 306px;
+        width: 436px;
+        height: 248px;
         box-sizing: border-box;
       }
 
       #game-1, #game-2 {
-        top: 4px;
+        top: 65px;
       }
 
       #game-3, #game-4 {
-        top: 356px;
+        top: 316px;
       }
 
       #game-1, #game-3 {
-        left: 452px;
+        left: 393px;
       }
 
       #game-2, #game-4 {
-        left: 866px;
+        left: 834px;
       }
 
       #padding {
@@ -74,71 +74,61 @@
 
       cali-nameplate {
         position: absolute;
-        width: 196px;
-        height: 28px;
-        font-size: 20px;
+        width: 436px;
+        height: 54px;
+        font-size: 42px;
         z-index: 2;
-        --glitch-height: 18px;
+      }
+
+      cali-nameplate[index="0"],
+      cali-nameplate[index="1"] {
+        top: 14px;
+        border-radius: 10px 10px 0 0;
+      }
+
+      cali-nameplate[index="2"],
+      cali-nameplate[index="3"] {
+        top: 561px;
+        border-radius: 0 0 10px 10px;
       }
 
       cali-nameplate[index="0"],
       cali-nameplate[index="2"] {
-        top: 310px;
-        border-radius: 0 0 10px 10px;
-        background-size: 406px auto;
+        left: 393px;
       }
 
       cali-nameplate[index="1"],
       cali-nameplate[index="3"] {
-        top: 328px;
-        border-radius: 10px 10px 0 0;
-        background-position: right center;
-        background-size: 406px auto;
-      }
-
-      cali-nameplate[index="0"] {
-        left: 452px;
-      }
-
-      cali-nameplate[index="1"] {
-        left: 662px;
-      }
-
-      cali-nameplate[index="2"] {
-        left: 866px;
-      }
-
-      cali-nameplate[index="3"] {
-        left: 1076px;
+        left: 834px;
       }
 
       cali-finish-time {
         position: absolute;
-        width: 400px;
+        width: 430px;
         height: 54px;
         font-size: 42px;
       }
 
       cali-finish-time[index="0"],
       cali-finish-time[index="1"] {
-        top: 253px;
-        border-radius: 10px 10px 0 0;
+        top: 68px;
+        border-radius: 0 0 10px 10px;
       }
 
       cali-finish-time[index="2"],
       cali-finish-time[index="3"] {
-        top: 359px;
-        border-radius: 0 0 10px 10px;
+        top: 507px;
+        border-radius: 10px 10px 0 0;
       }
 
       cali-finish-time[index="0"],
       cali-finish-time[index="2"] {
-        left: 455px;
+        left: 396px;
       }
 
       cali-finish-time[index="1"],
       cali-finish-time[index="3"] {
-        left: 869px;
+        left: 837px;
       }
 
       cali-game {
@@ -171,7 +161,7 @@
 <body>
   <div id="container">
     <div id="background">
-      <img src="img/backgrounds/La Jolla.png">
+      <img src="img/backgrounds/SF Bay.png">
       <div id="background-overlay"></div>
     </div>
     <div id="left">
@@ -182,7 +172,7 @@
             <stop offset="100%" stop-color="#459997"/>
           </linearGradient>
         </defs>
-        <rect x="1.5" y="1.5" rx="10" ry="10" width="430" height="237"
+        <rect x="1.5" y="1.5" rx="10" ry="10" width="371" height="240"
           style="stroke: url(#stroke); stroke-width: 3; fill: none"
           />
       </svg>
@@ -193,14 +183,14 @@
         <cali-estimate></cali-estimate>
       </div>
     </div>
-    <cali-nameplate index="0" right></cali-nameplate>
+    <cali-nameplate index="0"></cali-nameplate>
     <cali-nameplate index="1"></cali-nameplate>
-    <cali-nameplate index="2" right></cali-nameplate>
+    <cali-nameplate index="2"></cali-nameplate>
     <cali-nameplate index="3"></cali-nameplate>
-    <cali-finish-time index="0" attach="bottom"></cali-finish-time>
-    <cali-finish-time index="1" attach="bottom" reverse></cali-finish-time>
-    <cali-finish-time index="2" attach="top"></cali-finish-time>
-    <cali-finish-time index="3" attach="top" reverse></cali-finish-time>
+    <cali-finish-time index="0" attach="top"></cali-finish-time>
+    <cali-finish-time index="1" attach="top"></cali-finish-time>
+    <cali-finish-time index="2" attach="bottom"></cali-finish-time>
+    <cali-finish-time index="3" attach="bottom"></cali-finish-time>
     <svg id="game-1">
       <defs>
         <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -208,7 +198,7 @@
           <stop offset="100%" stop-color="#459997"/>
         </linearGradient>
       </defs>
-      <rect x="1.5" y="1.5" width="403" height="303"
+      <rect x="1.5" y="1.5" width="433" height="245"
         style="stroke: url(#stroke); stroke-width: 3; fill: none"
         />
     </svg>
@@ -219,7 +209,7 @@
           <stop offset="100%" stop-color="#459997"/>
         </linearGradient>
       </defs>
-      <rect x="1.5" y="1.5" width="403" height="303"
+      <rect x="1.5" y="1.5" width="433" height="245"
         style="stroke: url(#stroke); stroke-width: 3; fill: none"
         />
     </svg>
@@ -230,7 +220,7 @@
           <stop offset="100%" stop-color="#459997"/>
         </linearGradient>
       </defs>
-      <rect x="1.5" y="1.5" width="403" height="303"
+      <rect x="1.5" y="1.5" width="433" height="245"
         style="stroke: url(#stroke); stroke-width: 3; fill: none"
         />
     </svg>
@@ -241,7 +231,7 @@
           <stop offset="100%" stop-color="#459997"/>
         </linearGradient>
       </defs>
-      <rect x="1.5" y="1.5" width="403" height="303"
+      <rect x="1.5" y="1.5" width="433" height="245"
         style="stroke: url(#stroke); stroke-width: 3; fill: none"
         />
     </svg>

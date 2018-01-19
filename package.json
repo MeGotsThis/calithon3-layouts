@@ -138,6 +138,11 @@
         "height": 720
       },
       {
+        "file": "widescreen_4.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
         "file": "gba_1.html",
         "width": 1280,
         "height": 665
