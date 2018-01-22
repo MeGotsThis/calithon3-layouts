@@ -20,7 +20,7 @@
     }
 
     currentRunChanged(newVal) {
-      this.estimate = formatTimeSpan(newVal.estimate);
+      this.estimate = newVal.estimate;
     }
   }
 
