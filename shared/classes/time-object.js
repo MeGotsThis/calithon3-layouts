@@ -29,7 +29,7 @@ class TimeObject {
     t.hours = hms.h;
     t.minutes = hms.m;
     t.seconds = hms.s;
-    t.formatted = TimeObject.formatHMS(hms);
+    t.formatted = TimeObject.formatHMS(hms, true);
     t.timestamp = Date.now();
     return t;
   }
@@ -46,7 +46,7 @@ class TimeObject {
     t.hours = hms.h;
     t.minutes = hms.m;
     t.seconds = hms.s;
-    t.formatted = TimeObject.formatHMS(hms);
+    t.formatted = TimeObject.formatHMS(hms, true);
     t.timestamp = Date.now();
     return t;
   }
@@ -62,7 +62,7 @@ class TimeObject {
     t.hours = hms.h;
     t.minutes = hms.m;
     t.seconds = hms.s;
-    t.formatted = TimeObject.formatHMS(hms);
+    t.formatted = TimeObject.formatHMS(hms, true);
     t.raw = seconds;
     t.timestamp = Date.now();
     return t;
@@ -73,9 +73,9 @@ class TimeObject {
    * @param {{h: number, m: number, s: number}} hms - The HMS object to format.
    * @return {string} - The formatted time string.
    */
-  static formatHMS(hms) {
+  static formatHMS(hms, hours=false) {
     let str = '';
-    if (hms.h) {
+    if (hms.h || hours) {
       str += `${hms.h}:`;
     }
 
