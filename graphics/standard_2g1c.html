@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Standard, 2 Player</title>
+  <link rel="stylesheet" href="style/layout.css">
+  <link rel="import" href="../shared/imports/gsap.html">
+  <link rel="import" href="elements/cali-category/cali-category.html">
+  <link rel="import" href="elements/cali-estimate/cali-estimate.html">
+  <link rel="import" href="elements/cali-multi-game/cali-multi-game.html">
+  <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
+  <link rel="import" href="elements/cali-timer/cali-timer.html">
+
+  <custom-style>
+    <style>
+      #background {
+        -webkit-mask-image: url(img/backgrounds/standard_2_mask.svg);
+        mask-image: url(img/backgrounds/standard_2_mask.svg);
+      }
+
+      #webcam {
+        position: absolute;
+        top: 434px;
+        left: 493px;
+        width: 295px;
+        height: 222px;
+        box-sizing: border-box;
+      }
+
+      #game-1,
+      #game-2 {
+        position: absolute;
+        top: 5px;
+        width: 500px;
+        height: 376px;
+        box-sizing: border-box;
+      }
+
+      #game-1 {
+        left: 12px;
+      }
+
+      #game-2 {
+        right: 11px;
+      }
+
+      cali-multi-game {
+        position: absolute;
+        top: 378px;
+        width: 500px;
+        height: 56px;
+        border-radius: 0 0 10px 10px;
+        font-size: 42px;
+        z-index: 2;
+      }
+
+      cali-multi-game[index="0"] {
+        left: 12px;
+      }
+
+      cali-multi-game[index="1"] {
+        right: 11px;
+      }
+
+      cali-nameplate {
+        position: absolute;
+        top: 530px;
+        left: 10px;
+        width: 486px;
+        height: 54px;
+        background: #2184A2;
+        border-radius: 10px 0 0 10px;
+        font-size: 42px;
+      }
+
+      cali-category {
+        position: absolute;
+        top: 530px;
+        right: 11px;
+        width: 484px;
+        height: 54px;
+        background: #459997;
+        border-radius: 0 10px 10px 0;
+        font-size: 42px;
+      }
+
+      cali-estimate {
+        position: absolute;
+        top: 584px;
+        left: 785px;
+        width: 254px;
+        height: 54px;
+        border-radius: 0 10px 10px 0;
+        font-size: 42px;
+      }
+
+      cali-timer {
+        position: absolute;
+        top: 584px;
+        right: 785px;
+        width: 254px;
+        height: 54px;
+        border-radius: 10px 0 0 10px;
+        font-size: 42px;
+      }
+    </style>
+  </custom-style>
+</head>
+<body>
+  <div id="container">
+    <div id="background">
+      <img src="img/backgrounds/La Jolla.png">
+      <div id="background-overlay"></div>
+    </div>
+    <cali-multi-game index="0" name="Mike Tyson's Punch-Out!!"></cali-multi-game>
+    <cali-multi-game index="1" name="Super Punch-Out!!" right></cali-multi-game>
+    <cali-category right></cali-category>
+    <cali-estimate right></cali-estimate>
+    <cali-timer></cali-timer>
+    <cali-nameplate index="0"></cali-nameplate>
+    <cali-finish-time index="0" attach="top"></cali-finish-time>
+    <cali-finish-time index="1" attach="top" reverse></cali-finish-time>
+    <svg id="game-1">
+      <defs>
+        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#2184A2"/>
+          <stop offset="100%" stop-color="#459997"/>
+        </linearGradient>
+      </defs>
+      <rect x="1.5" y="1.5" width="497" height="373"
+        style="stroke: url(#stroke); stroke-width: 3; fill: none"
+        />
+    </svg>
+    <svg id="game-2">
+      <defs>
+        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#2184A2"/>
+          <stop offset="100%" stop-color="#459997"/>
+        </linearGradient>
+      </defs>
+      <rect x="1.5" y="1.5" width="497" height="373"
+        style="stroke: url(#stroke); stroke-width: 3; fill: none"
+        />
+    </svg>
+
+    <svg id="webcam">
+      <defs>
+        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#2184A2"/>
+          <stop offset="100%" stop-color="#459997"/>
+        </linearGradient>
+      </defs>
+      <rect x="1.5" y="1.5" rx="10" ry="10" width="292" height="219"
+        style="stroke: url(#stroke); stroke-width: 3; fill: none"
+        />
+    </svg>
+
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      TweenLite.to(document.body, 0.333, {
+        opacity: 1,
+        ease: Power1.easeOut,
+      });
+    });
+  </script>
+</body>
+</html>
