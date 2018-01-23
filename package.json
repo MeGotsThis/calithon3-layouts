@@ -78,16 +78,6 @@
     ],
     "graphics": [
       {
-        "file": "interview_monitor.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
-        "file": "interview_tier2.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
         "file": "countdown.html",
         "width": 1280,
         "height": 720
@@ -98,19 +88,9 @@
         "height": 720
       },
       {
-        "file": "interview.html",
-        "width": 1280,
-        "height": 665
-      },
-      {
         "file": "standard_1.html",
         "width": 1280,
         "height": 720
-      },
-      {
-        "file": "standard_1_ff6.html",
-        "width": 1280,
-        "height": 665
       },
       {
         "file": "standard_2.html",
@@ -153,11 +133,6 @@
         "height": 720
       },
       {
-        "file": "gba_2.html",
-        "width": 1280,
-        "height": 665
-      },
-      {
         "file": "gameboy_1.html",
         "width": 1280,
         "height": 720
@@ -173,16 +148,6 @@
         "height": 720
       },
       {
-        "file": "gameboy_3.html",
-        "width": 1280,
-        "height": 665
-      },
-      {
-        "file": "gameboy_4.html",
-        "width": 1280,
-        "height": 665
-      },
-      {
         "file": "3ds.html",
         "width": 1280,
         "height": 720
@@ -191,11 +156,6 @@
         "file": "ds.html",
         "width": 1280,
         "height": 720
-      },
-      {
-        "file": "ds_vertical.html",
-        "width": 1280,
-        "height": 665
       },
       {
         "file": "omnibar.html",
@@ -219,69 +179,6 @@
       }
     ],
     "assetCategories": [
-      {
-        "name": "sponsors-3ds",
-        "title": "Sponsors 3DS",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-gameboy_1",
-        "title": "Sponsors Gameboy, 1 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-gba_1",
-        "title": "Sponsors GBA, 1 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-gba_2",
-        "title": "Sponsors GBA, 2 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-standard_1",
-        "title": "Sponsors Standard, 1 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-standard_2",
-        "title": "Sponsors Standard, 2 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-standard_3",
-        "title": "Sponsors Standard, 3 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-widescreen_1",
-        "title": "Sponsors Widescreen, 1 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      },
-      {
-        "name": "sponsors-widescreen_2",
-        "title": "Sponsors Widescreen, 2 Player",
-        "allowedTypes": [
-          "png"
-        ]
-      }
     ]
   },
   "scripts": {
