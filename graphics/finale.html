@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Finale</title>
+  <link rel="stylesheet" href="style/layout.css">
+  <link rel="import" href="../shared/imports/gsap.html">
+
+  <custom-style>
+    <style>
+      #container {
+        height: 720px;
+      }
+
+      #logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1280px;
+        height: 163px;
+        background-color: rgba(33, 33, 43, 0.8);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #logo span {
+        text-align: center;
+        color: #90DBE8;
+        font-size: 96px;
+      }
+
+      #thanks {
+        position: absolute;
+        left: 380px;
+        top: 265px;
+        width: 520px;
+        height: 65px;
+      }
+
+      #soon {
+        position: absolute;
+        left: 380px;
+        top: 385px;
+        width: 520px;
+        height: 65px;
+      }
+
+      #thanks,
+      #soon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 50px;
+        color: white;
+        text-align: center;
+      }
+
+      #music {
+        position: absolute;
+        top: 538px;
+        left: 286px;
+        width: 706px;
+        height: 65px;
+
+        background-color: rgba(33, 33, 43, 0.8);
+        border-radius: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        color: white;
+        font-size: 48px;
+      }
+
+      #nowPlaying {
+        white-space: nowrap;
+        transform-origin: left;
+      }
+
+      #twitter {
+        position: absolute;
+        top: 623px;
+        left: 494px;
+        width: 293px;
+        height: 65px;
+
+        background-color: rgba(33, 33, 43, 0.8);
+        border-radius: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        color: white;
+        font-size: 35px;
+        font-family: sans-serif;
+      }
+
+      #clock, #padding {
+        flex: 1;
+      }
+
+      #clock,
+      #note,
+      #bird {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      #clock img {
+        margin: 18px;
+      }
+
+      #music img {
+        margin: 12px;
+      }
+
+      #twitter img {
+        height: 63px;
+      }
+    </style>
+  </custom-style>
+</head>
+<body>
+<div id="container">
+  <div id="background">
+    <img src="img/backgrounds/Catalina Island.png">
+    <div id="background-overlay"></div>
+  </div>
+  <div id="logo">
+    <span>Calithon</span>
+  </div>
+  <div id="thanks">
+    <span>Thanks for watching!</span>
+  </div>
+  <div id="soon">
+    <span>See you dudes soon!</span>
+  </div>
+  <div id="music">
+    <div id="note">
+      <img src="img/music.png"></img>
+    </div>
+    <span id="nowPlaying"></span>
+  </div>
+  <div id="twitter">
+    <div id="bird">
+      <img src="img/twitter.svg"></img>
+    </div>
+    <span id="twitter-id">@CalithonSR</span>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    TweenLite.to(document.body, 0.333, {
+      opacity: 1,
+      ease: Power1.easeOut,
+    });
+  });
+</script>
+
+<script src="app/finale.js"></script>
+</body>
+</html>
