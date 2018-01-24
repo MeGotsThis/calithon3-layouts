@@ -4,17 +4,10 @@
   <meta charset="UTF-8">
   <title>Countdown</title>
   <link rel="stylesheet" href="style/layout.css">
-  <link rel="stylesheet" href="style/font/small-pixel-7.css">
-  <link rel="stylesheet" href="style/font/SF%20Pixelate.css">
   <link rel="import" href="../shared/imports/gsap.html">
 
   <custom-style>
     <style>
-      body {
-        font-family: 'SF Pixelate', sans-serif;
-        letter-spacing: -0.025em;
-      }
-
       #container {
         height: 720px;
       }
@@ -22,60 +15,157 @@
       #logo {
         position: absolute;
         top: 0;
-        left: 388px;
-        transform: scale(0.75);
-        z-index: 1;
-      }
+        left: 0;
+        width: 1280px;
+        height: 163px;
+        background-color: rgba(33, 33, 43, 0.8);
 
-      #loop {
-        position: absolute;
-        top: 308px;
-        left: 280px;
-        z-index: -10;
-      }
-
-      #nowPlaying {
-        color: white;
-        font-size: 23px;
-        width: 764px;
-        bottom: 4px;
-        left: 258px;
-        opacity: 0;
-      }
-
-      #countdown {
-        font-size: 90px;
-        font-family: 'small-pixel-7', sans-serif;
-        color: #00ff00;
-        left: 509px;
-        top: 337px;
-        width: 264px;
-        letter-spacing: 0.075em;
         display: flex;
+        align-items: center;
         justify-content: center;
       }
 
-      #countdown,
-      #nowPlaying {
+      #logo span {
         text-align: center;
-        white-space: nowrap;
+        color: #90DBE8;
+        font-size: 96px;
+      }
+
+      #starting {
         position: absolute;
+        left: 490px;
+        top: 247px;
+        width: 300px;
+        height: 65px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 40px;
+        color: white;
+        text-align: center;
+      }
+
+      #countdown {
+        position: absolute;
+        left: 429px;
+        top: 318px;
+        width: 423px;
+        height: 82px;
+
+        background-color: rgba(33, 33, 43, 0.8);
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        font-size: 75px;
+        color: white;
+        letter-spacing: 0.01em;
+        text-align: center;
+      }
+
+      #music {
+        position: absolute;
+        top: 538px;
+        left: 286px;
+        width: 706px;
+        height: 65px;
+
+        background-color: rgba(33, 33, 43, 0.8);
+        border-radius: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        color: white;
+        font-size: 48px;
+      }
+
+      #nowPlaying {
+        white-space: nowrap;
         transform-origin: left;
+      }
+
+      #twitter {
+        position: absolute;
+        top: 623px;
+        left: 494px;
+        width: 293px;
+        height: 65px;
+
+        background-color: rgba(33, 33, 43, 0.8);
+        border-radius: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        color: white;
+        font-size: 35px;
+        font-family: sans-serif;
+      }
+
+      #clock, #padding {
+        flex: 1;
+      }
+
+      #clock,
+      #note,
+      #bird {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      #clock img {
+        margin: 18px;
+      }
+
+      #music img {
+        margin: 12px;
+      }
+
+      #twitter img {
+        height: 63px;
       }
     </style>
   </custom-style>
 </head>
 <body>
 <div id="container">
-  <video id="loop" autoplay loop src="img/countdown/countdown_anim_loop.webm"></video>
-  <img src="img/backgrounds/countdown_bg.png">
-  <img id="logo" src="img/countdown/countdown_logo.png">
-  <div id="countdown">
-    <div id="countdownMinutes"></div>
-    <div id="countdownColon">:</div>
-    <div id="countdownSeconds"></div>
+  <div id="background">
+    <img src="img/backgrounds/Oceanside Pier View.png">
+    <div id="background-overlay"></div>
   </div>
-  <div id="nowPlaying"></div>
+  <div id="starting">
+    <span>Starting Soon:</span>
+  </div>
+  <div id="logo">
+    <span>Calithon</span>
+  </div>
+  <div id="countdown">
+    <div id="clock">
+      <img src="img/clock.png"></img>
+    </div>
+    <span>
+      <span id="countdownMinutes"></span><span id="countdownColon">:</span><span id="countdownSeconds"></span>
+    </span>
+    <div id="padding">
+    </div>
+  </div>
+  <div id="music">
+    <div id="note">
+      <img src="img/music.png"></img>
+    </div>
+    <span id="nowPlaying"></span>
+  </div>
+  <div id="twitter">
+    <div id="bird">
+      <img src="img/twitter.svg"></img>
+    </div>
+    <span id="twitter-id">@CalithonSR</span>
+  </div>
 </div>
 
 <script>

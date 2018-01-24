@@ -1,16 +1,16 @@
 (function() {
   'use strict';
 
-  const MAX_NOW_PLAYING_WIDTH = 764;
   const countdown = document.getElementById('countdown');
   const countdownMinutes = document.getElementById('countdownMinutes');
   const countdownSeconds = document.getElementById('countdownSeconds');
   const countdownColon = document.getElementById('countdownColon');
+  const musicDivDisplay = document.getElementById('music');
+  const musicNoteDisplay = document.getElementById('note');
   const nowPlayingDisplay = document.getElementById('nowPlaying');
-  const logo = document.getElementById('logo');
   const countdownTime = nodecg.Replicant('countdown');
   const countdownRunning = nodecg.Replicant('countdownRunning');
-  const gmpd = nodecg.Replicant('gmpd');
+  const gpmd = nodecg.Replicant('gpmd');
 
   const colonFlashAnim = new TimelineMax({repeatDelay: 0.5});
   colonFlashAnim.set(countdownColon, {visibility: 'visible'});
@@ -31,7 +31,7 @@
     if (newVal.raw <= 10) {
       countdown.style.color = '#ff0000';
     } else {
-      countdown.style.color = '#00ff00';
+      countdown.style.color = '#ffffff';
     }
 
     if (newVal.raw === 0) {
@@ -53,22 +53,30 @@
     }
   });
 
-  gmpd.on('change', (newVal) => {
+  gpmd.on('change', (newVal, oldVal) => {
     TweenLite.to(nowPlayingDisplay, 0.33, {
       opacity: 0,
       ease: Power1.easeInOut,
       onComplete() {
-        if (!newVal || !newVal.playState || !newVal.track) {
+        if (typeof newVal === 'undefined' || !newVal.playState) {
+          return;
+        }
+        if (typeof oldVal !== 'undefined'
+            && oldVal.playState
+            && newVal.track.title === oldVal.track.title
+            && newVal.track.album === oldVal.track.album) {
           return;
         }
 
-        let {title, album} = value.track;
+        let {title, album} = newVal.track;
         if (album) {
           nowPlayingDisplay.innerText = `${title} - ${album}`;
         } else {
           nowPlayingDisplay.innerText = `${title}`;
         }
 
+        const MAX_NOW_PLAYING_WIDTH =
+          musicDivDisplay.clientWidth - musicNoteDisplay.clientWidth - 12;
         const width = nowPlayingDisplay.scrollWidth;
         if (width > MAX_NOW_PLAYING_WIDTH) {
           TweenLite.set(nowPlayingDisplay, {
@@ -86,24 +94,5 @@
         });
       },
     });
-  });
-
-  /* Logo loop anim */
-  // Gentle bobbing effect, repeats forever
-  TweenMax.to(logo, 7, {
-    scale: 0.82,
-    ease: Power1.easeInOut,
-    repeat: -1,
-    yoyo: true,
-  });
-
-  // Gentle rotation effect, repeats forever
-  TweenMax.fromTo(logo, 8, {
-    rotation: '-3deg',
-  }, {
-    rotation: '3deg',
-    ease: Power1.easeInOut,
-    repeat: -1,
-    yoyo: true,
   });
 })();
