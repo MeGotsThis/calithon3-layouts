@@ -4,9 +4,9 @@
   const NP_FADE_DURATION = 0.334;
   const gpmd = nodecg.Replicant('gpmd');
 
-  class GdqBreakSong extends Polymer.Element {
+  class CaliBreakSong extends Polymer.Element {
     static get is() {
-      return 'gdq-break-song';
+      return 'cali-break-song';
     }
 
     static get properties() {
@@ -37,25 +37,19 @@
       }
       const nowPlayingTL = this.nowPlayingTL;
 
-      nowPlayingTL.to(this.$['nowplaying-text'], NP_FADE_DURATION, {
+      nowPlayingTL.to(this.$['nowplaying-outer'], NP_FADE_DURATION, {
         opacity: 0,
         ease: Power1.easeIn,
         onComplete() {
-          TweenMax.killTweensOf(this.$['nowplaying-game']);
-          TweenMax.killTweensOf(this.$['nowplaying-title']);
+          TweenMax.killTweensOf(this.$['nowplaying-text']);
           TweenLite.set([
-            this.$['nowplaying-game'],
-            this.$['nowplaying-title'],
+            this.$['nowplaying-text'],
           ], {x: 0});
 
           [{
-            element: this.$['nowplaying-game'],
-            scrollMultiplier: 1,
-            newContent: newVal.track.album,
-          }, {
-            element: this.$['nowplaying-title'],
+            element: this.$['nowplaying-text'],
             scrollMultiplier: 1.2,
-            newContent: newVal.track.title,
+            newContent: `${newVal.track.title} - ${newVal.track.album}`,
           }].forEach(({element, scrollMultiplier, newContent}) => {
             element.innerHTML = newContent || '?';
             if (element.scrollWidth > element.clientWidth) {
@@ -82,12 +76,12 @@
         onCompleteScope: this,
       });
 
-      nowPlayingTL.to(this.$['nowplaying-text'], NP_FADE_DURATION, {
+      nowPlayingTL.to(this.$['nowplaying-outer'], NP_FADE_DURATION, {
         opacity: 1,
         ease: Power1.easeOut,
       });
     }
   }
 
-  customElements.define(GdqBreakSong.is, GdqBreakSong);
+  customElements.define(CaliBreakSong.is, CaliBreakSong);
 })();

@@ -7,12 +7,10 @@
   <link rel="stylesheet" href="style/font/SF Pixelate.css">
   <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
   <link rel="import" href="../bower_components/polymer/lib/elements/custom-style.html">
-  <link rel="import" href="elements/gdq-break-bids/gdq-break-bids.html">
-  <link rel="import" href="elements/gdq-break-lab/gdq-break-lab.html">
-  <link rel="import" href="elements/gdq-break-song/gdq-break-song.html">
-  <link rel="import" href="elements/gdq-break-prizes/gdq-break-prizes.html">
-  <link rel="import" href="elements/gdq-break-schedule/gdq-break-schedule.html">
-  <link rel="import" href="elements/gdq-break-total/gdq-break-total.html">
+  <link rel="import" href="../shared/imports/gsap-ModifiersPlugin.html">
+  <link rel="import" href="elements/cali-break-total/cali-break-total.html">
+  <link rel="import" href="elements/cali-break-game/cali-break-game.html">
+  <link rel="import" href="elements/cali-break-song/cali-break-song.html">
   <link rel="import" href="../shared/style/gdq-text-styles.html">
 
   <custom-style>
@@ -21,191 +19,131 @@
         height: 720px;
       }
 
-      #labLoop {
+      cali-break-total {
         position: absolute;
-        z-index: -11;
-        left: 46px;
-        top: 470px;
+        left: 497px;
+        bottom: 1px;
+        width: 292px;
+        height: 64px;
       }
 
-      #greenStatic,
-      #redStatic {
+      cali-break-game {
+        font-size: 36px;
+      }
+
+      cali-break-game[offset="-1"] {
         position: absolute;
-        width: 536px;
-        height: 116px;
-        animation: scheduleStatic 1s steps(3) infinite;
-        background-repeat: no-repeat;
-        right: 92px;
-        z-index: -11;
+        top: 661px;
+        left: 10px;
+        width: 493px;
+        height: 52px;
+        border-radius: 10px 0 0 10px;
       }
 
-      #greenStatic {
-        top: 38px;
-        background-image: url("img/break/green_static.png");
-      }
-
-      #redStatic {
-        top: 170px;
-        background-image: url("img/break/red_static.png");
-      }
-
-      @keyframes scheduleStatic {
-        from { background-position-x: 0; }
-        to { background-position-x: -1608px; } /* <-- width of spritesheet */
-      }
-
-      #sparks {
+      cali-break-game[offset="0"] {
         position: absolute;
-        width: 498px;
-        height: 14px;
-        top: 56px;
-        left: 36px;
-        background-image: url("img/break/sparks.png");
-        background-repeat: no-repeat;
-        animation: sparks 1s steps(3) infinite;
+        top: 661px;
+        right: 10px;
+        width: 493px;
+        height: 52px;
+        border-radius: 0 10px 10px 0;
       }
 
-      @keyframes sparks {
-        from { background-position-y: 0; }
-        to { background-position-y: -42px; } /* <-- height of spritesheet */
-      }
-
-      #gdqLogo {
+      cali-break-song {
         position: absolute;
-        top: 17px;
-        left: 177px;
-        opacity: 0;
+        top: 570px;
+        left: 227px;
+        width: 826px;
+        height: 65px;
+        border-radius: 10px;
       }
 
-      #charityLogo {
+      #scenery {
         position: absolute;
         top: 5px;
-        left: 116px;
-        opacity: 0;
+        left: 224px;
+        width: 832px;
+        height: 555px;
+
+        box-sizing: border-box;
+        border: 3px solid #90DBE8;
+        background-size: cover;
+        background-position: center center;
       }
 
-      #screenStatic {
+      #setup {
         position: absolute;
-        width: 532px;
-        height: 348px;
-        bottom: 30px;
-        right: 94px;
-        background-image: url("img/break/screen_static.png");
-        background-repeat: no-repeat;
-        animation: screenStatic 1s steps(3) infinite;
-        z-index: -11;
-      }
+        top: 12px;
+        width: 100%;
 
-      @keyframes screenStatic {
-        from { background-position-x: 0; }
-        to { background-position-x: -1596px; } /* <-- width of spritesheet */
-      }
-
-      gdq-break-lab {
-        top: 454px;
-        left: 30px;
-      }
-
-      gdq-nowplaying {
-        top: 154px;
-        left: 0;
-      }
-
-      gdq-twitter {
-        bottom: 7px;
-        left: 0;
-        width: 903px;
-        height: 125px;
-        background: url("img/break/twitter_bg.png");
-
-        --gdq-twitter-body: {
-          font-size: 23px;
-          padding: 5px 25px 0 25px;
-        };
-        --gdq-twitter-namebar: {
-          width: 340px;
-          height: 54px;
-          margin-bottom: -12px;
-          padding-bottom: 12px;
-          padding-left: 6px;
-          font-size: 21px;
-        };
-      }
-
-      gdq-break-total {
-        left: 25px;
-        bottom: 4px;
-      }
-
-      gdq-break-schedule {
-        top: 38px;
-        right: 92px;
-      }
-
-      #screen {
-        position: absolute;
-        width: 532px;
-        height: 348px;
-        bottom: 30px;
-        right: 94px;
-
-        @apply --layout-vertical;
-      }
-
-      #screen-donateURL {
-        color: transparent;
         display: flex;
-        justify-content: center;
         align-items: center;
-        height: 43px;
-        background-color: #1f2828;
-        font-size: 19px;
-        font-weight: 400;
-        font-family: "SF Pixelate";
-      }
+        justify-content: center;
 
-      #screen-donateURL .character {
+        font-family: sans-serif;
+        font-size: 32px;
         color: white;
       }
 
-      #screenHeader {
-        position: absolute;
-        top: 317px;
-        left: 727px;
-        padding-top: 1px;
-        width: 379px;
-        height: 37px;
-        background: url("img/break/screen-header.png") no-repeat;
-        color: #ffffff;
-        font-family: Montserrat;
-        font-size: 26px;
-        font-weight: 700;
-        text-transform: uppercase;
-        text-align: center;
+      #setup span {
+        background-color: rgba(33, 33, 43, 0.8);
+        border-radius: 10px;
+        padding: 12px 8px;
       }
 
-      #screen-transition {
+      #location {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 66px;
+
+        background-color: rgba(33, 33, 43, 0.8);
+        font-family: sans-serif;
+        font-size: 40px;
+        color: white;
+      }
+
+      #location #text-outer {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: url("img/break/screen_transition.png");
-        animation: screenTransition 500ms steps(6) infinite;
-        transition: opacity 333ms ease-in-out;
-        pointer-events: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      @keyframes screenTransition {
-        from { background-position-x: 0; }
-        to { background-position-x: -3192px; } /* <-- width of spritesheet */
-      }
-
-      gdq-break-bids,
-      gdq-break-prizes {
+      #location #locationIcon {
         position: absolute;
         top: 0;
         left: 0;
+        height: 100%;
+
+        padding-left: 16px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #prev-game,
+      #next-game {
+        position: absolute;
+        top: 625px;
+
+        font-family: sans-serif;
+        font-size: 24px;
+        color: white;
+      }
+
+      #prev-game {
+        left: 10px;
+      }
+
+      #next-game {
+        right: 10px;
       }
 
       [hidden] {
@@ -216,34 +154,32 @@
 </head>
 <body>
   <div id="container">
-    <div id="greenStatic"></div>
-    <div id="redStatic"></div>
-    <div id="screenStatic"></div>
-    <img id="background" src="img/backgrounds/break_bg.png">
-    <div id="sparks"></div>
-    <img id="gdqLogo" src="img/break/gdq-logo.png">
-    <img id="charityLogo" src="img/break/msf-logo.png">
-    <gdq-break-lab></gdq-break-lab>
-    <gdq-break-song></gdq-break-song>
-    <gdq-break-total></gdq-break-total>
-    <gdq-break-schedule></gdq-break-schedule>
-
-    <div id="screen">
-      <div style="flex-grow: 1; position: relative;">
-        <gdq-break-bids hidden></gdq-break-bids>
-        <gdq-break-prizes hidden></gdq-break-prizes>
-      </div>
-
-      <div id="screen-donateURL">
-        <span class="shadow">gamesdonequick.com/donate</span>
-      </div>
-
-      <div id="screen-transition"></div>
+    <div id="background">
+      <img id="background-image" src="img/backgrounds/SF Bay.png">
+      <div id="background-overlay"></div>
     </div>
 
-    <div id="screenHeader">
-      <span class="shadow"></span>
+    <div id="scenery" style="background-image: url('img/backgrounds/SF Bay.png')">
+      <div id="setup">
+        <span>Currently Setting Up For the Next Game</span>
+      </div>
+      <div id="location">
+        <div id="locationIcon">
+          <img src="img/geolocation.png"></img>
+        </div>
+        <div id="text-outer">
+          <span id="location-text">San Francisco Bay, CA</span>
+        </div>
+      </div>
     </div>
+
+    <span id="prev-game">Just Played</span>
+    <span id="next-game">Next Game</span>
+
+    <cali-break-song></cali-break-song>
+    <cali-break-game offset="-1"></cali-break-game>
+    <cali-break-game offset="0" right></cali-break-game>
+    <cali-break-total></cali-break-total>
   </div>
 
   <script src="app/break.js"></script>

@@ -1,6 +1,6 @@
-class GdqBreakTotal extends Polymer.Element {
+class CaliBreakTotal extends Polymer.Element {
   static get is() {
-    return 'gdq-break-total';
+    return 'cali-break-total';
   }
 
   static get properties() {
@@ -67,7 +67,7 @@ class GdqBreakTotal extends Polymer.Element {
       this.$['total-amount'].rawCents = newCents;
       this.$['total-amount'].textContent = dollars.toLocaleString('en-US', {
         maximumFractionDigits: 0,
-      }).replace(/1/ig, '\u00C0');
+      });
       return;
     }
 
@@ -81,14 +81,14 @@ class GdqBreakTotal extends Polymer.Element {
         const dollars = this.$['total-amount'].rawCents / 100;
         this.$['total-amount'].textContent = dollars.toLocaleString('en-US', {
           maximumFractionDigits: 0,
-        }).replace(/1/ig, '\u00C0');
+        });
       },
       onUpdateScope: this,
     });
   }
 }
 
-customElements.define(GdqBreakTotal.is, GdqBreakTotal);
+customElements.define(CaliBreakTotal.is, CaliBreakTotal);
 
 /**
  * Generates a random integer.
