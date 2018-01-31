@@ -41,9 +41,11 @@ class GdqRundownItem extends Polymer.Element {
           this.$.bottomLeft.appendChild(span);
         });
 
-        to = this.$.bottomLeft.lastChild.textContent.length - 2;
-        this.$.bottomLeft.lastChild.textContent =
-          this.$.bottomLeft.lastChild.textContent.substr(0, to);
+        if (this.$.bottomLeft.lastChild) {
+          to = this.$.bottomLeft.lastChild.textContent.length - 2;
+          this.$.bottomLeft.lastChild.textContent =
+            this.$.bottomLeft.lastChild.textContent.substr(0, to);
+        }
         break;
       case 'adBreak':
         this.name = 'Ad Break';

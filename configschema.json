@@ -86,6 +86,47 @@
         },
         "password": {
           "type": "string"
+        },
+        "schedule": {
+          "type": ["object", "null"],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "game": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "runTime": {
+              "type": "string"
+            },
+            "setupTime": {
+              "type": "string"
+            },
+            "runners": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4,
+              "items": {
+                "runner": {
+                  "type": "string"
+                },
+                "twitch": {
+                  "type": "string"
+                }
+              }
+            },
+            "notes": {
+              "type": "string"
+            },
+            "extra": {
+              "type": "string"
+            }
+          },
+          "required": ["id"],
+          "default": null
         }
       },
       "description": "Login information for the private areas of the tracker API.",

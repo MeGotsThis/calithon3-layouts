@@ -2,6 +2,7 @@
 
 // Packages
 const assign = require('lodash.assign');
+const cheerio = require('cheerio');
 const clone = require('clone');
 const deepEqual = require('deep-equal');
 const EventEmitter = require('events');
@@ -21,10 +22,6 @@ const checklist = require('./checklist');
 const canSeekScheduleRep = nodecg.Replicant('canSeekSchedule');
 const currentRunRep = nodecg.Replicant('currentRun');
 const nextRunRep = nodecg.Replicant('nextRun');
-const runnersRep = nodecg.Replicant('runners', {
-  defaultValue: [],
-  persistent: false,
-});
 const runOrderMap = nodecg.Replicant('runOrderMap', {
   defaultValue: {},
   persistent: false,
@@ -181,73 +178,16 @@ nodecg.listenFor('resetRun', (pk, cb) => {
  * @return {Promise} - A a promise resolved with "true" if the schedule was
  * updated, "false" if unchanged.
  */
-function update() {
-  adBreakIdCounter = 0;
-
-  const runnersPromise = request({
-    uri: nodecg.bundleConfig.useMockData ?
-      'https://www.dropbox.com/s/lmhh2tctyrvipdr/runners.json' :
-      'https://private.gamesdonequick.com/tracker/search',
-    qs: {
-      type: 'runner',
-      event: 20,
-      dl: 1,
-    },
-    json: true,
-  });
-
-  const runsPromise = request({
-    uri: nodecg.bundleConfig.useMockData ?
-      'https://www.dropbox.com/s/7njvyl80m34b46s/schedule.json' :
-      'https://private.gamesdonequick.com/tracker/search',
-    qs: {
-      type: 'run',
-      event: 20,
-      dl: 1,
-    },
-    json: true,
-  });
-
-  const adsPromise = request({
-    uri: nodecg.bundleConfig.useMockData ?
-      'https://www.dropbox.com/s/p04aoahtx6hv10i/ads.json' :
-      'https://private.gamesdonequick.com/tracker/gdq/ads/20/',
-      qs: {
-        dl: 1,
-      },
-    json: true,
-  });
-
-  const interviewsPromise = request({
-    uri: nodecg.bundleConfig.useMockData ?
-      'https://www.dropbox.com/s/kr8279xxnrzsyp4/interviews.json' :
-      'https://private.gamesdonequick.com/tracker/gdq/interviews/20/',
-      qs: {
-        dl: 1,
-      },
-    json: true,
-  });
-
-  return Promise.all([
-    runnersPromise, runsPromise, adsPromise, interviewsPromise,
-  ]).then(([runnersJSON, runsJSON, adsJSON, interviewsJSON]) => {
-    const formattedRunners = [];
-    runnersJSON.forEach((obj) => {
-      formattedRunners[obj.pk] = {
-        stream: obj.fields.stream.split('/').filter((part) => part).pop(),
-        name: obj.fields.name,
-      };
+async function update() {
+  try {
+    const {id: scheduleId, game} = nodecg.bundleConfig.tracker.schedule;
+    let runsHtml = await request({
+      uri: `https://horaro.org/-/schedules/${scheduleId}`,
     });
-
-    if (!deepEqual(formattedRunners, runnersRep.value)) {
-      runnersRep.value = clone(formattedRunners);
-    }
-
+    let $ = cheerio.load(runsHtml);
+    let runsJSON = JSON.parse($("#h-item-data").contents().text());
     const formattedSchedule = calcFormattedSchedule({
       rawRuns: runsJSON,
-      formattedRunners,
-      formattedAds: adsJSON.map(formatAd),
-      formattedInterviews: interviewsJSON.map(formatInterview),
     });
 
     // If nothing has changed, return.
@@ -258,8 +198,8 @@ function update() {
     scheduleRep.value = formattedSchedule;
 
     const newRunOrderMap = {};
-    runsJSON.forEach((run) => {
-      newRunOrderMap[run.fields.name] = run.fields.order;
+    runsJSON.forEach((run, i) => {
+      newRunOrderMap[run[2][game]] = i;
     });
     runOrderMap.value = newRunOrderMap;
 
@@ -268,7 +208,7 @@ function update() {
      */
     if (!currentRunRep.value
         || typeof currentRunRep.value.order === 'undefined') {
-      _seekToArbitraryRun(1);
+      _seekToArbitraryRun(0);
     } else {
       const currentRunAsInSchedule = findRunByPk(currentRunRep.value.pk);
 
@@ -320,7 +260,7 @@ function update() {
     }
 
     return true;
-  }).catch((error) => {
+  } catch(error) {
     const response = error.response;
     const actualError = error.error || error;
     if (response && response.statusCode === 403) {
@@ -333,7 +273,7 @@ function update() {
     } else {
       nodecg.log.error('[schedule] Failed to update:', actualError);
     }
-  });
+  }
 }
 
 /**
@@ -433,69 +373,13 @@ function _seekToArbitraryRun(runOrOrder) {
  * @return {Array} - A formatted schedule.
  */
 
-function calcFormattedSchedule(
-    {rawRuns, formattedRunners, formattedAds, formattedInterviews}) {
-  const flatSchedule = [];
-
-  // NOTE: We *probably* don't have to do this sort step,
-  // but UraniumAnchor said he wasn't 100% positive that sorting
-  // was guaranteed from the API, so we do this just to be safe.
-
-  // Sort runs by order.
-  rawRuns = rawRuns.sort((a, b) => a.fields.order - b.fields.order);
-
-  // Sort ads and interviews by order, then suborder.
-  const formattedAdsAndInterviews =
-    formattedAds.concat(formattedInterviews).sort(suborderSort);
-
-  let lastIndex = 0;
-  rawRuns.forEach((run) => {
-    run = formatRun(run, formattedRunners);
-    flatSchedule.push(run);
-
-    formattedAdsAndInterviews.slice(lastIndex).some((item, index) => {
-      if (item.order > run.order) {
-        return true;
-      }
-
-      lastIndex = index;
-
-      // This theoretically should never be hit?
-      if (item.order < run.order) {
-        return false;
-      }
-
-      flatSchedule.push(item);
-      return false;
-    });
-  });
-
+function calcFormattedSchedule({rawRuns}) {
   const schedule = [];
 
-  let adBreak;
-  flatSchedule.forEach((item, index) => {
-    if (item.type === 'ad') {
-      if (!adBreak) {
-        adBreak = {
-          type: 'adBreak',
-          ads: [],
-          id: adBreakIdCounter++,
-        };
-      }
-
-      adBreak.ads.push(item);
-
-      const nextItem = flatSchedule[index + 1];
-      if (nextItem && nextItem.type === 'ad') {
-        return;
-      }
-
-      schedule.push(adBreak);
-      adBreak = null;
-      return;
-    }
-
-    schedule.push(item);
+  let lastIndex = 0;
+  rawRuns.forEach((run, i) => {
+    run = formatRun(run, i);
+    schedule.push(run);
   });
 
   return schedule;
@@ -509,99 +393,41 @@ function calcFormattedSchedule(
  * to hydrate the run's runners.
  * @return {Object} - The formatted run object.
  */
-function formatRun(run, formattedRunners) {
-  const runners = run.fields.runners.slice(0, 4).map((runnerId) => {
+function formatRun(run, order) {
+  const {game, category, runTime, setupTime, runners: runnersIdx, notes,
+      extra} =
+    nodecg.bundleConfig.tracker.schedule;
+  const runners = runnersIdx.map(({runner, twitch}) => {
     return {
-      name: formattedRunners[runnerId].name,
-      stream: formattedRunners[runnerId].stream,
+      name: run[2][runner],
+      stream: run[2][twitch],
     };
+  }).filter((runner) => {
+    return typeof runner.name !== 'undefined'
+      || typeof runner.stream !== 'undefined';
   });
-
-  return {
-    name: run.fields.display_name || 'Unknown',
-    longName: run.fields.name || 'Unknown',
-    console: run.fields.console || 'Unknown',
-    commentators: run.fields.commentators || 'Unknown',
-    category: run.fields.category || 'Any%',
-    setupTime: run.fields.setup_time,
-    order: run.fields.order,
-    estimate: run.fields.run_time || 'Unknown',
-    releaseYear: run.fields.release_year || '',
-    runners,
-    notes: run.fields.tech_notes || '',
-    coop: run.fields.coop || false,
-    id: run.pk,
-    pk: run.pk,
-    type: 'run',
-  };
-}
-
-/**
- * Formats a raw ad object from the GDQ Tracker API into a slimmed-down version
- * for our use.
- * @param {Object} ad - A raw ad object from the GDQ Tracker API.
- * @return {Object} - The formatted ad object.
- */
-function formatAd(ad) {
-  return {
-    id: ad.pk,
-    name: ad.fields.ad_name,
-    adType: ad.fields.ad_type,
-    filename: ad.fields.filename,
-    duration: ad.fields.length,
-    order: ad.fields.order,
-    suborder: ad.fields.suborder,
-    sponsorName: ad.fields.sponsor_name,
-    type: 'ad',
-  };
-}
-
-/**
- * Formats a raw interview object from the GDQ Tracker API into a slimmed-down
- * version for our use.
- * @param {Object} interview - A raw interview object from the GDQ Tracker API.
- * @return {Object} - The formatted interview object.
- */
-function formatInterview(interview) {
-  return {
-    id: interview.pk,
-    interviewees: splitString(interview.fields.interviewees),
-    interviewers: splitString(interview.fields.interviewers),
-    duration: interview.fields.length,
-    order: interview.fields.order,
-    subject: interview.fields.subject,
-    suborder: interview.fields.suborder,
-    type: 'interview',
-  };
-}
-
-/**
- * Splits a comma-separated string into an array of strings, trimming
- * whitespace.
- * @param {string} str - The string to split.
- * @return {Array<string>} - The split string.
- */
-function splitString(str) {
-  return str.split(',')
-    .map((part) => part.trim())
-    .filter((part) => part);
-}
-
-/**
- * Sorts objects by their `order` property, then by their `suborder` property.
- * @param {object} a - The first item in the current sort operation.
- * @param {object} b - The second item in the current sort operation.
- * @return {number} - A number expressing which of these two items comes first
- * in the sort.
- */
-function suborderSort(a, b) {
-  const orderDiff = a.order - b.order;
-
-  if (orderDiff !== 0) {
-    return orderDiff;
+  let data = {};
+  try {
+    data = (extra && run[extra] && JSON.parse(run[extra])) || {};
+  } catch(error) {
   }
 
-  return a.suborder - b.suborder;
+  return {
+    name: data.name || run[2][game] || 'Unknown',
+    longName: data.longName || run[2][game] || 'Unknown',
+    category: data.category || run[2][category] || 'Any%',
+    console: data.console || 'Unknown',
+    estimate: run[2][runTime] || 'Unknown',
+    setupTime: run[2][setupTime],
+    order: order,
+    releaseYear: data.release_year || '',
+    runners,
+    notes: run[2][notes] || '',
+    coop: data.coop || false,
+    id: run[0],
+    pk: run[0],
+    type: 'run',
+  };
 }
 
 /**

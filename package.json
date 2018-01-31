@@ -74,6 +74,14 @@
         "file": "google-play-music-desktop.html",
         "headerColor": "#2d4e8a",
         "workspace": "Setup"
+      },
+      {
+        "name": "tracker-2fa",
+        "title": "Tracker 2FA",
+        "width": 2,
+        "file": "tracker-2fa.html",
+        "headerColor": "#2d4e8a",
+        "workspace": "Setup"
       }
     ],
     "graphics": [

@@ -1,0 +1,33 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/nodecg-toggle/nodecg-toggle.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="tracker-2fa">
+  <template>
+    <style>
+      :host {
+      }
+
+      #code {
+        @apply --layout-flex;
+      }
+
+      #button {
+        --paper-button: {
+          background-color: #5BA664;
+          color: white;
+        };
+      }
+    </style>
+
+    <div>
+      <div id="authorization">
+        <paper-input id="code" label="Authorization Code"></paper-input>
+        <paper-button id="button" on-tap="sendCode">Send</paper-button>
+      </div>
+    </div>
+  </template>
+
+  <script src="tracker-2fa.js"></script>
+</dom-module>
