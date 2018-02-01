@@ -73,7 +73,9 @@ class GdqRundownItem extends Polymer.Element {
           this.$.topRight.lastChild.textContent.substr(0, to);
         break;
       default:
-        throw new Error(`'Unexpected content type: ${item.type}`);
+        throw new Error(
+          `'Unexpected content type "${item.type}" in item: `
+          + `${JSON.stringify(item)}`);
     }
   }
 }

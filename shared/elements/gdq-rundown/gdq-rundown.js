@@ -49,7 +49,8 @@
       if (currentRun.status !== 'declared'
           || schedule.status !== 'declared'
           || stopwatch.status !== 'declared'
-          || currentIntermission.status !== 'declared') {
+          || currentIntermission.status !== 'declared'
+          || !schedule.value) {
         return;
       }
 

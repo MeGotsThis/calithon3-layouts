@@ -17,7 +17,7 @@
     "lodash.debounce": "^4.0.6",
     "lodash.merge": "^4.4.0",
     "nanotimer": "^0.3.14",
-    "nodecg-utility-obs": "^3.0.2",
+    "nodecg-utility-obs": "^4.1.2",
     "numeral": "^2.0.6",
     "object-path": "^0.11.3",
     "q": "^1.4.1",
@@ -191,8 +191,7 @@
         "height": 1080
       }
     ],
-    "assetCategories": [
-    ]
+    "assetCategories": []
   },
   "scripts": {
     "static": "eslint ./**/*.js ./**/*.html --ignore-path .eslintignore",
