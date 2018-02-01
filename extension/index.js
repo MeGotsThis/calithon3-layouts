@@ -16,6 +16,12 @@ module.exports = function(nodecg) {
   // This must be done before any other files are `require`d.
   nodecgApiContext.set(nodecg);
 
+  if (!nodecg.bundleConfig.tracker) {
+      throw new Error(
+        `You must populate the "tracker" configuration object in `
+        + `cfg/${nodecg.bundleName}.json`);
+  }
+
   if (nodecg.bundleConfig.useMockData) {
     nodecg.log.warn(
       'WARNING! useMockData is true, you will not receive real data from the '
