@@ -117,7 +117,9 @@
           id="typeahead"
           placeholder="Search"
           raised
-          on-keyup="_typeaheadKeyup"></vaadin-combo-box>
+          on-keyup="_typeaheadKeyup"
+          on-change="_checkButtons">
+      </vaadin-combo-box>
 
         <paper-button id="take" on-tap="takeTypeahead" raised>
           <span>Take</span>
