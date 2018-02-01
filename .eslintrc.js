@@ -18,5 +18,32 @@ module.exports = {
         "SteppedGradientMixin"
       ]
     }],
+    "operator-linebreak": ["error", "after", {
+      "overrides": {
+        "+": "before",
+        "-": "before",
+        "*": "before",
+        "/": "before",
+        "%": "before",
+        "**": "before",
+        "||": "before",
+        "&&": "before",
+        "==": "ignore",
+        "===": "ignore",
+        "!=": "ignore",
+        "!==": "ignore",
+        ">": "before",
+        "<": "before",
+        ">=": "before",
+        "<=": "before",
+        "&": "before",
+        "|": "before",
+        "^": "before",
+        ">>": "none",
+        "<<": "none",
+        "!": "none",
+        "~": "none",
+      }
+    }]
   },
 };

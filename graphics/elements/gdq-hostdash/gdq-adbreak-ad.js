@@ -27,8 +27,8 @@ class GdqAdbreakAd extends Polymer.MutableData(Polymer.Element) {
   }
 
   frameNumberToTimeString(fps, frameNumber) {
-    if (typeof fps !== 'number' || Number.isNaN(fps) ||
-      typeof frameNumber !== 'number' || Number.isNaN(frameNumber)) {
+    if (typeof fps !== 'number' || Number.isNaN(fps)
+        || typeof frameNumber !== 'number' || Number.isNaN(frameNumber)) {
       return ':??';
     }
     return TimeObject.formatSeconds(frameNumber / fps);

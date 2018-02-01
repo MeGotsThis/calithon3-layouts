@@ -35,8 +35,8 @@ module.exports = function(nodecg) {
   if (nodecg.bundleConfig.googlePlayMusic) {
     require('./google-play-music-desktop');
   } else {
-    nodecg.log.warn('"googlePlayMusic" is not defined in cfg! ' +
-        'Google Play Music Desktop Player integration will be disabled.');
+    nodecg.log.warn('"googlePlayMusic" is not defined in cfg! '
+      + 'Google Play Music Desktop Player integration will be disabled.');
   }
 
   const {loginToTracker} = require('./horaro');
@@ -67,7 +67,7 @@ module.exports = function(nodecg) {
       require('./twitter');
     }
   } else {
-    nodecg.log.warn('"twitter" is not defined in cfg/sgdq17-layouts.json! ' +
-      'Twitter integration will be disabled.');
+    nodecg.log.warn('"twitter" is not defined in cfg/sgdq17-layouts.json! '
+      + 'Twitter integration will be disabled.');
   }
 };

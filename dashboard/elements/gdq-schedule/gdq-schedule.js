@@ -141,10 +141,10 @@
     }
 
     _checkButtons() {
-      if (canSeekSchedule.status !== 'declared' ||
-        schedule.status !== 'declared' ||
-        currentRun.status !== 'declared' ||
-        nextRun.status !== 'declared') {
+      if (canSeekSchedule.status !== 'declared'
+          || schedule.status !== 'declared'
+          || currentRun.status !== 'declared'
+          || nextRun.status !== 'declared') {
         return;
       }
 

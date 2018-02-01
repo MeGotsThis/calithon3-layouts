@@ -31,8 +31,8 @@ setInterval(checkGoogleMusicPlayerDesktop, CONNECTION_FREQUENCY);
 
 function checkGoogleMusicPlayerDesktop() {
   if (connection) {
-    if (connection.readyState == connection.OPEN ||
-        connection.readyState == connection.CONNECTING) {
+    if (connection.readyState == connection.OPEN
+        || connection.readyState == connection.CONNECTING) {
       return;
     }
   }

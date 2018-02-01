@@ -184,8 +184,8 @@ function mergeChangesFromTracker(run, unmodifiedRun) {
   if (run.originalValues) {
     if (run.originalValues.runners) {
       for (let i = 0; i < run.originalValues.runners.length; i++) {
-        if (typeof run.originalValues.runners[i] === 'object' &&
-          Object.keys(run.originalValues.runners[i]).length === 0) {
+        if (typeof run.originalValues.runners[i] === 'object'
+            && Object.keys(run.originalValues.runners[i]).length === 0) {
           delete run.originalValues.runners[i];
         }
       }
