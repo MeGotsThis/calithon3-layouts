@@ -21,12 +21,14 @@ const formatTimeSpan = (timeSpan, {hours = false} = {}) => {
     parts.push(second + '');
   }
   return parts.join(':');
-}
+};
 
 const parseTimeSpan = (timeSpan) => {
   const parts = timeSpan.split(':');
   if (parts.length == 3) {
-    return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+    return (parseInt(parts[0]) * 3600
+      + parseInt(parts[1]) * 60
+      + parseInt(parts[2]));
   }
   if (parts.length == 2) {
     return parseInt(parts[0]) * 60 + parseInt(parts[1]);
@@ -35,4 +37,4 @@ const parseTimeSpan = (timeSpan) => {
     return parseInt(parts[0]);
   }
   return 0;
-}
+};

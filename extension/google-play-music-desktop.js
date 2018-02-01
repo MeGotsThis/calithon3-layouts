@@ -17,7 +17,7 @@ const gpmdAuthorizationCode = nodecg.Replicant('gpmd-authorization-code');
 const logDataToFile = {
   'playlists': 'gpmdp-playlists.json',
   'library': 'gpmdp-library.json',
-}
+};
 
 const requestCallbacks = {};
 let requestID = 1;
@@ -88,17 +88,17 @@ nodecg.listenFor('gpmd:authorization', (data, cb) => {
   nodecg.log.info(
     'Sending Google Play Music Desktop Player authorization code...');
   send({
-    "namespace": "connect",
-    "method": "connect",
-    "arguments": [NAME, data],
+    'namespace': 'connect',
+    'method': 'connect',
+    'arguments': [NAME, data],
   });
 });
 
 const sendConnect = () => {
   send({
-    "namespace": "connect",
-    "method": "connect",
-    "arguments": [NAME, gpmdAuthorizationCode.value],
+    'namespace': 'connect',
+    'method': 'connect',
+    'arguments': [NAME, gpmdAuthorizationCode.value],
   }, gpmdAuthorizationCode.value ? connectCallback : undefined);
 };
 
@@ -108,8 +108,8 @@ const connectCallback = () => {
     return;
   }
   sendWithCallback({
-    "namespace": "playback",
-    "method": "getPlaybackState",
+    'namespace': 'playback',
+    'method': 'getPlaybackState',
   }, (data) => {
     if (data.type == 'error') {
       return;
@@ -119,32 +119,32 @@ const connectCallback = () => {
         nodecg.bundleConfig.googlePlayMusic.forcePlay;
       if (type === 'playlists') {
         sendWithCallback({
-          "namespace": "playlists",
-          "method": "getAll",
+          'namespace': 'playlists',
+          'method': 'getAll',
         }, (data) => {
-          let playlist = data.value.find(v => v.id == id);
+          let playlist = data.value.find((v) => v.id == id);
           if (!playlist) {
             return;
           }
           send({
-            "namespace": "playlists",
-            "method": "play",
-            "arguments": [playlist],
+            'namespace': 'playlists',
+            'method': 'play',
+            'arguments': [playlist],
           }, sendCallback({
-            "namespace": "playback",
-            "method": "setShuffle",
-            "arguments": [shuffle],
+            'namespace': 'playback',
+            'method': 'setShuffle',
+            'arguments': [shuffle],
           }, sendCallback({
-            "namespace": "playback",
-            "method": "setRepeat",
-            "arguments": [repeat],
+            'namespace': 'playback',
+            'method': 'setRepeat',
+            'arguments': [repeat],
           })));
         });
       }
     } else if (data.value == 1) {
       send({
-        "namespace": "playback",
-        "method": "playPause",
+        'namespace': 'playback',
+        'method': 'playPause',
       });
     }
   });
@@ -154,11 +154,11 @@ const send = (data, cb) => {
   connection.send(JSON.stringify({
     ...data,
   }), null, cb);
-}
+};
 
 const sendCallback = (data, cb) => {
   return () => send(data, cb);
-}
+};
 
 const sendWithCallback = (data, cb, err) => {
   requestCallbacks[requestID] = {cb, err};
@@ -167,4 +167,4 @@ const sendWithCallback = (data, cb, err) => {
     requestID: requestID,
   }));
   requestID += requestID;
-}
+};

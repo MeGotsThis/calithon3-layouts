@@ -195,6 +195,7 @@
   },
   "scripts": {
     "static": "eslint ./**/*.js ./**/*.html --ignore-path .eslintignore",
+    "static-fix": "eslint ./**/*.js ./**/*.html --fix --ignore-path .eslintignore",
     "test": "npm run static && istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "mock-donations": "node ./scripts/test_donation_server"
   }

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 'use strict';
 
 const cheerio = require('cheerio');
@@ -28,7 +29,11 @@ const loginToTracker = async () => {
   }
 
   try {
-    let response, $, csfrToken, client_id, request_id;
+    let response;
+    let $;
+    let csfrToken;
+    let client_id;
+    let request_id;
 
     // First request from horaro
     response = await request({
@@ -59,8 +64,8 @@ const loginToTracker = async () => {
         request_id,
       },
       headers: {
-        Referer: response.request.uri.href,
-        "X-CSRF-Token": csfrToken,
+        'Referer': response.request.uri.href,
+        'X-CSRF-Token': csfrToken,
       },
       resolveWithFullResponse: true,
     });
@@ -77,8 +82,8 @@ const loginToTracker = async () => {
           request_id,
         },
         headers: {
-          Referer: response.request.uri.href,
-          "X-CSRF-Token": csfrToken,
+          'Referer': response.request.uri.href,
+          'X-CSRF-Token': csfrToken,
         },
         resolveWithFullResponse: true,
       });
@@ -92,8 +97,8 @@ const loginToTracker = async () => {
           request_id: request_id,
         },
         headers: {
-          Referer: response.request.uri.href,
-          "X-CSRF-Token": csfrToken,
+          'Referer': response.request.uri.href,
+          'X-CSRF-Token': csfrToken,
         },
         resolveWithFullResponse: true,
       });
@@ -118,14 +123,14 @@ const loginToTracker = async () => {
         time_to_submit,
       },
       headers: {
-        Referer: response.request.uri.href,
-        "X-CSRF-Token": entities.decodeHTML($('#authenticity_token').val()),
+        'Referer': response.request.uri.href,
+        'X-CSRF-Token': entities.decodeHTML($('#authenticity_token').val()),
       },
       simple: false,
       json: true,
     });
     if (response.captcha) {
-      throw new Error("captcha is required");
+      throw new Error('captcha is required');
     }
 
     // Handle the two factor authentication
@@ -164,8 +169,8 @@ const loginToTracker = async () => {
             code,
           },
           headers: {
-            Referer: response.request.uri.href,
-            "X-CSRF-Token": csfrToken,
+            'Referer': response.request.uri.href,
+            'X-CSRF-Token': csfrToken,
           },
           simple: false,
         }));
@@ -185,10 +190,10 @@ const loginToTracker = async () => {
       loginLog.info(
         'Refreshed session as %s.', nodecg.bundleConfig.tracker.username);
     }
-  } catch(err) {
+  } catch (err) {
     loginLog.error('Error authenticating!\n', err);
     throw err;
   }
-}
+};
 
 module.exports = {loginToTracker};

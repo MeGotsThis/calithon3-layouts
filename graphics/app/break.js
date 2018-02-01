@@ -42,7 +42,7 @@
 
   const getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
-  }
+  };
 
   const randomBackground = () => {
     let index = getRandomInt(backgrounds.length);

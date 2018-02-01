@@ -11,7 +11,7 @@
       return {
         name: {
           type: String,
-          observer: 'fitText'
+          observer: 'fitText',
         },
         singleLineName: {
           type: Boolean,

@@ -39,7 +39,7 @@ module.exports = function(nodecg) {
         'Google Play Music Desktop Player integration will be disabled.');
   }
 
-  const { loginToTracker } = require('./horaro');
+  const {loginToTracker} = require('./horaro');
   loginToTracker().then(() => {
     const schedule = require('./schedule');
     schedule.on('permissionDenied', () => {

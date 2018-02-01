@@ -185,7 +185,7 @@ async function update() {
       uri: `https://horaro.org/-/schedules/${scheduleId}`,
     });
     let $ = cheerio.load(runsHtml);
-    let runsJSON = JSON.parse($("#h-item-data").contents().text());
+    let runsJSON = JSON.parse($('#h-item-data').contents().text());
     const formattedSchedule = calcFormattedSchedule({
       rawRuns: runsJSON,
     });
@@ -260,7 +260,7 @@ async function update() {
     }
 
     return true;
-  } catch(error) {
+  } catch (error) {
     const response = error.response;
     const actualError = error.error || error;
     if (response && response.statusCode === 403) {
@@ -389,8 +389,7 @@ function calcFormattedSchedule({rawRuns}) {
  * Formats a raw run object from the GDQ Tracker API into a slimmed-down and
  * hydrated version for our use.
  * @param {Object} run - A raw run object from the GDQ Tracker API.
- * @param {Object} formattedRunners - The formatted array of all runners, used
- * to hydrate the run's runners.
+ * @param {Number} order - The index of the run
  * @return {Object} - The formatted run object.
  */
 function formatRun(run, order) {
@@ -409,7 +408,7 @@ function formatRun(run, order) {
   let data = {};
   try {
     data = (extra && run[extra] && JSON.parse(run[extra])) || {};
-  } catch(error) {
+  } catch (error) {
   }
 
   return {

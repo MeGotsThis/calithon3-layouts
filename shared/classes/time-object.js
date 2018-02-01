@@ -71,6 +71,7 @@ class TimeObject {
   /**
    * Formats an HMS object into a string ([hh:]mm:ss).
    * @param {{h: number, m: number, s: number}} hms - The HMS object to format.
+   * @param {boolean} hours - Force showing hours
    * @return {string} - The formatted time string.
    */
   static formatHMS(hms, hours=false) {

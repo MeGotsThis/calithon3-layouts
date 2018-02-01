@@ -36,7 +36,7 @@ const loginToTracker = async () => {
       resolveWithFullResponse: true,
     });
     if (response.statusCode == 401) {
-      throw new Error("Error authenticating on horaro.org");
+      throw new Error('Error authenticating on horaro.org');
     }
     if (isFirstLogin) {
       isFirstLogin = false;
@@ -46,10 +46,10 @@ const loginToTracker = async () => {
       loginLog.info(
         'Refreshed session as %s.', nodecg.bundleConfig.tracker.username);
     }
-  } catch(err) {
+  } catch (err) {
     loginLog.error('Error authenticating!\n', err);
     throw err;
   }
-}
+};
 
 module.exports = {loginToTracker};
