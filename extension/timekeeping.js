@@ -1,13 +1,15 @@
 'use strict';
 
-// Packages
-const NanoTimer = require('nanotimer');
-
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
 const TimeObject = require('../shared/classes/time-object');
+const liveSplitCore = require('livesplit-core');
 
-const timer = new NanoTimer();
+const lsRun = liveSplitCore.Run.new();
+const segment = liveSplitCore.Segment.new('finish');
+lsRun.pushSegment(segment);
+const timer = liveSplitCore.Timer.new(lsRun);
+
 const checklistComplete = nodecg.Replicant('checklistComplete');
 const currentRun = nodecg.Replicant('currentRun');
 const stopwatch = nodecg.Replicant('stopwatch', {
@@ -20,10 +22,13 @@ const stopwatch = nodecg.Replicant('stopwatch', {
 });
 
 // Load the existing time and start the stopwatch at that.
+let timeOffset = 0;
 if (stopwatch.value.state === 'running') {
-  const timeDelta = Date.now() - stopwatch.value.timestamp;
-  const missedSeconds = Math.round(timeDelta / 1000);
-  TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
+  const missedTime =
+    Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
+  const previousTime = stopwatch.value.raw;
+  timeOffset = previousTime + missedTime;
+  console.log('timeOffset: %s', timeOffset);
   start(true);
 }
 
@@ -60,6 +65,8 @@ nodecg.listenFor('resumeRunner', (index) => {
 });
 nodecg.listenFor('editTime', editTime);
 
+setInterval(tick, 100); // 10 times per second.
+
 /**
  * Starts the timer.
  * @param {Boolean} [force=false] - Forces the timer to start again, even if
@@ -71,9 +78,9 @@ function start(force) {
     return;
   }
 
-  timer.clearInterval();
   stopwatch.value.state = 'running';
-  timer.setInterval(tick, '', '1s');
+  timer.start();
+	timer.resume();
 }
 
 /**
@@ -81,7 +88,13 @@ function start(force) {
  * @return {undefined}
  */
 function tick() {
-  TimeObject.increment(stopwatch.value);
+  const time = timer.currentTime();
+  const realTime = time.realTime();
+  if (!realTime) {
+    return;
+  }
+  TimeObject.setSeconds(
+    stopwatch.value, Math.floor(realTime.totalSeconds() + timeOffset));
 }
 
 /**
@@ -89,7 +102,7 @@ function tick() {
  * @return {undefined}
  */
 function stop() {
-  timer.clearInterval();
+  timer.pause();
   stopwatch.value.state = 'stopped';
 }
 
@@ -99,6 +112,8 @@ function stop() {
  */
 function reset() {
   stop();
+  timer.reset(true);
+  timeOffset = 0;
   TimeObject.setSeconds(stopwatch.value, 0);
   stopwatch.value.results = [];
 }
