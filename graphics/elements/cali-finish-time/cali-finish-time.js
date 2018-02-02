@@ -140,7 +140,7 @@
       if (newVal.results[this.index]) {
         this._setForfeit(newVal.results[this.index].forfeit);
         this._setPlace(newVal.results[this.index].place);
-        this._setTime(newVal.results[this.index].formatted);
+        this._setTime(newVal.results[this.index].time.formatted);
       } else {
         this._setForfeit(false);
         this._setPlace(0);

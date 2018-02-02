@@ -1,9 +1,19 @@
 'use strict';
 
+const LS_TIMER_PHASE = {
+  NotRunning: 0,
+  Running: 1,
+  Ended: 2,
+  Paused: 3
+};
+
+// Packages
+const clone = require('clone');
+const liveSplitCore = require('livesplit-core');
+
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
-const TimeObject = require('../shared/classes/time-object');
-const liveSplitCore = require('livesplit-core');
+const TimeUtils = require('./lib/time');
 
 const lsRun = liveSplitCore.Run.new();
 const segment = liveSplitCore.Segment.new('finish');
@@ -12,24 +22,20 @@ const timer = liveSplitCore.Timer.new(lsRun);
 
 const checklistComplete = nodecg.Replicant('checklistComplete');
 const currentRun = nodecg.Replicant('currentRun');
-const stopwatch = nodecg.Replicant('stopwatch', {
-  defaultValue: (function() {
-    const to = new TimeObject(0);
-    to.state = 'stopped';
-    to.results = [null, null, null, null];
-    return to;
-  })(),
-});
+const stopwatch = nodecg.Replicant('stopwatch');
 
 // Load the existing time and start the stopwatch at that.
-let timeOffset = 0;
+timer.start();
+timer.pause();
+initGameTime();
 if (stopwatch.value.state === 'running') {
-  const missedTime =
-    Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
-  const previousTime = stopwatch.value.raw;
-  timeOffset = previousTime + missedTime;
-  console.log('timeOffset: %s', timeOffset);
+  const missedTime = Date.now() - stopwatch.value.time.timestamp;
+  const previousTime = stopwatch.value.time.raw;
+  const timeOffset = previousTime + missedTime;
+  nodecg.log.info(
+    'Recovered %s seconds of lost time.', (missedTime / 1000).toFixed(2));
   start(true);
+  timer.setGameTime(liveSplitCore.TimeSpan.fromSeconds(timeOffset / 1000));
 }
 
 nodecg.listenFor('startTimer', start);
@@ -79,8 +85,19 @@ function start(force) {
   }
 
   stopwatch.value.state = 'running';
-  timer.start();
-	timer.resume();
+  if (timer.currentPhase() === LS_TIMER_PHASE.NotRunning) {
+    timer.start();
+    initGameTime();
+  } else {
+    timer.resume();
+  }
+}
+
+function initGameTime() {
+  timer.setLoadingTimes(liveSplitCore.TimeSpan.fromSeconds(0));
+  timer.initializeGameTime();
+  const existingSeconds = stopwatch.value.time.raw / 1000;
+  timer.setGameTime(liveSplitCore.TimeSpan.fromSeconds(existingSeconds));
 }
 
 /**
@@ -88,13 +105,18 @@ function start(force) {
  * @return {undefined}
  */
 function tick() {
-  const time = timer.currentTime();
-  const realTime = time.realTime();
-  if (!realTime) {
+  if (stopwatch.value.state !== 'running') {
     return;
   }
-  TimeObject.setSeconds(
-    stopwatch.value, Math.floor(realTime.totalSeconds() + timeOffset));
+
+  const time = timer.currentTime();
+  const gameTime = time.gameTime();
+  if (!gameTime) {
+    return;
+  }
+
+  stopwatch.value.time =
+    TimeUtils.createTimeStruct((gameTime.totalSeconds() * 1000));
 }
 
 /**
@@ -113,9 +135,8 @@ function stop() {
 function reset() {
   stop();
   timer.reset(true);
-  timeOffset = 0;
-  TimeObject.setSeconds(stopwatch.value, 0);
-  stopwatch.value.results = [];
+  stopwatch.value.time = TimeUtils.createTimeStruct();
+  stopwatch.value.results = [null, null, null, null];
 }
 
 /**
@@ -126,7 +147,11 @@ function reset() {
  */
 function completeRunner({index, forfeit}) {
   if (!stopwatch.value.results[index]) {
-    stopwatch.value.results[index] = new TimeObject(stopwatch.value.raw);
+    stopwatch.value.results[index] = {
+      time: clone(stopwatch.value.time),
+      place: 0,
+      forfeit: false,
+    };
   }
 
   stopwatch.value.results[index].forfeit = forfeit;
@@ -143,16 +168,18 @@ function resumeRunner(index) {
   recalcPlaces();
 
   if (stopwatch.value.state === 'finished') {
-    const timeDelta = Date.now() - stopwatch.value.timestamp;
-    const missedSeconds = Math.round(timeDelta / 1000);
-    TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
+    const missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
+    const newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
+    stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
+    timer.setGameTime(
+      liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000));
     start();
   }
 }
 
 /**
  * Edits the final time of a result.
- * @param {Number} index - The result index to edit.
+ * @param {Number|String} index - The result index to edit.
  * @param {String} newTime - A hh:mm:ss (or mm:ss) formatted new time.
  * @return {undefined}
  */
@@ -161,20 +188,21 @@ function editTime({index, newTime}) {
     return;
   }
 
-  const newSeconds = TimeObject.parseSeconds(newTime);
-  if (isNaN(newSeconds)) {
+  const newMilliseconds = TimeUtils.parseTimeString(newTime);
+  if (isNaN(newMilliseconds)) {
     return;
   }
 
-  if (index === 'master') {
-    TimeObject.setSeconds(stopwatch.value, newSeconds);
-  } else if (stopwatch.value.results[index]) {
-    TimeObject.setSeconds(stopwatch.value.results[index], newSeconds);
-    recalcPlaces();
+  if (index === 'master' || currentRun.value.runners.length === 1) {
+    stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
+    timer.setGameTime(
+        liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000));
+  }
 
-    if (currentRun.value.runners.length === 1) {
-      TimeObject.setSeconds(stopwatch.value, newSeconds);
-    }
+  if (stopwatch.value.results[index]) {
+    stopwatch.value.results[index].time =
+      TimeUtils.createTimeStruct(newMilliseconds);
+    recalcPlaces();
   }
 }
 
@@ -193,7 +221,7 @@ function recalcPlaces() {
   });
 
   finishedResults.sort((a, b) => {
-    return a.raw - b.raw;
+    return a.time.raw - b.time.raw;
   });
 
   finishedResults.forEach((r, index) => {
