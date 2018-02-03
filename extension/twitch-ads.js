@@ -7,6 +7,7 @@ const request = require('request-promise');
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
 const TimeUtils = require('./lib/time');
+const {STOPWATCH_STATES} = require('./timekeeping');
 
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
 const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {
@@ -15,35 +16,41 @@ const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {
 const timeLeft = nodecg.Replicant('twitch:timeLeftInAd', {
   defaultValue: TimeUtils.createTimeStruct()
 });
+const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd');
+const stopwatch = nodecg.Replicant('stopwatch');
 const timeSinceTimer = new NanoTimer();
 const timeLeftTimer = new NanoTimer();
+const CANT_PLAY_REASONS = {
+  AD_IN_PROGRESS: 'ad in progress',
+  RUN_IN_PROGRESS: 'run in progress',
+  ON_COOLDOWN: 'on cooldown',
+  NONE: ''
+};
 
 // Load the existing timeSince and timeLeft and resume at the appropriate time.
 if (timeSince.value.raw > 0) {
-  const timeDelta = Date.now() - timeSince.value.timestamp;
-  const missedSeconds = Math.round(timeDelta / 1000);
-  resetTimeSinceTicker(timeSince.value.raw + missedSeconds);
+  const missedMilliseconds = Date.now() - timeSince.value.timestamp;
+ resetTimeSinceTicker(timeSince.value.raw + missedMilliseconds);
 }
 
 if (timeLeft.value.raw > 0) {
-  const timeDelta = Date.now() - timeLeft.value.timestamp;
-  const missedSeconds = Math.round(timeDelta / 1000);
-  resetTimeLeftTicker(timeLeft.value.raw - missedSeconds);
+  const missedMilliseconds = Date.now() - timeLeft.value.timestamp;
+  resetTimeLeftTicker(timeLeft.value.raw - missedMilliseconds);
 }
 
-nodecg.listenFor('twitch:playAd', (duration) => {
-  if (timeLeft.value > 0) {
-    log.error('Requested Twitch ad before last ad had finished playing.');
-    return;
-  }
+[timeLeft, timeSince, stopwatch].forEach((replicant) => {
+  replicant.on('change', updateCanPlay);
+});
 
-  if (timeSince.value.raw > 0 && timeSince.value.raw < 480) {
+nodecg.listenFor('twitch:playAd', (durationSeconds) => {
+  if (!canPlayTwitchAd.value.canPlay) {
     log.error(
-      'Requested Twitch ad before the mandatory 8 minute cooldown expired.');
+      'Requested Twitch ad when it was not allowed (%s)',
+      canPlayTwitchAd.value.reason);
     return;
   }
 
-  log.info('Requesting %d second Twitch ad...', duration);
+  log.info('Requesting %d second Twitch ad...', durationSeconds);
   let twitchUri = `https://api.twitch.tv/kraken/channels/`
     + `${nodecg.bundleConfig.twitch.channelId}/commercial`;
   request({
@@ -55,12 +62,12 @@ nodecg.listenFor('twitch:playAd', (duration) => {
       'Client-ID': nodecg.bundleConfig.twitch.clientId,
       'Content-Type': 'application/json',
     },
-    body: {duration},
+    body: {durationSeconds},
     json: true,
   }).then((res) => {
     resetTimeSinceTicker();
-    resetTimeLeftTicker(duration + 15);
-    if (res.Length === duration) {
+    resetTimeLeftTicker((durationSeconds + 15) * 1000);
+    if (res.Length === durationSeconds) {
       log.info('Successfully started %d second Twitch Ad.', res.Length);
     } else {
       log.info(
@@ -68,22 +75,23 @@ nodecg.listenFor('twitch:playAd', (duration) => {
         + ' %d seconds.', res.Length, duration);
     }
   }).catch((err) => {
-    log.error('Failed to start %d second Twitch Ad:\n\t', duration, err);
+    log.error('Failed to start %d second Twitch Ad:\n\t', durationSeconds, err);
   });
 });
 
-function resetTimeSinceTicker(startingSeconds = 0) {
+function resetTimeSinceTicker(startingMilliseconds = 0) {
   timeSinceTimer.clearInterval();
-  timeSince.value = TimeUtils.createTimeStruct(startingSeconds * 1000);
+  timeSince.value = TimeUtils.createTimeStruct(startingMilliseconds);
   timeSinceTimer.setInterval(() => {
     timeSince.value = TimeUtils.createTimeStruct(timeSince.value.raw + 1000);
+  }, '', '1s');
 }
 
-function resetTimeLeftTicker(duration) {
+function resetTimeLeftTicker(durationMilliseconds) {
   timeLeftTimer.clearInterval();
-  timeLeft.value = TimeUtils.createTimeStruct(duration * 1000);
+  timeLeft.value = TimeUtils.createTimeStruct(durationMilliseconds * 1000);
 
-  if (duration < 0) {
+  if (durationMilliseconds < 0) {
     return;
   }
 
@@ -93,4 +101,34 @@ function resetTimeLeftTicker(duration) {
       timeLeftTimer.clearInterval();
     }
   }, '', '1s');
+}
+
+
+/**
+ * Updates the value of the canPlayTwitchAd replicant, based on the state of
+ * the timeLeft, timeSince, and stopwatch Replicants.
+ * @returns {undefined}
+ */
+function updateCanPlay() {
+  if (timeLeft.value.raw > 0) {
+    canPlayTwitchAd.value.canPlay = false;
+    canPlayTwitchAd.value.reason = CANT_PLAY_REASONS.AD_IN_PROGRESS;
+    return;
+  }
+
+  if (timeSince.value.raw > 0 && timeSince.value.raw < 480 * 1000) {
+    canPlayTwitchAd.value.canPlay = false;
+    canPlayTwitchAd.value.reason = CANT_PLAY_REASONS.ON_COOLDOWN;
+    return;
+  }
+
+  if (stopwatch.value.state !== STOPWATCH_STATES.NOT_STARTED &&
+    stopwatch.value.state !== STOPWATCH_STATES.FINISHED) {
+    canPlayTwitchAd.value.canPlay = false;
+    canPlayTwitchAd.value.reason = CANT_PLAY_REASONS.RUN_IN_PROGRESS;
+    return;
+  }
+
+  canPlayTwitchAd.value.canPlay = true;
+  canPlayTwitchAd.value.reason = CANT_PLAY_REASONS.NONE;
 }
