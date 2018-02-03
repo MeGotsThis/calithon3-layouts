@@ -23,12 +23,18 @@ const timer = liveSplitCore.Timer.new(lsRun);
 const checklistComplete = nodecg.Replicant('checklistComplete');
 const currentRun = nodecg.Replicant('currentRun');
 const stopwatch = nodecg.Replicant('stopwatch');
+const STOPWATCH_STATES = {
+  NOT_STARTED: 'not_started',
+  RUNNING: 'running',
+  PAUSED: 'paused',
+  FINISHED: 'finished'
+};
 
 // Load the existing time and start the stopwatch at that.
 timer.start();
 timer.pause();
 initGameTime();
-if (stopwatch.value.state === 'running') {
+if (stopwatch.value.state === STOPWATCH_STATES.RUNNING) {
   const missedTime = Date.now() - stopwatch.value.time.timestamp;
   const previousTime = stopwatch.value.time.raw;
   const timeOffset = previousTime + missedTime;
@@ -80,11 +86,11 @@ setInterval(tick, 100); // 10 times per second.
  * @return {undefined}
  */
 function start(force) {
-  if (!force && stopwatch.value.state === 'running') {
+  if (!force && stopwatch.value.state === STOPWATCH_STATES.RUNNING) {
     return;
   }
 
-  stopwatch.value.state = 'running';
+  stopwatch.value.state = STOPWATCH_STATES.RUNNING;
   if (timer.currentPhase() === LS_TIMER_PHASE.NotRunning) {
     timer.start();
     initGameTime();
@@ -105,7 +111,7 @@ function initGameTime() {
  * @return {undefined}
  */
 function tick() {
-  if (stopwatch.value.state !== 'running') {
+  if (stopwatch.value.state !== STOPWATCH_STATES.RUNNING) {
     return;
   }
 
@@ -125,7 +131,7 @@ function tick() {
  */
 function pause() {
   timer.pause();
-  stopwatch.value.state = 'paused';
+  stopwatch.value.state = STOPWATCH_STATES.PAUSED;
 }
 
 /**
@@ -137,7 +143,7 @@ function reset() {
   timer.reset(true);
   stopwatch.value.time = TimeUtils.createTimeStruct();
   stopwatch.value.results = [null, null, null, null];
-  stopwatch.value.state = 'not_started';
+  stopwatch.value.state = STOPWATCH_STATES.NOT_STARTED;
 }
 
 /**
@@ -168,7 +174,7 @@ function resumeRunner(index) {
   stopwatch.value.results[index] = null;
   recalcPlaces();
 
-  if (stopwatch.value.state === 'finished') {
+  if (stopwatch.value.state === STOPWATCH_STATES.FINISHED) {
     const missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
     const newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
     stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
@@ -248,12 +254,13 @@ function recalcPlaces() {
 
   if (allRunnersFinished) {
     pause();
-    stopwatch.value.state = 'finished';
+    stopwatch.value.state = STOPWATCH_STATES.FINISHED;
   }
 }
 
 module.exports = {
   start,
   pause,
-  reset
+  reset,
+  STOPWATCH_STATES,
 };
