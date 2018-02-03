@@ -42,7 +42,8 @@ const TimeUtils = {
    * @returns {string} - The formatted time sting.
    */
   formatMilliseconds(inputMs) {
-    const {days, hours, minutes, seconds, milliseconds} = TimeUtils.parseMilliseconds(inputMs);
+    const {days, hours, minutes, seconds, milliseconds} =
+      TimeUtils.parseMilliseconds(inputMs);
     let str = '';
 
     if (days) {
@@ -102,7 +103,7 @@ const TimeUtils = {
     }
 
     if (timeParts.length === 1) {
-      ms += convertUnitToMs.seconds(parseFloat(timeParts[0]));
+      ms += parseFloat(timeParts[0]);
       return ms;
     }
 
