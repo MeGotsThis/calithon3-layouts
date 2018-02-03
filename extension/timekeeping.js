@@ -251,3 +251,9 @@ function recalcPlaces() {
     stopwatch.value.state = 'finished';
   }
 }
+
+module.exports = {
+  start,
+  pause,
+  reset
+};
