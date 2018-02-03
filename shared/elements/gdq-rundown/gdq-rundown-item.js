@@ -78,6 +78,10 @@ class GdqRundownItem extends Polymer.Element {
           + `${JSON.stringify(item)}`);
     }
   }
+
+  _itemHasNotes(item) {
+    return item && item.notes && item.notes.trim().length > 0;
+  }
 }
 
 customElements.define(GdqRundownItem.is, GdqRundownItem);
