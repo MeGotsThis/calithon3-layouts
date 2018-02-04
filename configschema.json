@@ -175,6 +175,10 @@
       },
       "required": ["enabled"],
       "default": null
+    },
+    "techDashboardShowAudioEngineer": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

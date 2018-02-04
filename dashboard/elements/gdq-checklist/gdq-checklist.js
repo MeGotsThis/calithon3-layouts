@@ -13,12 +13,14 @@
       checklist.on('change', (newVal) => {
         this.techStationDuties = newVal.techStationDuties;
         this.stageTechDuties = newVal.stageTechDuties;
+        this.audioEngineerDuties = newVal.audioEngineerDuties;
         this.audioReady =
           newVal.audioEngineerDuties.every((task) => task.complete);
       });
 
       this._checkboxChanged = this._checkboxChanged.bind(this);
       this.addEventListener('change', this._checkboxChanged);
+      this.audioEngineer = nodecg.bundleConfig.techDashboardShowAudioEngineer;
     }
 
     _checkboxChanged(e) {

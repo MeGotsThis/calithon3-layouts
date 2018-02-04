@@ -42,6 +42,10 @@
         margin-right: 0;
       }
 
+      #audioEngineerGroup {
+        margin-top: 10px;
+      }
+
       #audioCheckboxWrapper {
         cursor: not-allowed;
       }
@@ -62,7 +66,7 @@
             <paper-checkbox category="techStationDuties" checked="[[item.complete]]">[[item.name]]</paper-checkbox>
           </template>
 
-          <div id="audioCheckboxWrapper">
+          <div id="audioCheckboxWrapper" hidden$="[[audioEngineer]]">
             <paper-checkbox
               id="audioCheckbox"
               class="non-interactive"
@@ -77,6 +81,15 @@
           <template is="dom-repeat" items="[[stageTechDuties]]" mutable-data>
             <paper-checkbox category="stageTechDuties" checked="[[item.complete]]">[[item.name]]</paper-checkbox>
           </template>
+        </div>
+
+        <div id="audioEngineerGroup" hidden$="[[!audioEngineer]]">
+          <div class="header">Audio Engineer Duties</div>
+          <div class="group">
+            <template is="dom-repeat" items="[[audioEngineerDuties]]" mutable-data>
+              <paper-checkbox category="audioEngineerDuties" checked="[[item.complete]]">[[item.name]]</paper-checkbox>
+            </template>
+          </div>
         </div>
       </section>
     </div>
