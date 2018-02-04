@@ -6,10 +6,14 @@
   <template>
     <style>
       :host {
-        margin-right: 24px;
-        @apply --layout-vertical;
+        @apply --layout-horizontal;
         @apply --layout-center;
-        @apply --layout-flex-none;
+      }
+
+      .column {
+        @apply --layout-flex;
+        @apply --layout-horizontal;
+        @apply --layout-center;
       }
 
       label {
@@ -20,18 +24,25 @@
         pointer-events: none;
         user-select: none;
         white-space: nowrap;
+        padding-left: 0.1em;
       }
     </style>
 
-    <label for="cycleToggle">Auto Cycle Recordings</label>
-    <paper-toggle-button
-      id="cycleToggle"
-       on-change="_handleCycleToggleChange"></paper-toggle-button>
+    <div class="column">
+      <paper-toggle-button
+        id="cycleToggle"
+        on-change="_handleCycleToggleChange">
+      </paper-toggle-button>
+      <label for="cycleToggle">Auto Cycle Recordings</label>
+    </div>
 
-    <label for="cycleToggle" style="margin-top: 8px;">Auto Upload Recordings</label>
-    <paper-toggle-button
-      id="uploadToggle"
-      on-change="_handleUploadToggleChange"></paper-toggle-button>
+    <div class="column">
+      <paper-toggle-button
+        id="uploadToggle"
+        on-change="_handleUploadToggleChange">
+      </paper-toggle-button>
+      <label for="cycleToggle">Auto Upload Recordings</label>
+    </div>
   </template>
 
   <script src="gdq-recordings.js"></script>
