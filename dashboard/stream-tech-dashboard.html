@@ -11,7 +11,6 @@
   <link rel="import" href="elements/gdq-timekeeper/gdq-timekeeper.html">
   <link rel="import" href="elements/gdq-totals/gdq-totals.html">
   <link rel="import" href="elements/gdq-twitter-controls/gdq-twitter-controls.html">
-  <link rel="import" href="elements/gdq-throw/gdq-throw.html">
   <link rel="import" href="elements/gdq-recordings/gdq-recordings.html">
 
   <custom-style>
@@ -78,10 +77,8 @@
         @apply --layout-flex;
       }
 
-      gdq-throw {
-        margin-top: 15px;
-        padding: 12px 15px;
-        @apply --layout-flex;
+      gdq-recordings {
+        margin-top: 16px;
       }
     </style>
   </custom-style>
@@ -92,10 +89,7 @@
       <div id="leftColumn" class="column">
         <gdq-timekeeper class="bordered"></gdq-timekeeper>
         <gdq-checklist class="bordered" style="border-top: 0;"></gdq-checklist>
-        <div class="layout horizontal center justified">
-          <gdq-recordings></gdq-recordings>
-          <gdq-throw class="bordered"></gdq-throw>
-        </div>
+        <gdq-recordings></gdq-recordings>
       </div>
 
       <div id="centerColumn" class="column">
