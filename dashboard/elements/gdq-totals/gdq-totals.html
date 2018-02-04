@@ -17,7 +17,6 @@
         text-transform: uppercase;
         font-size: 12px;
         font-weight: bold;
-        margin-bottom: 4px;
         pointer-events: none;
         user-select: none;
         white-space: nowrap;
@@ -34,7 +33,7 @@
       }
 
       #toggle {
-        @apply --layout-vertical;
+        @apply --layout-horizontal;
         @apply --layout-center;
         @apply --layout-flex-none;
         margin-left: -14px;
@@ -43,10 +42,10 @@
     </style>
 
     <div id="toggle">
-      <div id="toggleLabel">Auto Update</div>
       <paper-toggle-button
         on-change="_handleAutoUpdateToggleChange"
         checked="[[autoUpdateTotal]]"></paper-toggle-button>
+      <div id="toggleLabel">Auto Update</div>
     </div>
 
     <gdq-totals-total
@@ -54,11 +53,6 @@
       value="[[cashTotal]]"
       currency="cash"
       on-edit="editCashTotal"></gdq-totals-total>
-    <gdq-totals-total
-      id="bitsTotal"
-      value="[[bitsTotal]]"
-      currency="bits"
-      on-edit="editBitsTotal"></gdq-totals-total>
 
     <paper-dialog id="editDialog" with-backdrop>
       <h2>Edit Donation Total</h2>

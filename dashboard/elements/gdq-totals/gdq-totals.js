@@ -2,7 +2,6 @@
   'use strict';
 
   const cashTotal = nodecg.Replicant('total');
-  const bitsTotal = nodecg.Replicant('bits:total');
   const autoUpdateTotal = nodecg.Replicant('autoUpdateTotal');
 
   class GdqTotals extends Polymer.Element {
@@ -28,9 +27,6 @@
       cashTotal.on('change', (newVal) => {
         this.cashTotal = newVal.formatted;
       });
-      bitsTotal.on('change', (newVal) => {
-        this.bitsTotal = newVal.toLocaleString('en-US');
-      });
       autoUpdateTotal.on('change', (newVal) => {
         this.autoUpdateTotal = newVal;
       });
@@ -39,12 +35,6 @@
     editCashTotal() {
       this.$.editTotalInput.value = cashTotal.value.raw;
       this._editTarget = 'cash';
-      this.$.editDialog.open();
-    }
-
-    editBitsTotal() {
-      this.$.editTotalInput.value = bitsTotal.value;
-      this._editTarget = 'bits';
       this.$.editDialog.open();
     }
 
