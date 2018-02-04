@@ -10,7 +10,6 @@ const formatDollars = require('../util/format-dollars');
 const nodecg = require('./util/nodecg-api-context').get();
 
 const autoUpdateTotal = nodecg.Replicant('autoUpdateTotal');
-const bitsTotal = nodecg.Replicant('bits:total');
 const total = nodecg.Replicant('total');
 
 autoUpdateTotal.on('change', (newVal) => {
@@ -87,8 +86,6 @@ nodecg.listenFor('setTotal', ({type, newValue}) => {
       raw: parseFloat(newValue),
       formatted: formatDollars(newValue, {cents: false}),
     };
-  } else if (type === 'bits') {
-    bitsTotal.value = parseInt(newValue, 10);
   } else {
     nodecg.log.error('Unexpected "type" sent to setTotal: "%s"', type);
   }

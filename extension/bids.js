@@ -19,7 +19,6 @@ const CURRENT_BIDS_URL = nodecg.bundleConfig.useMockData ?
   + '&event=20';
 const currentBidsRep = nodecg.Replicant('currentBids', {defaultValue: []});
 const allBidsRep = nodecg.Replicant('allBids', {defaultValue: []});
-const bitsTotal = nodecg.Replicant('bits:total');
 
 // Get latest bid data every POLL_INTERVAL milliseconds
 update();
@@ -124,8 +123,7 @@ function processRawBids(bids) {
         if (formattedParentBid.isBitsChallenge) {
           formattedParentBid.goal = numeral(goal * 100).format('0,0');
           formattedParentBid.rawGoal = parseFloat(goal * 100);
-          formattedParentBid.rawTotal =
-            Math.min(bitsTotal.value, formattedParentBid.rawGoal);
+          formattedParentBid.rawTotal = formattedParentBid.rawGoal;
           formattedParentBid.total =
             numeral(formattedParentBid.rawTotal).format('0,0');
           formattedParentBid.goalMet =

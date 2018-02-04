@@ -2,7 +2,6 @@
   'use strict';
 
   const cashTotal = nodecg.Replicant('total');
-  const bitsTotal = nodecg.Replicant('bits:total');
 
   class GdqHostdashTotals extends Polymer.Element {
     static get is() {
@@ -24,9 +23,6 @@
       super.connectedCallback();
       cashTotal.on('change', (newVal) => {
         this.cashTotal = newVal.formatted;
-      });
-      bitsTotal.on('change', (newVal) => {
-        this.bitsTotal = newVal.toLocaleString('en-US');
       });
     }
   }
