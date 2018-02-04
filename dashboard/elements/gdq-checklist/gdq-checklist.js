@@ -11,7 +11,6 @@
     ready() {
       super.ready();
       checklist.on('change', (newVal) => {
-        this.extraContent = newVal.extraContent;
         this.techStationDuties = newVal.techStationDuties;
         this.stageTechDuties = newVal.stageTechDuties;
         this.audioReady =

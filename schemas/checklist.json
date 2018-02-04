@@ -23,9 +23,6 @@
 
   "type": "object",
   "properties": {
-    "extraContent": {
-      "$ref": "#/definitions/checklistGroup"
-    },
     "techStationDuties": {
       "$ref": "#/definitions/checklistGroup"
     },
@@ -38,10 +35,6 @@
   },
 
   "default": {
-    "extraContent": [
-      {"name": "Check for Advertisement", "complete": false},
-      {"name": "Check for Interview", "complete": false}
-    ],
     "techStationDuties": [
       {"name": "Check Tech Notes", "complete": false},
       {"name": "Stream Layout", "complete": false},
@@ -52,7 +45,6 @@
       {"name": "Wipe Down Headsets", "complete": false},
       {"name": "TVs have Video", "complete": false},
       {"name": "Steam Notifications Off", "complete": false},
-      {"name": "Restart Elgato Recording", "complete": false},
       {"name": "Remove Excess Chairs", "complete": false}
     ],
     "audioEngineerDuties": [
