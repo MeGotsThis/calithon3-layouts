@@ -1,4 +1,3 @@
-/* global formatTimeSpan */
 (function() {
   'use strict';
 
