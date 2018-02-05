@@ -11,6 +11,22 @@ module.exports = {
       uri: `https://horaro.org/-/schedules/${scheduleId}`,
     });
     let $ = cheerio.load(runsHtml);
-    return JSON.parse($('#h-item-data').contents().text());
+    return {
+      runs: JSON.parse($('#h-item-data').contents().text()),
+      csrfName: $('meta[name="csrf_token_name"]').attr('content'),
+      csrfToken: $('meta[name="csrf_token"]').attr('content'),
+    };
+  },
+
+  async updateRunEstimate({scheduleId, runId, estimate, csrfName, csrfToken}) {
+    await request({
+      method: 'PATCH',
+      uri: `https://horaro.org/-/schedules/${scheduleId}/items/${runId}`,
+      body: {
+        [csrfName]: csrfToken,
+        length: estimate,
+      },
+      json: true,
+    });
   },
 };

@@ -9,6 +9,7 @@ const EventEmitter = require('events');
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
 const timer = require('./timekeeping');
+const TimeUtils = require('./lib/time');
 const HoraroUtils = require('./lib/horaro');
 const {calcOriginalValues, mergeChangesFromTracker} = require('./lib/diff-run');
 
@@ -178,10 +179,16 @@ nodecg.listenFor('resetRun', (pk, cb) => {
 async function update() {
   try {
     const {id: scheduleId, game} = nodecg.bundleConfig.tracker.schedule;
-    let runsJSON = await HoraroUtils.getSchedule(scheduleId);
+    let {runs: runsJSON, csrfName, csrfToken} =
+      await HoraroUtils.getSchedule(scheduleId);
     const formattedSchedule = calcFormattedSchedule({
       rawRuns: runsJSON,
     });
+
+    if (!validatedEstimates(formattedSchedule, scheduleId, csrfName,
+          csrfToken)) {
+      return update();
+    }
 
     // If nothing has changed, return.
     if (deepEqual(formattedSchedule, scheduleRep.value)) {
@@ -428,6 +435,29 @@ function formatRun(run, order) {
     type: 'run',
   };
 }
+
+const validatedEstimates = async (rawRuns, scheduleId, csrfName, csrfToken) => {
+  let changed = false;
+  await Promise.all(rawRuns.map(async (run) => {
+    let duration = run._horaroEstimate * 1000;
+    let estimate = TimeUtils.parseTimeString(run.estimate);
+    let setupTime = TimeUtils.parseTimeString(run.setupTime);
+    if (duration != estimate + setupTime) {
+      await HoraroUtils.updateRunEstimate({
+        scheduleId,
+        runId: run.id,
+        estimate: Math.floor((estimate + setupTime) / 1000),
+        csrfName,
+        csrfToken,
+      });
+      changed = true;
+      nodecg.log.info(
+        `Updated Run Id ${run.id} for not having matching `
+        + `estimate/setup/duration`)
+    }
+  }))
+  return !changed;
+};
 
 /**
  * Disambiguates a variable that could either be a run object or a numeric run
