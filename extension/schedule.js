@@ -2,17 +2,14 @@
 
 // Packages
 const assign = require('lodash.assign');
-const cheerio = require('cheerio');
 const clone = require('clone');
 const deepEqual = require('deep-equal');
 const EventEmitter = require('events');
-const request = require('request-promise').defaults({
-  jar: true, // <= Automatically saves and re-uses cookies.
-});
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
 const timer = require('./timekeeping');
+const HoraroUtils = require('./lib/horaro');
 const {calcOriginalValues, mergeChangesFromTracker} = require('./lib/diff-run');
 
 const POLL_INTERVAL = 60000 * 1000;
@@ -181,11 +178,7 @@ nodecg.listenFor('resetRun', (pk, cb) => {
 async function update() {
   try {
     const {id: scheduleId, game} = nodecg.bundleConfig.tracker.schedule;
-    let runsHtml = await request({
-      uri: `https://horaro.org/-/schedules/${scheduleId}`,
-    });
-    let $ = cheerio.load(runsHtml);
-    let runsJSON = JSON.parse($('#h-item-data').contents().text());
+    let runsJSON = await HoraroUtils.getSchedule(scheduleId);
     const formattedSchedule = calcFormattedSchedule({
       rawRuns: runsJSON,
     });
