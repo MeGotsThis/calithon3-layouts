@@ -429,6 +429,7 @@ function formatRun(run, order) {
     notes: run[2][notes] || '',
     coop: coop || false,
     extra,
+    _horaroEstimate: run[1],
     id: run[0],
     pk: run[0],
     type: 'run',
