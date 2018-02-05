@@ -396,8 +396,8 @@ function calcFormattedSchedule({rawRuns}) {
  * @return {Object} - The formatted run object.
  */
 function formatRun(run, order) {
-  const {game, category, runTime, setupTime, runners: runnersIdx, notes,
-      extra} =
+  const {game, category: categoryIdx, runTime, setupTime, runners: runnersIdx,
+      notes, extra: extraIdx} =
     nodecg.bundleConfig.tracker.schedule;
   const runners = runnersIdx.map(({runner, twitch}) => {
     return {
@@ -410,22 +410,25 @@ function formatRun(run, order) {
   });
   let data = {};
   try {
-    data = (extra && run[extra] && JSON.parse(run[extra])) || {};
+    data = (extra && run[extraIdx] && JSON.parse(run[extraIdx])) || {};
   } catch (error) {
   }
+  let {name, longName, category, console: console_, releaseYear, coop,
+    ...extra} = data;
 
   return {
-    name: data.name || run[2][game] || 'Unknown',
-    longName: data.longName || run[2][game] || 'Unknown',
-    category: data.category || run[2][category] || 'Any%',
-    console: data.console || 'Unknown',
+    name: name || run[2][game] || 'Unknown',
+    longName: longName || run[2][game] || 'Unknown',
+    category: category || run[2][categoryIdx] || 'Any%',
+    console: console_ || 'Unknown',
     estimate: run[2][runTime] || 'Unknown',
     setupTime: run[2][setupTime],
     order: order,
-    releaseYear: data.release_year || '',
+    releaseYear: releaseYear || '',
     runners,
     notes: run[2][notes] || '',
-    coop: data.coop || false,
+    coop: coop || false,
+    extra,
     id: run[0],
     pk: run[0],
     type: 'run',
