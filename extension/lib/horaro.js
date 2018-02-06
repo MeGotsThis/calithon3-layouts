@@ -15,6 +15,8 @@ module.exports = {
       runs: JSON.parse($('#h-item-data').contents().text()),
       csrfName: $('meta[name="csrf_token_name"]').attr('content'),
       csrfToken: $('meta[name="csrf_token"]').attr('content'),
+      startTime: new Date($('.h-scheduler').data('start')),
+      setupTime: $('.h-scheduler').data('setuptime'),
     };
   },
 
@@ -25,6 +27,20 @@ module.exports = {
       body: {
         [csrfName]: csrfToken,
         length: estimate,
+      },
+      json: true,
+    });
+  },
+
+  async updateRunEstimateAndData(
+      {scheduleId, runId, estimate, data, csrfName, csrfToken}) {
+    await request({
+      method: 'PATCH',
+      uri: `https://horaro.org/-/schedules/${scheduleId}/items/${runId}`,
+      body: {
+        [csrfName]: csrfToken,
+        length: estimate,
+        columns: data,
       },
       json: true,
     });

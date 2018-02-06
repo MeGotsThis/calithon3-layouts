@@ -37,6 +37,31 @@ const TimeUtils = {
   },
 
   /**
+   * Formats a number of seconds into a string ([hh:]mm:ss).
+   * @param {number} inputSeconds - The number of econds to format.
+   * @returns {string} - The formatted time sting.
+   */
+  formatSeconds(inputSeconds, {showHours=false}) {
+    const {days, hours, minutes, seconds, milliseconds} =
+      TimeUtils.parseMilliseconds(inputSeconds * 1000);
+    let str = '';
+
+    if (days) {
+      str += `${days}d `;
+    }
+
+    if (hours || showHours) {
+      str += `${hours}:`;
+    }
+
+    const paddedMinutes = String(minutes).padStart(2, '0');
+    const paddedSeconds = String(seconds).padStart(2, '0');
+
+    str += `${paddedMinutes}:${paddedSeconds}`;
+    return str;
+  },
+
+  /**
    * Formats a number of milliseconds into a string ([hh:]mm:ss).
    * @param {number} inputMs - The number of milliseconds to format.
    * @returns {string} - The formatted time sting.

@@ -13,6 +13,7 @@ const liveSplitCore = require('livesplit-core');
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
+const horaroApi = require('./schedule-horaro');
 const TimeUtils = require('./lib/time');
 
 const lsRun = liveSplitCore.Run.new();
@@ -91,12 +92,18 @@ function start(force) {
     return;
   }
 
+  const wasReset = stopwatch.value.state == STOPWATCH_STATES.NOT_STARTED;
+
   stopwatch.value.state = STOPWATCH_STATES.RUNNING;
   if (timer.currentPhase() === LS_TIMER_PHASE.NotRunning) {
     timer.start();
     initGameTime();
   } else {
     timer.resume();
+  }
+
+  if (wasReset) {
+    horaroApi.updateStartTime().then();
   }
 }
 
