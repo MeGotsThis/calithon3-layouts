@@ -2,9 +2,18 @@ const nodecg = require('./util/nodecg-api-context').get();
 const TimeUtils = require('./lib/time');
 const HoraroUtils = require('./lib/horaro');
 
+const checklistComplete = nodecg.Replicant('checklistComplete');
+const stopwatch = nodecg.Replicant('stopwatch');
 const currentRunRep = nodecg.Replicant('currentRun');
 const nextRunRep = nodecg.Replicant('nextRun');
 const scheduleRep = nodecg.Replicant('schedule');
+
+const STOPWATCH_STATES = {
+  NOT_STARTED: 'not_started',
+  RUNNING: 'running',
+  PAUSED: 'paused',
+  FINISHED: 'finished'
+};
 
 let csrfName;
 let csrfToken;
@@ -78,8 +87,35 @@ const updateStartTime = async () => {
   });
 }
 
+const updateFinishTime = async () => {
+  if (!checklistComplete.value) {
+    return;
+  }
+  if (stopwatch.value.state !== STOPWATCH_STATES.FINISHED) {
+    return;
+  }
+
+  const run = currentRunRep.value;
+
+  let runRunTime = Math.floor(stopwatch.value.time.raw / 1000);
+  let setupTime = TimeUtils.parseTimeString(run.setupTime) / 1000;
+  const {id: scheduleId, runTime} = nodecg.bundleConfig.tracker.schedule;
+  await HoraroUtils.updateRunEstimateAndData({
+    scheduleId,
+    runId: run.id,
+    estimate: runRunTime + setupTime,
+    data: {
+      [runTime]: TimeUtils.formatSeconds(runRunTime, {showHours: true}),
+    },
+    csrfName,
+    csrfToken,
+  });
+}
+
 module.exports = {
   getSchedule,
   validatedEstimates,
   updateStartTime,
+  updateFinishTime,
+  STOPWATCH_STATES,
 };

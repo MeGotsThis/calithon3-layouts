@@ -24,12 +24,7 @@ const timer = liveSplitCore.Timer.new(lsRun);
 const checklistComplete = nodecg.Replicant('checklistComplete');
 const currentRun = nodecg.Replicant('currentRun');
 const stopwatch = nodecg.Replicant('stopwatch');
-const STOPWATCH_STATES = {
-  NOT_STARTED: 'not_started',
-  RUNNING: 'running',
-  PAUSED: 'paused',
-  FINISHED: 'finished'
-};
+const STOPWATCH_STATES = horaroApi.STOPWATCH_STATES;
 
 // Load the existing time and start the stopwatch at that.
 timer.start();

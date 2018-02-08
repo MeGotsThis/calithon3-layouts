@@ -32,6 +32,18 @@ module.exports = {
     });
   },
 
+  async updateRunData({scheduleId, runId, data, csrfName, csrfToken}) {
+    await request({
+      method: 'PATCH',
+      uri: `https://horaro.org/-/schedules/${scheduleId}/items/${runId}`,
+      body: {
+        [csrfName]: csrfToken,
+        columns: data,
+      },
+      json: true,
+    });
+  },
+
   async updateRunEstimateAndData(
       {scheduleId, runId, estimate, data, csrfName, csrfToken}) {
     await request({

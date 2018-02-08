@@ -64,8 +64,9 @@ nodecg.listenFor('nextRun', (data, cb) => {
     return cb();
   }
 
-  _seekToNextRun();
-  cb();
+  _seekToNextRun().then(() => {
+    cb();
+  });
 });
 
 nodecg.listenFor('previousRun', (data, cb) => {
@@ -75,8 +76,9 @@ nodecg.listenFor('previousRun', (data, cb) => {
     return cb();
   }
 
-  _seekToPreviousRun();
-  cb();
+  _seekToPreviousRun().then(() => {
+    cb();
+  });
 });
 
 nodecg.listenFor('setCurrentRunByOrder', (order, cb) => {
@@ -87,14 +89,12 @@ nodecg.listenFor('setCurrentRunByOrder', (order, cb) => {
     return cb();
   }
 
-  try {
-    _seekToArbitraryRun(order);
-  } catch (e) {
+  _seekToArbitraryRun(order).then(() => {
+    cb();
+  }).catch((e) => {
     nodecg.log.error(e);
-    return cb(e);
-  }
-
-  cb();
+    cb(e);
+  });
 });
 
 nodecg.listenFor('modifyRun', (data, cb) => {
@@ -283,7 +283,7 @@ async function update() {
  * @private
  * @return {undefined}
  */
-function _seekToPreviousRun() {
+async function _seekToPreviousRun() {
   const prevRun = scheduleRep.value.slice(0).reverse().find((item) => {
     if (item.type !== 'run') {
       return false;
@@ -292,8 +292,11 @@ function _seekToPreviousRun() {
     return item.order < currentRunRep.value.order;
   });
 
+  await horaroApi.updateFinishTime();
+
   nextRunRep.value = clone(currentRunRep.value);
   currentRunRep.value = clone(prevRun);
+
   checklist.reset();
   timer.reset();
 }
@@ -306,10 +309,13 @@ function _seekToPreviousRun() {
  * @private
  * @return {undefined}
  */
-function _seekToNextRun() {
+async function _seekToNextRun() {
   const newNextRun = _findRunAfter(nextRunRep.value);
+  await horaroApi.updateFinishTime();
+
   currentRunRep.value = clone(nextRunRep.value);
   nextRunRep.value = clone(newNextRun);
+
   checklist.reset();
   timer.reset();
 }
@@ -345,11 +351,13 @@ function _findRunAfter(runOrOrder) {
  * as the new currentRun.
  * @return {undefined}
  */
-function _seekToArbitraryRun(runOrOrder) {
+async function _seekToArbitraryRun(runOrOrder) {
   const run = _resolveRunOrOrder(runOrOrder);
   if (nextRunRep.value && run.order === nextRunRep.value.order) {
-    _seekToNextRun();
+    await _seekToNextRun();
   } else {
+    await horaroApi.updateFinishTime();
+
     currentRunRep.value = clone(run);
 
     const nextRunOrder = run.order + 1;
