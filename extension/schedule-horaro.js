@@ -1,3 +1,5 @@
+const EventEmitter = require('events');
+
 const nodecg = require('./util/nodecg-api-context').get();
 const TimeUtils = require('./lib/time');
 const HoraroUtils = require('./lib/horaro');
@@ -14,6 +16,8 @@ const STOPWATCH_STATES = {
   PAUSED: 'paused',
   FINISHED: 'finished'
 };
+
+const events = new EventEmitter();
 
 let csrfName;
 let csrfToken;
@@ -50,7 +54,7 @@ const validatedEstimates = async (rawRuns, scheduleId) => {
         `Updated Run Id ${run.id} (${run.name}) for not having matching `
         + `estimate/setup/duration`)
     }
-  }))
+  }));
   return !changed;
 };
 
@@ -103,6 +107,7 @@ const updateStartTime = async () => {
     csrfName,
     csrfToken,
   });
+  events.emit('horaro-updated');
 }
 
 const updateFinishTime = async () => {
@@ -135,9 +140,11 @@ const updateFinishTime = async () => {
     csrfName,
     csrfToken,
   });
+  events.emit('horaro-updated');
 }
 
 module.exports = {
+  on: events.on.bind(events),
   getSchedule,
   validatedEstimates,
   updateStartTime,

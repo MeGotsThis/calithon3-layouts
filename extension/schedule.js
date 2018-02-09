@@ -39,6 +39,8 @@ update();
 // Get latest schedule data every POLL_INTERVAL milliseconds
 updateInterval = setInterval(update, POLL_INTERVAL);
 
+horaroApi.on('horaro-updated', update);
+
 // Dashboard can invoke manual updates
 nodecg.listenFor('updateSchedule', (data, cb) => {
   nodecg.log.info('Manual schedule update button pressed, invoking update...');
