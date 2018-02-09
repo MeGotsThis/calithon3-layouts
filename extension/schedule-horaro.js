@@ -74,13 +74,20 @@ const updateStartTime = async () => {
   let offset = Math.floor((now - runStartTime.getTime()) / 1000);
   let prevSetupTime = TimeUtils.parseTimeString(prevRun.setupTime) / 1000;
   const {id: scheduleId, setupTime} = nodecg.bundleConfig.tracker.schedule;
+  let horaroEstimate = prevRun._horaroEstimate + offset;
+  let formattedSetupTime = TimeUtils.formatSeconds(
+    prevSetupTime + offset, {showHours: true});
+  if (horaroEstimate < 0) {
+    throw new Error(
+      `Run ${prevRun.id} (${prevRun.name}) cannot have negative Horaro `
+      + `estimate of ${horaroEstimate}`);
+  }
   await HoraroUtils.updateRunEstimateAndData({
     scheduleId,
     runId: prevRun.id,
-    estimate: prevRun._horaroEstimate + offset,
+    estimate: horaroEstimate,
     data: {
-      [setupTime]:
-        TimeUtils.formatSeconds(prevSetupTime + offset, {showHours: true}),
+      [setupTime]: formattedSetupTime,
     },
     csrfName,
     csrfToken,
@@ -100,12 +107,19 @@ const updateFinishTime = async () => {
   let runRunTime = Math.floor(stopwatch.value.time.raw / 1000);
   let setupTime = TimeUtils.parseTimeString(run.setupTime) / 1000;
   const {id: scheduleId, runTime} = nodecg.bundleConfig.tracker.schedule;
+  let horaroEstimate = runRunTime + setupTime;
+  let formattedRunTime = TimeUtils.formatSeconds(runRunTime, {showHours: true});
+  if (horaroEstimate < 0) {
+    throw new Error(
+      `Run ${prevRun.id} (${prevRun.name}) cannot have negative Horaro `
+      + `estimate of ${horaroEstimate}`);
+  }
   await HoraroUtils.updateRunEstimateAndData({
     scheduleId,
     runId: run.id,
     estimate: runRunTime + setupTime,
     data: {
-      [runTime]: TimeUtils.formatSeconds(runRunTime, {showHours: true}),
+      [runTime]: formattedRunTime,
     },
     csrfName,
     csrfToken,
