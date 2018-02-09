@@ -47,7 +47,7 @@ const validatedEstimates = async (rawRuns, scheduleId) => {
       });
       changed = true;
       nodecg.log.info(
-        `Updated Run Id ${run.id} for not having matching `
+        `Updated Run Id ${run.id} (${run.name}) for not having matching `
         + `estimate/setup/duration`)
     }
   }))
@@ -67,6 +67,11 @@ const updateStartTime = async () => {
   // This is the case of the first game of the marathon. In this case, I'll let
   // the next game eat the additional setup time for this game to get started
   if (typeof prevRun === 'undefined') {
+    if (run.order != 0) {
+      throw new Error(
+        `Run ${run.id} (${run.name}) does not have a previous run `
+        + `and is not the first run`);
+    }
     return;
   }
 
