@@ -64,6 +64,12 @@ const updateStartTime = async () => {
     return item.order < run.order;
   });
 
+  // This is the case of the first game of the marathon. In this case, I'll let
+  // the next game eat the additional setup time for this game to get started
+  if (typeof prevRun === 'undefined') {
+    return;
+  }
+
   let now = stopwatch.value.time.timestamp;
   let runStartTime = new Date(startTime);
   scheduleRep.value.forEach((item) => {
