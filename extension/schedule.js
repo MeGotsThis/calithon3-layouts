@@ -185,8 +185,8 @@ async function update() {
       rawRuns: runsJSON,
     });
 
-    if (!horaroApi.validatedEstimates(formattedSchedule, scheduleId)) {
-      return update();
+    if (!await horaroApi.validatedEstimates(formattedSchedule, scheduleId)) {
+      return await update();
     }
 
     // If nothing has changed, return.
