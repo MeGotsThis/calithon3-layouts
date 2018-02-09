@@ -42,9 +42,14 @@ const TimeUtils = {
    * @returns {string} - The formatted time sting.
    */
   formatSeconds(inputSeconds, {showHours=false}) {
+    let str = '';
+    if (inputSeconds < 0) {
+      str = '-';
+      inputSeconds = -inputSeconds;
+    }
+
     const {days, hours, minutes, seconds, milliseconds} =
       TimeUtils.parseMilliseconds(inputSeconds * 1000);
-    let str = '';
 
     if (days) {
       str += `${days}d `;
@@ -112,24 +117,29 @@ const TimeUtils = {
    * @returns {number} - The parsed time string represented as milliseconds.
    */
   parseTimeString(timeString) {
+    let factor = 1;
+    if (timeString[0] === '-') {
+      factor = -1;
+      timeString = timeString.substring(1);
+    }
     let ms = 0;
     const timeParts = timeString.split(':').filter(part => part.trim());
     if (timeParts.length === 3) {
       ms += convertUnitToMs.hours(parseInt(timeParts[0], 10));
       ms += convertUnitToMs.minutes(parseInt(timeParts[1], 10));
       ms += convertUnitToMs.seconds(parseFloat(timeParts[2]));
-      return ms;
+      return factor * ms;
     }
 
     if (timeParts.length === 2) {
       ms += convertUnitToMs.minutes(parseInt(timeParts[0], 10));
       ms += convertUnitToMs.seconds(parseFloat(timeParts[1]));
-      return ms;
+      return factor * ms;
     }
 
     if (timeParts.length === 1) {
       ms += parseFloat(timeParts[0]);
-      return ms;
+      return factor * ms;
     }
 
     throw new Error(`Unexpected format of timeString argument: ${timeString}`);
