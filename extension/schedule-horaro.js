@@ -79,14 +79,14 @@ const updateStartTime = async () => {
     return;
   }
 
-  let now = stopwatch.value.time.timestamp;
+  let now = new Date();
   let runStartTime = new Date(startTime);
   scheduleRep.value.forEach((item) => {
     if (item.order < run.order) {
       runStartTime.setSeconds(runStartTime.getSeconds() + item._horaroEstimate);
     }
   });
-  let offset = Math.floor((now - runStartTime.getTime()) / 1000);
+  let offset = Math.floor((now.getTime() - runStartTime.getTime()) / 1000);
   let prevSetupTime = TimeUtils.parseTimeString(prevRun.setupTime) / 1000;
   const {id: scheduleId, setupTime} = nodecg.bundleConfig.tracker.schedule;
   let horaroEstimate = prevRun._horaroEstimate + offset;
