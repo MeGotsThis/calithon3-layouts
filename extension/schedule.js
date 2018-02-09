@@ -14,7 +14,7 @@ const TimeUtils = require('./lib/time');
 const HoraroUtils = require('./lib/horaro');
 const {calcOriginalValues, mergeChangesFromTracker} = require('./lib/diff-run');
 
-const POLL_INTERVAL = 60000 * 1000;
+const POLL_INTERVAL = 600 * 1000;
 let adBreakIdCounter = 0;
 let updateInterval;
 
