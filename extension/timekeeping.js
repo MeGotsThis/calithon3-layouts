@@ -143,7 +143,11 @@ function pause() {
  * Pauses and resets the timer, clearing the time and results.
  * @return {undefined}
  */
-function reset() {
+async function reset() {
+  if (stopwatch.value.state === STOPWATCH_STATES.FINISHED) {
+    await horaroApi.updateFinishTime();
+  }
+
   pause();
   timer.reset(true);
   stopwatch.value.time = TimeUtils.createTimeStruct();

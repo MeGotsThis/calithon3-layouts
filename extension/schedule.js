@@ -294,13 +294,11 @@ async function _seekToPreviousRun() {
     return item.order < currentRunRep.value.order;
   });
 
-  await horaroApi.updateFinishTime();
+  await timer.reset();
+  await checklist.reset();
 
   nextRunRep.value = clone(currentRunRep.value);
   currentRunRep.value = clone(prevRun);
-
-  checklist.reset();
-  timer.reset();
 }
 
 /**
@@ -313,13 +311,12 @@ async function _seekToPreviousRun() {
  */
 async function _seekToNextRun() {
   const newNextRun = _findRunAfter(nextRunRep.value);
-  await horaroApi.updateFinishTime();
+
+  await timer.reset();
+  await checklist.reset();
 
   currentRunRep.value = clone(nextRunRep.value);
   nextRunRep.value = clone(newNextRun);
-
-  checklist.reset();
-  timer.reset();
 }
 
 /**
@@ -358,7 +355,8 @@ async function _seekToArbitraryRun(runOrOrder) {
   if (nextRunRep.value && run.order === nextRunRep.value.order) {
     await _seekToNextRun();
   } else {
-    await horaroApi.updateFinishTime();
+    await timer.reset();
+    await checklist.reset();
 
     currentRunRep.value = clone(run);
 
@@ -371,9 +369,6 @@ async function _seekToArbitraryRun(runOrOrder) {
     } else {
       nextRunRep.value = {};
     }
-
-    checklist.reset();
-    timer.reset();
   }
 }
 
