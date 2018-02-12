@@ -296,6 +296,7 @@ async function _seekToPreviousRun() {
 
   await timer.reset();
   await checklist.reset();
+  await horaroApi.runChanging();
 
   nextRunRep.value = clone(currentRunRep.value);
   currentRunRep.value = clone(prevRun);
@@ -314,6 +315,7 @@ async function _seekToNextRun() {
 
   await timer.reset();
   await checklist.reset();
+  await horaroApi.runChanging();
 
   currentRunRep.value = clone(nextRunRep.value);
   nextRunRep.value = clone(newNextRun);
@@ -357,6 +359,7 @@ async function _seekToArbitraryRun(runOrOrder) {
   } else {
     await timer.reset();
     await checklist.reset();
+    await horaroApi.runChanging();
 
     currentRunRep.value = clone(run);
 
@@ -414,7 +417,7 @@ function formatRun(run, order) {
   });
   let data = {};
   try {
-    data = (extra && run[extraIdx] && JSON.parse(run[extraIdx])) || {};
+    data = (extraIdx && run[2][extraIdx] && JSON.parse(run[2][extraIdx])) || {};
   } catch (error) {
   }
   let {name, longName, category, console: console_, releaseYear, coop,

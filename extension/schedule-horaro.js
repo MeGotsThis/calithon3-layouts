@@ -1,3 +1,4 @@
+const clone = require('clone');
 const EventEmitter = require('events');
 
 const nodecg = require('./util/nodecg-api-context').get();
@@ -9,6 +10,19 @@ const stopwatch = nodecg.Replicant('stopwatch');
 const currentRunRep = nodecg.Replicant('currentRun');
 const nextRunRep = nodecg.Replicant('nextRun');
 const scheduleRep = nodecg.Replicant('schedule');
+const timeTracking = nodecg.Replicant('timeTracking', {
+  defaultValue: {
+    startTime: {
+      first: null,
+      firstCompleted: null,
+      last: null,
+    },
+    finishTime: {
+      first: null,
+      last: null,
+    }
+  },
+});
 
 const STOPWATCH_STATES = {
   NOT_STARTED: 'not_started',
@@ -17,12 +31,26 @@ const STOPWATCH_STATES = {
   FINISHED: 'finished'
 };
 
+const SCHEDULE_MODE = {
+  NORMAL: 'NORMAL',
+  MULTI_PARTS: 'MULTI_PARTS',
+  CUSTOM: 'CUSTOM',
+};
+
 const events = new EventEmitter();
 
 let csrfName;
 let csrfToken;
 let startTime;
 let setupTime;
+
+const getScheduleModeFromRun = (run) => {
+  const mode = run.extra.scheduleMode || SCHEDULE_MODE.NORMAL;
+  if (!SCHEDULE_MODE[mode]) {
+    return SCHEDULE_MODE.CUSTOM;
+  }
+  return mode;
+}
 
 const getSchedule = async(scheduleId) => {
   let {runs, csrfName: csrfName_, csrfToken: csrfToken_,
@@ -68,6 +96,31 @@ const updateStartTime = async () => {
     return item.order < run.order;
   });
 
+  const now = Date.now();
+  let oldTimeTracking = clone(timeTracking.value);
+  timeTracking.value.startTime.last = now;
+  if (timeTracking.value.startTime.first == null) {
+    timeTracking.value.startTime.first = now;
+  }
+  if (timeTracking.value.finishTime.first == null) {
+    timeTracking.value.startTime.firstCompleted = now;
+  }
+
+  const scheduleMode = getScheduleModeFromRun(run);
+  if (scheduleMode == SCHEDULE_MODE.CUSTOM) {
+    return;
+  }
+  if (scheduleMode == SCHEDULE_MODE.NORMAL) {
+    if (oldTimeTracking.finishTime.first) {
+      return;
+    }
+  }
+  if (scheduleMode == SCHEDULE_MODE.MULTI_PARTS) {
+    if (oldTimeTracking.startTime.firstCompleted) {
+      return;
+    }
+  }
+
   // This is the case of the first game of the marathon. In this case, I'll let
   // the next game eat the additional setup time for this game to get started
   if (typeof prevRun === 'undefined') {
@@ -79,14 +132,13 @@ const updateStartTime = async () => {
     return;
   }
 
-  let now = new Date();
   let runStartTime = new Date(startTime);
   scheduleRep.value.forEach((item) => {
     if (item.order < run.order) {
       runStartTime.setSeconds(runStartTime.getSeconds() + item._horaroEstimate);
     }
   });
-  let offset = Math.floor((now.getTime() - runStartTime.getTime()) / 1000);
+  let offset = Math.floor((now - runStartTime.getTime()) / 1000);
   let prevSetupTime = TimeUtils.parseTimeString(prevRun.setupTime) / 1000;
   const {id: scheduleId, setupTime} = nodecg.bundleConfig.tracker.schedule;
   let horaroEstimate = prevRun._horaroEstimate + offset;
@@ -120,6 +172,26 @@ const updateFinishTime = async () => {
 
   const run = currentRunRep.value;
 
+  const now = Date.now();
+  let oldTimeTracking = clone(timeTracking.value);
+  timeTracking.value.finishTime.last = now;
+  if (timeTracking.value.finishTime.first == null) {
+    timeTracking.value.finishTime.first = now;
+  }
+
+  const scheduleMode = getScheduleModeFromRun(run);
+  if (scheduleMode == SCHEDULE_MODE.CUSTOM) {
+    return;
+  }
+  if (scheduleMode == SCHEDULE_MODE.NORMAL) {
+    if (oldTimeTracking.finishTime.first) {
+      return;
+    }
+  }
+  if (scheduleMode == SCHEDULE_MODE.MULTI_PARTS) {
+    return;
+  }
+
   let runRunTime = Math.floor(stopwatch.value.time.raw / 1000);
   let setupTime = TimeUtils.parseTimeString(run.setupTime) / 1000;
   const {id: scheduleId, runTime} = nodecg.bundleConfig.tracker.schedule;
@@ -143,11 +215,70 @@ const updateFinishTime = async () => {
   events.emit('horaro-updated');
 }
 
+
+const updateFinalFinishTime = async () => {
+  const run = currentRunRep.value;
+
+  const scheduleMode = getScheduleModeFromRun(run);
+  if (scheduleMode != SCHEDULE_MODE.MULTI_PARTS) {
+    return;
+  }
+
+  if (!timeTracking.value.finishTime.last) {
+    return;
+  }
+  if (!timeTracking.value.startTime.firstCompleted) {
+    return;
+  }
+
+  let timeDiff =
+    timeTracking.value.finishTime.last
+    - timeTracking.value.startTime.firstCompleted;
+  let runRunTime = Math.floor(timeDiff / 1000);
+  let setupTime = TimeUtils.parseTimeString(run.setupTime) / 1000;
+  const {id: scheduleId, runTime} = nodecg.bundleConfig.tracker.schedule;
+  let horaroEstimate = runRunTime + setupTime;
+  let formattedRunTime = TimeUtils.formatSeconds(runRunTime, {showHours: true});
+  if (horaroEstimate < 0) {
+    throw new Error(
+      `Run ${run.id} (${run.name}) cannot have negative Horaro `
+      + `estimate of ${horaroEstimate}`);
+  }
+  await HoraroUtils.updateRunEstimateAndData({
+    scheduleId,
+    runId: run.id,
+    estimate: runRunTime + setupTime,
+    data: {
+      [runTime]: formattedRunTime,
+    },
+    csrfName,
+    csrfToken,
+  });
+  events.emit('horaro-updated');
+}
+
+const runChanging = async () => {
+  await updateFinalFinishTime();
+
+  timeTracking.value = {
+    startTime: {
+      first: null,
+      firstCompleted: null,
+      last: null,
+    },
+    finishTime: {
+      first: null,
+      last: null,
+    }
+  };
+}
+
 module.exports = {
   on: events.on.bind(events),
   getSchedule,
   validatedEstimates,
   updateStartTime,
   updateFinishTime,
+  runChanging,
   STOPWATCH_STATES,
 };
