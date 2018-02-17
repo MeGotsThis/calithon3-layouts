@@ -54,7 +54,6 @@ let csrfToken;
 updateHoraro.on('change', (newVal) => {
   if (newVal) {
     nodecg.log.info('Automatic updating of Horaro Schedule enabled');
-    manuallyUpdateTotal(true);
   } else {
     nodecg.log.warn('Automatic updating of Horaro Schedule DISABLED');
   }
