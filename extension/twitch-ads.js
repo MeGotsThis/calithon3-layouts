@@ -15,7 +15,9 @@ const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {
 const timeLeft = nodecg.Replicant('twitch:timeLeftInAd', {
   defaultValue: TimeUtils.createTimeStruct()
 });
-const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd');
+const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd', {
+  defaultValue: {},
+});
 const stopwatch = nodecg.Replicant('stopwatch');
 const CANT_PLAY_REASONS = {
   AD_IN_PROGRESS: 'ad in progress',
