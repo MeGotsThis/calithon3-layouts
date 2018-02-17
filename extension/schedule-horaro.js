@@ -319,6 +319,9 @@ const updateFinalFinishTime = async () => {
   let runRunTime;
   const scheduleMode = getScheduleModeFromRun(run);
   if (scheduleMode == SCHEDULE_MODE.NORMAL) {
+    if (!timeTracking.value.finishTime.firstDuration) {
+      return;
+    }
     runRunTime = Math.floor(timeTracking.value.finishTime.firstDuration / 1000);
   } else if (scheduleMode == SCHEDULE_MODE.MULTI_PARTS) {
     if (!timeTracking.value.finishTime.last) {
