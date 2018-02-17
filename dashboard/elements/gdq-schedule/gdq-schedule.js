@@ -5,6 +5,7 @@
   const currentRun = nodecg.Replicant('currentRun');
   const nextRun = nodecg.Replicant('nextRun');
   const schedule = nodecg.Replicant('schedule');
+  const stopwatch = nodecg.Replicant('stopwatch');
 
   /**
    * @customElement
@@ -52,6 +53,10 @@
           this.$.editNext.setAttribute('disabled', 'true');
         }
 
+        this._checkButtons();
+      });
+
+      stopwatch.on('change', (value) => {
         this._checkButtons();
       });
     }
@@ -152,7 +157,8 @@
       if (canSeekSchedule.status !== 'declared'
           || schedule.status !== 'declared'
           || currentRun.status !== 'declared'
-          || nextRun.status !== 'declared') {
+          || nextRun.status !== 'declared'
+          || stopwatch.status !== 'declared') {
         return;
       }
 
@@ -162,7 +168,8 @@
       if (!canSeekSchedule.value
           || this._pendingSetCurrentRunByOrderMessageResponse
           || this._pendingPreviousRunMessageResponse
-          || this._pendingNextRunMessageResponse) {
+          || this._pendingNextRunMessageResponse
+          || stopwatch.value.state === 'running') {
         shouldDisableNext = true;
         shouldDisablePrev = true;
         shouldDisableTake = true;
