@@ -2,11 +2,11 @@
   'use strict';
 
   const METROID_BID_ID = 5744;
-  const EVENT_START_TIMESTAMP = 1499013000000;
   const allBids = nodecg.Replicant('allBids');
   const checklistComplete = nodecg.Replicant('checklistComplete');
   const stopwatch = nodecg.Replicant('stopwatch');
   const currentRun = nodecg.Replicant('currentRun');
+  const scheduleProperties = nodecg.Replicant('scheduleProperties');
 
   class GdqHostDashboard extends Polymer.MutableData(Polymer.Element) {
     static get is() {
@@ -142,8 +142,13 @@
     }
 
     updateTimeElapsed() {
+      if (scheduleProperties.status !== 'declared') {
+        return;
+      }
+
       const nowTimestamp = Date.now();
-      let millisecondsElapsed = nowTimestamp - EVENT_START_TIMESTAMP;
+      let millisecondsElapsed =
+        nowTimestamp - scheduleProperties.value.startTime;
       let eventHasStarted = true;
       if (millisecondsElapsed < 0) {
         eventHasStarted = false;
