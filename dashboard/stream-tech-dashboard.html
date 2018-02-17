@@ -5,6 +5,7 @@
   <title>Stream Tech Dashboard</title>
   <script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
   <link rel="import" href="../shared/elements/gdq-rundown/gdq-rundown.html">
+  <link rel="import" href="elements/cali-horaro/cali-horaro.html">
   <link rel="import" href="elements/gdq-checklist/gdq-checklist.html">
   <link rel="import" href="elements/gdq-countdown/gdq-countdown.html">
   <link rel="import" href="elements/gdq-schedule/gdq-schedule.html">
@@ -79,6 +80,10 @@
       gdq-recordings {
         margin-top: 16px;
       }
+
+      cali-horaro {
+        margin-top: 16px;
+      }
     </style>
   </custom-style>
 </head>
@@ -88,7 +93,6 @@
       <div id="leftColumn" class="column">
         <gdq-timekeeper class="bordered"></gdq-timekeeper>
         <gdq-checklist class="bordered" style="border-top: 0;"></gdq-checklist>
-        <gdq-recordings></gdq-recordings>
       </div>
 
       <div id="centerColumn" class="column">
@@ -99,6 +103,8 @@
         <gdq-totals></gdq-totals>
         <gdq-rundown class="bordered"></gdq-rundown>
         <gdq-countdown class="bordered"></gdq-countdown>
+        <gdq-recordings></gdq-recordings>
+        <cali-horaro></cali-horaro>
       </div>
     </div>
   </div>

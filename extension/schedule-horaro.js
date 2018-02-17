@@ -10,6 +10,12 @@ const stopwatch = nodecg.Replicant('stopwatch');
 const currentRunRep = nodecg.Replicant('currentRun');
 const nextRunRep = nodecg.Replicant('nextRun');
 const scheduleRep = nodecg.Replicant('schedule');
+const scheduleProperties = nodecg.Replicant('scheduleProperties', {
+  defaultValue: {
+    startTime: 0,
+    setupTime: 0,
+  },
+});
 const timeTracking = nodecg.Replicant('timeTracking', {
   defaultValue: {
     startTime: {
@@ -22,6 +28,9 @@ const timeTracking = nodecg.Replicant('timeTracking', {
       last: null,
     }
   },
+});
+const updateHoraro = nodecg.Replicant('updateHoraro', {
+  defaultValue: true,
 });
 
 const STOPWATCH_STATES = {
@@ -41,8 +50,100 @@ const events = new EventEmitter();
 
 let csrfName;
 let csrfToken;
-let startTime;
-let setupTime;
+
+updateHoraro.on('change', (newVal) => {
+  if (newVal) {
+    nodecg.log.info('Automatic updating of Horaro Schedule enabled');
+    manuallyUpdateTotal(true);
+  } else {
+    nodecg.log.warn('Automatic updating of Horaro Schedule DISABLED');
+  }
+});
+
+nodecg.listenFor('setStartTime', async ({value}) => {
+  if (currentRunRep.value.order === 0) {
+    return;
+  }
+  if (!timeTracking.value.startTime.first) {
+    return;
+  }
+
+  const run = currentRunRep.value;
+  const prevRun = [...scheduleRep.value].reverse().find((item) => {
+    if (item.type !== 'run') {
+      return false;
+    }
+
+    return item.order < run.order;
+  });
+
+  const now = value;
+  let runStartTime = new Date(scheduleProperties.value.startTime);
+  scheduleRep.value.forEach((item) => {
+    if (item.order < run.order) {
+      runStartTime.setSeconds(runStartTime.getSeconds() + item._horaroEstimate);
+    }
+  });
+  let offset = Math.floor((now - runStartTime.getTime()) / 1000);
+  let prevSetupTime = TimeUtils.parseTimeString(prevRun.setupTime) / 1000;
+  const {id: scheduleId, setupTime} = nodecg.bundleConfig.tracker.schedule;
+  let horaroEstimate = prevRun._horaroEstimate + offset;
+  let formattedSetupTime = TimeUtils.formatSeconds(
+    prevSetupTime + offset, {showHours: true});
+  if (horaroEstimate < 0) {
+    throw new Error(
+      `Run ${prevRun.id} (${prevRun.name}) cannot have negative Horaro `
+      + `estimate of ${horaroEstimate}`);
+  }
+  await HoraroUtils.updateRunEstimateAndData({
+    scheduleId,
+    runId: prevRun.id,
+    estimate: horaroEstimate,
+    data: {
+      [setupTime]: formattedSetupTime,
+    },
+    csrfName,
+    csrfToken,
+  });
+  events.emit('horaro-updated');
+});
+
+nodecg.listenFor('setRunTime', async ({value}) => {
+  if (timeTracking.value.startTime.first) {
+    return;
+  }
+
+  const run = currentRunRep.value;
+  const prevRun = [...scheduleRep.value].reverse().find((item) => {
+    if (item.type !== 'run') {
+      return false;
+    }
+
+    return item.order < run.order;
+  });
+
+  let runRunTime = Math.floor(value / 1000);
+  let setupTime = TimeUtils.parseTimeString(prevRun.setupTime) / 1000;
+  const {id: scheduleId, runTime} = nodecg.bundleConfig.tracker.schedule;
+  let horaroEstimate = runRunTime + setupTime;
+  let formattedRunTime = TimeUtils.formatSeconds(runRunTime, {showHours: true});
+  if (horaroEstimate < 0) {
+    throw new Error(
+      `Run ${prevRun.id} (${prevRun.name}) cannot have negative Horaro `
+      + `estimate of ${horaroEstimate}`);
+  }
+  await HoraroUtils.updateRunEstimateAndData({
+    scheduleId,
+    runId: prevRun.id,
+    estimate: runRunTime + setupTime,
+    data: {
+      [runTime]: formattedRunTime,
+    },
+    csrfName,
+    csrfToken,
+  });
+  events.emit('horaro-updated');
+});
 
 const getScheduleModeFromRun = (run) => {
   const mode = run.extra.scheduleMode || SCHEDULE_MODE.NORMAL;
@@ -54,12 +155,14 @@ const getScheduleModeFromRun = (run) => {
 
 const getSchedule = async(scheduleId) => {
   let {runs, csrfName: csrfName_, csrfToken: csrfToken_,
-      startTime: startTime_, setupTime: setupTime_} =
+      startTime, setupTime} =
     await HoraroUtils.getSchedule(scheduleId);
   csrfName = csrfName_;
   csrfToken = csrfToken_;
-  startTime = startTime_;
-  setupTime = setupTime_;
+  scheduleProperties.value = {
+    startTime: startTime.getTime(),
+    setupTime,
+  };
   return runs;
 };
 
@@ -106,6 +209,10 @@ const updateStartTime = async () => {
     timeTracking.value.startTime.firstCompleted = now;
   }
 
+  if (!updateHoraro.value) {
+    return;
+  }
+
   const scheduleMode = getScheduleModeFromRun(run);
   if (scheduleMode == SCHEDULE_MODE.CUSTOM) {
     return;
@@ -132,7 +239,7 @@ const updateStartTime = async () => {
     return;
   }
 
-  let runStartTime = new Date(startTime);
+  let runStartTime = new Date(scheduleProperties.value.startTime);
   scheduleRep.value.forEach((item) => {
     if (item.order < run.order) {
       runStartTime.setSeconds(runStartTime.getSeconds() + item._horaroEstimate);
@@ -179,6 +286,10 @@ const updateFinishTime = async () => {
     timeTracking.value.finishTime.first = now;
   }
 
+  if (!updateHoraro.value) {
+    return;
+  }
+
   const scheduleMode = getScheduleModeFromRun(run);
   if (scheduleMode == SCHEDULE_MODE.CUSTOM) {
     return;
@@ -218,6 +329,10 @@ const updateFinishTime = async () => {
 
 const updateFinalFinishTime = async () => {
   const run = currentRunRep.value;
+
+  if (!updateHoraro.value) {
+    return;
+  }
 
   const scheduleMode = getScheduleModeFromRun(run);
   if (scheduleMode != SCHEDULE_MODE.MULTI_PARTS) {
