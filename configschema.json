@@ -13,37 +13,6 @@
       "description": "How long (in seconds) most things show on-screen for.",
       "default": 10
     },
-    "twitter": {
-      "type": ["object", "null"],
-      "properties": {
-        "enabled": {
-          "type": "boolean",
-          "default": true
-        },
-        "userId": {
-          "type": "string",
-          "description": "The numeric userid of the Twitter account that owns these API keys. http://mytwitterid.com/"
-        },
-        "consumerKey": {
-          "type": "string"
-        },
-        "consumerSecret": {
-          "type": "string"
-        },
-        "accessTokenKey": {
-          "type": "string"
-        },
-        "accessTokenSecret": {
-          "type": "string"
-        },
-        "debug": {
-          "type": "boolean",
-          "default": false
-        }
-      },
-      "required": ["userId", "consumerKey", "consumerSecret", "accessTokenKey", "accessTokenSecret"],
-      "default": null
-    },
     "twitch": {
       "type": ["object", "null"],
       "additionalProperties": false,
