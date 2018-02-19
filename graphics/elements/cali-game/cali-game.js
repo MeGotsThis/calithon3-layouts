@@ -40,9 +40,9 @@
         Polymer.flush();
       }
 
-      const MAX_GAME_WIDTH = this.clientWidth - 32 - 54;
       const gameSpan = this.$.text;
-      const gameWidth = gameSpan.clientWidth;
+      const MAX_GAME_WIDTH = gameSpan.clientWidth;
+      const gameWidth = gameSpan.scrollWidth;
       if (gameWidth > MAX_GAME_WIDTH) {
         TweenLite.set(gameSpan, {
           scaleX: MAX_GAME_WIDTH / gameWidth,

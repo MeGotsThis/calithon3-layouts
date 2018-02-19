@@ -5,72 +5,64 @@
   <template>
     <style include="gdq-text-styles">
       :host {
-        position: relative;
-        box-sizing: border-box;
-        background-color: rgba(33, 33, 43, 0.8);
-        border-radius: 10px;
         color: white;
       }
 
-      :host([paused]) {
+      #layout {
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        box-sizing: border-box;
+      }
+
+      #display {
+        position: relative;
+        width: 100%;
+      }
+
+      :host([paused]) #display {
         background: linear-gradient(to right, #212121 0%,#353535 13.5%,#9d9d9d 50%,#353535 86.5%,#212121 100%);
       }
 
-      :host([finished]) {
+      :host([finished]) #display {
         background: linear-gradient(to right, #012006 0%,#013705 13.5%,#2ab641 50%,#013705 86.5%,#012006 100%);
+      }
+
+      #bar {
+        height: 5px;
+        background-color: var(--timer-primary-color, #3298A0);
       }
 
       #startFlash {
         position: absolute;
         display: flex;
         background-color: #a5ffa9;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        bottom: 0;
         mix-blend-mode: color-dodge;
         opacity: 0;
       }
 
       #time {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-
-        display: flex;
-        align-items: center;
         padding: 0 16px;
         box-sizing: border-box;
-      }
-
-      #icon {
-        margin-left: -16px;
-      width: 54px;
-        height: 54px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      :host([center]) #icon {
-        margin-left: 0;
-        display: none;
-      }
-
-      #time span {
-        flex: 1;
-      }
-
-      :host([center]) #time {
+        background-color: var(--timer-secondary-color, #25646B);
         text-align: center;
       }
     </style>
-    <div id="startFlash"></div>
-    <div id="time">
-      <div id="icon"><img src="[[importPath]]/../../../img/clock.png" /></div>
-      <span>[[time]]</span>
+    <div id="layout">
+      <div id="display">
+        <div id="startFlash"></div>
+        <div id="time">
+          <span>[[time]]</span>
+        </div>
+      </div>
+      <div id="bar"></div>
     </div>
   </template>
 

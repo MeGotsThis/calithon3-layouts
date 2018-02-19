@@ -139,34 +139,35 @@
 
     fitName() {
       Polymer.flush();
-      const MAX_NAME_WIDTH = this.$.names.clientWidth - 24;
-      const nameWidth = this.$.namesName.clientWidth;
+      const MAX_NAME_WIDTH = this.$.name.clientWidth;
+      const nameWidth = this.$.name.scrollWidth;
       if (nameWidth > MAX_NAME_WIDTH) {
-        TweenLite.set(this.$.namesName, {
+        TweenLite.set(this.$.name, {
           scaleX: MAX_NAME_WIDTH / nameWidth,
           transformOrigin: this.right ? 'right' : 'left',
         });
       } else {
-        TweenLite.set(this.$.namesName, {
+        TweenLite.set(this.$.name, {
           scaleX: 1,
           transformOrigin: this.right ? 'right' : 'left',
         });
       }
 
-      const MAX_TWITCH_WIDTH = MAX_NAME_WIDTH - this.$.glitch.clientWidth;
-      const twitchSpan = this.$.namesTwitch.querySelector('span');
-      twitchSpan.style.width = 'auto';
-      const twitchWidth = twitchSpan.clientWidth;
+      const MAX_TWITCH_WIDTH = this.$.twitch.clientWidth;
+      const twitchWidth = this.$.twitch.scrollWidth;
       if (twitchWidth > MAX_TWITCH_WIDTH) {
         const scale = MAX_TWITCH_WIDTH / twitchWidth;
         const newWidth = twitchWidth * scale;
 
         // Can sometimes be NaN on the co-op variants of Standard_1
         if (typeof newWidth === 'number' && !isNaN(newWidth)) {
-          TweenLite.set(twitchSpan, {scaleX: scale, width: newWidth});
+          TweenLite.set(this.$.twitch, {
+            scaleX: scale,
+            width: newWidth
+          });
         }
       } else {
-        TweenLite.set(twitchSpan, {scaleX: 1});
+        TweenLite.set(this.$.twitch, {scaleX: 1});
       }
     }
   }

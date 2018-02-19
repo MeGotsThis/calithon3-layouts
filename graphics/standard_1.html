@@ -5,9 +5,7 @@
   <title>Standard, 1 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/cali-category/cali-category.html">
-  <link rel="import" href="elements/cali-estimate/cali-estimate.html">
-  <link rel="import" href="elements/cali-game/cali-game.html">
+  <link rel="import" href="elements/cali-run-info/cali-run-info.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
@@ -22,10 +20,10 @@
         display: flex;
         flex-direction: column;
         position: absolute;
-        top: 5px;
-        left: 12px;
-        width: 452px;
-        height: 627px;
+        top: 247px;
+        left: 0px;
+        width: 392px;
+        height: 420px;
       }
 
       #webcam {
@@ -47,41 +45,24 @@
       #runners {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
         position: relative;
       }
 
       cali-nameplate {
-        position: relative;
-        width: 452px;
-        height: 59px;
-        font-size: 42px;
+        font-size: 28px;
       }
 
-      cali-timer,
-      cali-estimate,
-      cali-category {
-        position: relative;
-        height: 57px;
-        width: calc(100% - 12px - 12px);
-        font-size: 42px;
-        margin-left: 12px;
-        margin-right: 12px;
-        margin-bottom: 5px;
-      }
-
-      cali-game {
-        position: absolute;
-        top: 591px;
-        left: 469px;
-        width: 800px;
-        height: 65px;
+      cali-timer {
+        font-family: 'Simply Rounded', 'Nunito', sans-serif;
         font-size: 48px;
+      }
+
+      cali-run-info {
+        font-size: 28px;
       }
 
       /* One runner */
       #runners[num-runners="1"] {
-        margin-top: 9px;
       }
 
       #runners[num-runners="1"] cali-nameplate:not([index="0"]) {
@@ -90,7 +71,6 @@
 
       /* Two runners */
       #runners[num-runners="2"] {
-        margin-top: 11px;
       }
 
       #runners[num-runners="2"] cali-nameplate[index="2"],
@@ -100,8 +80,6 @@
 
       /* Four runners */
       #runners[num-runners="4"] {
-        margin-top: 11px;
-        margin-bottom: 5px;
       }
     </style>
   </custom-style>
@@ -114,39 +92,15 @@
     </div>
 
     <div id="left">
-      <svg id="webcam">
-        <defs>
-          <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stop-color="#2184A2"/>
-            <stop offset="100%" stop-color="#459997"/>
-          </linearGradient>
-        </defs>
-        <rect x="1.5" y="1.5" rx="10" ry="10" width="449" height="336"
-          style="stroke: url(#stroke); stroke-width: 3; fill: none"
-          />
-      </svg>
       <div id="runners">
         <cali-nameplate index="0"></cali-nameplate>
-        <cali-nameplate index="1"></cali-nameplate>
+        <cali-nameplate index="1" right></cali-nameplate>
         <cali-nameplate index="2"></cali-nameplate>
-        <cali-nameplate index="3"></cali-nameplate>
+        <cali-nameplate index="3" right></cali-nameplate>
       </div>
       <cali-timer></cali-timer>
-      <cali-estimate></cali-estimate>
-      <cali-category></cali-category>
+      <cali-run-info></cali-run-info>
     </div>
-    <svg id="game">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="797" height="597"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-    <cali-game></cali-game>
   </div>
 
   <script>

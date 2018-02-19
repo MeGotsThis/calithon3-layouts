@@ -38,7 +38,7 @@
         Polymer.flush();
       }
 
-      const MAX_CATEGORY_WIDTH = this.clientWidth - 6 - 54;
+      const MAX_CATEGORY_WIDTH = this.clientWidth;
       const categorySpan = this.$.text;
       const categoryWidth = categorySpan.clientWidth;
       if (categoryWidth > MAX_CATEGORY_WIDTH) {

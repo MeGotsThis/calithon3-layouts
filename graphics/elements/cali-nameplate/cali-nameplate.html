@@ -7,64 +7,72 @@
   <template>
     <style include="gdq-text-styles">
       :host {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
         text-transform: uppercase;
-        z-index: 1;
         color: white;
-        background: linear-gradient(to right, #2184A2, #459997);
-        border-radius: 10px;
+      }
+
+      #layout {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        white-space: nowrap;
+
+        background-color: var(--name-color, #3298A0);
+      }
+
+      #placeholder {
+        visibility: hidden;
+        overflow: hidden;
       }
 
       #names {
-        position: relative;
-        width: 100%;
-        box-sizing: border-box;
-        flex: 1;
-        white-space: nowrap;
-        padding: 0 12px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
       }
 
-      #namesName {
-        box-sizing: border-box;
-        width: 100%;
-      }
-
-      :host([right]) #namesName {
-        text-align: right;
-      }
-
-      #namesTwitch {
+      #namesName, #namesTwitch  {
         box-sizing: border-box;
         width: 100%;
         @apply --layout-horizontal;
         @apply --layout-center;
       }
 
+      :host([right]) #namesName,
       :host([right]) #namesTwitch {
-        flex-direction: row-reverse;
+        @apply --layout-horizontal-reverse;
       }
 
-      #glitch {
+      .glitch {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        padding-left: 8px;
-        padding-right: 8px;
+        width: var(--icon-width, 1.5em);
+        height: var(--icon-height, 1.5em);
+
+        background-color: rgba(9, 53, 71, 0.4);
       }
 
-      #glitch img {
-        height: var(--glitch-height, 40px);
+      .glitch img {
+        width: 50%;
+        height: 50%;
       }
 
-      #twitch {
+      .name-pad {
         flex: 1;
+        min-width: 0;
+        padding: 0 0.5em;
+      }
+
+      #name, #twitch {
         transform-origin: left;
       }
 
+      :host([right]) #name,
       :host([right]) #twitch {
         text-align: right;
       }
@@ -79,12 +87,22 @@
       }
     </style>
 
-    <div id="names">
-      <div style="width: 100%; position: relative;">
-        <div id="namesName">[[name]]</div>
+    <div id="layout">
+      <div id="placeholder">
+        <span id="twitch">[[name]][[twitch]]</span>
+      </div>
+      <div id="names">
+        <div id="namesName">
+          <div class="glitch"></div>
+          <span class="name-pad">
+            <div id="name">[[name]]</div>
+          </span>
+        </div>
         <div id="namesTwitch">
-          <div id="glitch"><img src="[[importPath]]/../../../img/twitch_white.svg" /></div>
-          <span id="twitch">[[twitch]]</span>
+          <div class="glitch"><img src="[[importPath]]/../../../img/twitch_white.svg" /></div>
+          <span class="name-pad">
+            <div id="twitch">[[twitch]]</div>
+          </span>
         </div>
       </div>
     </div>

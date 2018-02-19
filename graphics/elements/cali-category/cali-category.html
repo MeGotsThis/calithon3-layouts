@@ -5,57 +5,25 @@
   <template>
     <style include="gdq-text-styles">
       :host {
-        position: relative;
-        box-sizing: border-box;
-        background-color: rgba(33, 33, 43, 0.8);
-        border-radius: 10px;
         color: white;
       }
 
       #category {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
 
         display: flex;
         align-items: center;
-        padding: 0 6px;
         box-sizing: border-box;
       }
 
-      :host([right]) #category {
-        flex-direction: row-reverse;
-      }
-
-      #icon {
-        margin-left: -6px;
-        width: 54px;
-        height: 54px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      :host([right]) #icon {
-        margin-right: -6px;
-        margin-left: 0;
-      }
-
-      #category span {
+      #category div {
         flex: 1;
         white-space: nowrap;
       }
-
-      :host([right]) #category {
-        text-align: right;
-      }
     </style>
     <div id="category">
-      <div id="icon"><img src="[[importPath]]/../../../img/category.png" /></div>
-      <span id="text">[[category]]</span>
+      <div id="text">[[category]]</div>
     </div>
   </template>
 
