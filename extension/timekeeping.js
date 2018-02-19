@@ -41,6 +41,12 @@ if (stopwatch.value.state === STOPWATCH_STATES.RUNNING) {
     .with(t => timer.setGameTime(t));
 }
 
+currentRun.on('change', (newVal) => {
+  stopwatch.value.time =
+    TimeUtils.createTimeStruct(stopwatch.value.time.raw, calcOptions());
+});
+
+
 nodecg.listenFor('startTimer', start);
 nodecg.listenFor('stopTimer', pause);
 nodecg.listenFor('resetTimer', reset);
@@ -127,7 +133,7 @@ function tick() {
   }
 
   stopwatch.value.time =
-    TimeUtils.createTimeStruct((gameTime.totalSeconds() * 1000));
+    TimeUtils.createTimeStruct((gameTime.totalSeconds() * 1000), calcOptions());
 }
 
 /**
@@ -150,7 +156,7 @@ async function reset() {
 
   pause();
   timer.reset(true);
-  stopwatch.value.time = TimeUtils.createTimeStruct();
+  stopwatch.value.time = TimeUtils.createTimeStruct(undefined, calcOptions());
   stopwatch.value.results = [null, null, null, null];
   stopwatch.value.state = STOPWATCH_STATES.NOT_STARTED;
 }
@@ -186,7 +192,8 @@ function resumeRunner(index) {
   if (stopwatch.value.state === STOPWATCH_STATES.FINISHED) {
     const missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
     const newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
-    stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
+    stopwatch.value.time =
+      TimeUtils.createTimeStruct(newMilliseconds, calcOptions());
     liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000)
       .with(t => timer.setGameTime(t));
     start();
@@ -214,14 +221,15 @@ function editTime({index, newTime}) {
       return reset();
     }
 
-    stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
+    stopwatch.value.time =
+      TimeUtils.createTimeStruct(newMilliseconds, calcOptions());
     liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000)
       .with(t => timer.setGameTime(t));
   }
 
   if (stopwatch.value.results[index]) {
     stopwatch.value.results[index].time =
-      TimeUtils.createTimeStruct(newMilliseconds);
+      TimeUtils.createTimeStruct(newMilliseconds, calcOptions());
     recalcPlaces();
   }
 }
@@ -265,6 +273,15 @@ function recalcPlaces() {
     pause();
     stopwatch.value.state = STOPWATCH_STATES.FINISHED;
   }
+}
+
+function calcOptions() {
+  const options = {};
+  let estimate = TimeUtils.parseTimeString(currentRun.value.estimate);
+  if (estimate >= 3600 * 1000) {
+    options.showHours = true;
+  }
+  return options;
 }
 
 module.exports = {

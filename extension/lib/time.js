@@ -28,12 +28,12 @@ const TimeUtils = {
    * TimeObject with, in milliseconds.
    * @returns {TimeStruct} - A populated TimeStruct object.
    */
-  createTimeStruct(milliseconds = 0) {
+  createTimeStruct(milliseconds = 0, options) {
     const parsedTime = TimeUtils.parseMilliseconds(milliseconds);
     // Can't use object spread because of
     // https://github.com/Polymer/polymer-cli/issues/888
     return Object.assign({}, parsedTime, {
-      formatted: TimeUtils.formatMilliseconds(milliseconds),
+      formatted: TimeUtils.formatMilliseconds(milliseconds, options),
       raw: milliseconds,
       timestamp: Date.now()
     });
@@ -74,7 +74,7 @@ const TimeUtils = {
    * @param {number} inputMs - The number of milliseconds to format.
    * @returns {string} - The formatted time sting.
    */
-  formatMilliseconds(inputMs) {
+  formatMilliseconds(inputMs, {showHours = false} = {}) {
     const {days, hours, minutes, seconds, milliseconds} =
       TimeUtils.parseMilliseconds(inputMs);
     let str = '';
@@ -83,7 +83,7 @@ const TimeUtils = {
       str += `${days}d `;
     }
 
-    if (hours) {
+    if (hours || showHours) {
       str += `${hours}:`;
     }
 
