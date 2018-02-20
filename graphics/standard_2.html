@@ -5,11 +5,9 @@
   <title>Standard, 2 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/cali-category/cali-category.html">
-  <link rel="import" href="elements/cali-estimate/cali-estimate.html">
   <link rel="import" href="elements/cali-finish-time/cali-finish-time.html">
-  <link rel="import" href="elements/cali-game/cali-game.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
+  <link rel="import" href="elements/cali-run-info/cali-run-info.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -19,107 +17,64 @@
         mask-image: url(img/backgrounds/standard_2_mask.svg);
       }
 
-      #webcam {
+      #info {
         position: absolute;
-        top: 434px;
-        left: 493px;
-        width: 295px;
-        height: 222px;
-        box-sizing: border-box;
-      }
-
-      #game-1,
-      #game-2 {
-        position: absolute;
-        top: 5px;
-        width: 500px;
-        height: 376px;
-        box-sizing: border-box;
-      }
-
-      #game-1 {
-        left: 12px;
-      }
-
-      #game-2 {
-        right: 11px;
+        bottom: 53px;
+        left: 0px;
+        width: 470px;
       }
 
       cali-nameplate {
         position: absolute;
-        top: 378px;
-        width: 500px;
-        height: 56px;
-        border-radius: 0 0 10px 10px;
-        font-size: 42px;
-        z-index: 2;
+        top: 478px;
+        width: 470px;
+        font-size: 28px;
       }
 
       cali-nameplate[index="0"] {
-        left: 12px;
+        left: 0;
       }
 
       cali-nameplate[index="1"] {
-        right: 11px;
+        right: 0;
       }
 
       cali-finish-time {
         position: absolute;
-        top: 434px;
-        width: 471px;
-        height: 66px;
-        border-radius: 0 0 10px 10px;
-        font-size: 42px;
+        bottom: 242px;
+        width: 458px;
+        font-size: 32px;
       }
 
       cali-finish-time[index="0"] {
-        left: 22px;
+        left: 6px;
       }
 
       cali-finish-time[index="1"] {
-        right: 21px;
+        right: 6px;
       }
 
-      cali-game {
-        position: absolute;
-        top: 530px;
-        left: 10px;
-        width: 486px;
-        height: 54px;
-        background: #2184A2;
-        border-radius: 10px 0 0 10px;
-        font-size: 42px;
+      cali-nameplate[index="0"],
+      cali-finish-time[index="0"] {
+        --name-color: #1F8FBE;
+        --time-color: #1F4B61;
       }
 
-      cali-category {
-        position: absolute;
-        top: 530px;
-        right: 11px;
-        width: 484px;
-        height: 54px;
-        background: #459997;
-        border-radius: 0 10px 10px 0;
-        font-size: 42px;
+      cali-nameplate[index="1"],
+      cali-finish-time[index="1"] {
+        --name-color: #93494C;
+        --time-color: #673033;
       }
 
-      cali-estimate {
-        position: absolute;
-        top: 584px;
-        left: 785px;
-        width: 254px;
-        height: 54px;
-        border-radius: 0 10px 10px 0;
-        font-size: 42px;
+      cali-run-info {
+        font-size: 28px;
+
+        --run-primary-color: #3298A0;
+        --run-secondary-color: #25646B;
       }
 
       cali-timer {
-        position: absolute;
-        top: 380px;
-        left: 512px;
-        width: 257px;
-        height: 54px;
-        border-radius: 10px 10px 0 0;
-        font-size: 42px;
+        font-size: 39px;
       }
     </style>
   </custom-style>
@@ -130,49 +85,14 @@
       <img src="img/backgrounds/La Jolla.png">
       <div id="background-overlay"></div>
     </div>
-    <cali-game></cali-game>
-    <cali-category right></cali-category>
-    <cali-estimate right></cali-estimate>
-    <cali-timer center></cali-timer>
+    <div id="info">
+      <cali-timer></cali-timer>
+      <cali-run-info></cali-run-info>
+    </div>
     <cali-nameplate index="0"></cali-nameplate>
     <cali-nameplate index="1" right></cali-nameplate>
-    <cali-finish-time index="0" attach="top"></cali-finish-time>
-    <cali-finish-time index="1" attach="top" reverse></cali-finish-time>
-    <svg id="game-1">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="497" height="373"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-    <svg id="game-2">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="497" height="373"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-
-    <svg id="webcam">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" rx="10" ry="10" width="292" height="219"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-
+    <cali-finish-time index="0" attach="bottom"></cali-finish-time>
+    <cali-finish-time index="1" attach="bottom" reverse></cali-finish-time>
   </div>
 
   <script>

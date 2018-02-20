@@ -78,11 +78,11 @@
       if (this.attach === 'top') {
         val.top = 0;
       } else if (this.attach === 'bottom') {
-        val.bottom = 0;
+        val.top = 0;
       } else if (this.attach === 'left') {
         val.left = 0;
       } else if (this.attach === 'right') {
-        val.right = 0;
+        val.left = 0;
       }
       this.timeTL.to(this.$.main, FADE_DURATION, val);
     }
@@ -101,11 +101,11 @@
       if (this.attach === 'top') {
         val.top = '-100%';
       } else if (this.attach === 'bottom') {
-        val.bottom = '-100%';
+        val.top = '100%';
       } else if (this.attach === 'left') {
         val.left = '-100%';
       } else if (this.attach === 'right') {
-        val.right = '-100%';
+        val.left = '100%';
       }
       this.timeTL.to(this.$.main, FADE_DURATION, val);
     }
