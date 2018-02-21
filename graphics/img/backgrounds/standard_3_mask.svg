@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <defs>
-    <rect id="game-feed-1" x="15" y="8" width="410" height="307" />
-    <rect id="game-feed-2" x="436" y="8" width="410" height="307" />
-    <rect id="game-feed-3" x="857" y="8" width="410" height="307" />
-    <rect id="webcam" x="496" y="437" rx="8" ry="8" width="289" height="216" />
+    <rect id="game-feed-1" x="0" y="0" width="437" height="328" />
+    <rect id="game-feed-2" x="843" y="0" width="437" height="328" />
+    <rect id="game-feed-3" x="0" y="333" width="437" height="328" />
+    <rect id="webcam" x="843" y="333" width="437" height="328" />
     <mask id="image-mask">
       <rect x="0" y="0" width="1280" height="720" fill="white" />
       <use href="#game-feed-1" fill="black" />
