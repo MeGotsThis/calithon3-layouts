@@ -5,10 +5,8 @@
   <title>Widescreen, 1 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/cali-category/cali-category.html">
-  <link rel="import" href="elements/cali-estimate/cali-estimate.html">
-  <link rel="import" href="elements/cali-game/cali-game.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
+  <link rel="import" href="elements/cali-run-info/cali-run-info.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -18,77 +16,36 @@
         mask-image: url(img/backgrounds/widescreen_1_mask.svg);
       }
 
-      #webcam {
-        width: 351px;
-        height: 264px;
-        box-sizing: border-box;
-        margin-bottom: -20px;
+      #bottom {
+        position: absolute;
+        left: 280px;
+        top: 562px;
+        right: 0px;
+        bottom: 53px;
+
+        display: flex;
+        flex-direction: row;
       }
 
       #left {
+        flex: 1;
         display: flex;
         flex-direction: column;
-        position: absolute;
-        top: 4px;
-        left: 11px;
-        width: 351px;
       }
 
-      #padding {
-        display: flex;
-        flex-direction: column;
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-
-      #padding > * {
-        margin-bottom: 5px;
-      }
-
-      #game {
-        position: absolute;
-        top: 5px;
-        left: 369px;
-        width: 900px;
-        height: 509px;
-        box-sizing: border-box;
+      cali-run-info {
+        flex: 1;
+        font-size: 30px;
       }
 
       cali-nameplate {
-        width: 100%;
-        height: 59px;
-        font-size: 42px;
-      }
-
-      cali-game {
-        position: absolute;
-        top: 511px;
-        left: 369px;
-        width: 900px;
-        height: 54px;
-        border-radius: 0 0 10px 10px;
-        font-size: 42px;
-      }
-
-      cali-category {
-        position: absolute;
-        top: 565px;
-        left: 376px;
-        width: 886px;
-        height: 54px;
-        font-size: 42px;
-      }
-
-      cali-estimate {
-        width: 100%;
-        height: 54px;
-        font-size: 42px;
+        font-size: 28px;
       }
 
       cali-timer {
-        width: 100%;
-        height: 54px;
-        font-size: 42px;
+        flex: 1;
+        font-family: 'Simply Rounded', 'Nunito', sans-serif;
+        font-size: 48px;
       }
     </style>
   </custom-style>
@@ -99,38 +56,13 @@
       <img src="img/backgrounds/SF Bay.png">
       <div id="background-overlay"></div>
     </div>
-    <div id="left">
-      <svg id="webcam">
-        <defs>
-          <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stop-color="#2184A2"/>
-            <stop offset="100%" stop-color="#459997"/>
-          </linearGradient>
-        </defs>
-        <rect x="1.5" y="1.5" rx="10" ry="10" width="348" height="261"
-          style="stroke: url(#stroke); stroke-width: 3; fill: none"
-          />
-      </svg>
-      <cali-nameplate index="0"></cali-nameplate>
-      <div id="padding">
+    <div id="bottom">
+      <div id="left">
+        <cali-nameplate index="0"></cali-nameplate>
         <cali-timer></cali-timer>
-        <cali-estimate></cali-estimate>
       </div>
+      <cali-run-info></cali-run-info>
     </div>
-
-    <svg id="game">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="897" height="506"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-    <cali-game></cali-game>
-    <cali-category></cali-category>
   </div>
 
   <script>
