@@ -5,8 +5,8 @@
   <title>Standard, 1 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/cali-run-info/cali-run-info.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
+  <link rel="import" href="elements/cali-run-info/cali-run-info.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -26,22 +26,6 @@
         height: 420px;
       }
 
-      #webcam {
-        width: 100%;
-        height: 339px;
-        box-sizing: border-box;
-        margin-bottom: -40px;
-      }
-
-      #game {
-        position: absolute;
-        top: 5px;
-        left: 469px;
-        width: 800px;
-        height: 600px;
-        box-sizing: border-box;
-      }
-
       #runners {
         display: flex;
         flex-direction: column;
@@ -49,15 +33,6 @@
       }
 
       cali-nameplate {
-        font-size: 28px;
-      }
-
-      cali-timer {
-        font-family: 'Simply Rounded', 'Nunito', sans-serif;
-        font-size: 48px;
-      }
-
-      cali-run-info {
         font-size: 28px;
       }
 
@@ -80,6 +55,15 @@
 
       /* Four runners */
       #runners[num-runners="4"] {
+      }
+
+      cali-timer {
+        font-family: 'Simply Rounded', 'Nunito', sans-serif;
+        font-size: 48px;
+      }
+
+      cali-run-info {
+        font-size: 28px;
       }
     </style>
   </custom-style>
