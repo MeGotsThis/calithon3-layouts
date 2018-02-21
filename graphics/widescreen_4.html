@@ -5,11 +5,9 @@
   <title>Widescreen, 4 Player</title>
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../shared/imports/gsap.html">
-  <link rel="import" href="elements/cali-category/cali-category.html">
-  <link rel="import" href="elements/cali-estimate/cali-estimate.html">
   <link rel="import" href="elements/cali-finish-time/cali-finish-time.html">
-  <link rel="import" href="elements/cali-game/cali-game.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
+  <link rel="import" href="elements/cali-run-info/cali-run-info.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -19,140 +17,110 @@
         mask-image: url(img/backgrounds/widescreen_4_mask.svg);
       }
 
-      #webcam {
-        width: 374px;
-        height: 243px;
-        box-sizing: border-box;
-        margin-bottom: -10px;
+      #main {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 53px;
       }
 
-      #left {
+      #middle {
         display: flex;
         flex-direction: column;
         position: absolute;
-        top: 4px;
-        left: 11px;
-        width: 374px;
-      }
-
-      #game-1,
-      #game-2,
-      #game-3,
-      #game-4 {
-        position: absolute;
-        width: 436px;
-        height: 248px;
-        box-sizing: border-box;
-      }
-
-      #game-1, #game-2 {
-        top: 65px;
-      }
-
-      #game-3, #game-4 {
-        top: 316px;
-      }
-
-      #game-1, #game-3 {
-        left: 393px;
-      }
-
-      #game-2, #game-4 {
-        left: 834px;
-      }
-
-      #padding {
-        display: flex;
-        flex-direction: column;
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-
-      #padding > * {
-        margin-bottom: 5px;
+        top: 262px;
+        left: 421px;
+        right: 421px;
+        bottom: 262px;
       }
 
       cali-nameplate {
         position: absolute;
-        width: 436px;
-        height: 54px;
-        font-size: 42px;
-        z-index: 2;
-      }
-
-      cali-nameplate[index="0"],
-      cali-nameplate[index="1"] {
-        top: 14px;
-        border-radius: 10px 10px 0 0;
-      }
-
-      cali-nameplate[index="2"],
-      cali-nameplate[index="3"] {
-        top: 561px;
-        border-radius: 0 0 10px 10px;
+        width: 421px;
+        font-size: 28px;
       }
 
       cali-nameplate[index="0"],
       cali-nameplate[index="2"] {
-        left: 393px;
+        left: 0px;
       }
 
       cali-nameplate[index="1"],
       cali-nameplate[index="3"] {
-        left: 834px;
+        right: 0px;
+      }
+
+      cali-nameplate[index="0"],
+      cali-nameplate[index="1"] {
+        top: 262px;
+      }
+
+      cali-nameplate[index="2"],
+      cali-nameplate[index="3"] {
+        bottom: 262px;
       }
 
       cali-finish-time {
         position: absolute;
-        width: 430px;
-        height: 54px;
-        font-size: 42px;
-      }
-
-      cali-finish-time[index="0"],
-      cali-finish-time[index="1"] {
-        top: 68px;
-        border-radius: 0 0 10px 10px;
-      }
-
-      cali-finish-time[index="2"],
-      cali-finish-time[index="3"] {
-        top: 507px;
-        border-radius: 10px 10px 0 0;
+        width: 409px;
+        font-size: 28px;
       }
 
       cali-finish-time[index="0"],
       cali-finish-time[index="2"] {
-        left: 396px;
+        left: 6px;
       }
 
       cali-finish-time[index="1"],
       cali-finish-time[index="3"] {
-        left: 837px;
+        right: 6px;
       }
 
-      cali-game {
-        width: 100%;
-        height: 54px;
-        border-radius: 0 0 10px 10px;
-        font-size: 42px;
+      cali-finish-time[index="0"],
+      cali-finish-time[index="1"] {
+        bottom: 405px;
       }
 
-      cali-category {
-        width: 100%;
-        height: 54px;
-        font-size: 42px;
+      cali-finish-time[index="2"],
+      cali-finish-time[index="3"] {
+        top: 405px;
       }
 
-      cali-estimate {
-        width: 100%;
-        height: 54px;
-        font-size: 42px;
+      cali-nameplate[index="0"],
+      cali-finish-time[index="0"] {
+        --name-color: #1F8FBE;
+        --time-color: #1F4B61;
+      }
+
+      cali-nameplate[index="1"],
+      cali-finish-time[index="1"] {
+        --name-color: #93494C;
+        --time-color: #673033;
+      }
+
+      cali-nameplate[index="2"],
+      cali-finish-time[index="2"] {
+        --name-color: #C8AD59;
+        --time-color: #8D7A40;
+      }
+
+      cali-nameplate[index="3"],
+      cali-finish-time[index="3"] {
+        --name-color: #579848;
+        --time-color: #3D6B32;
+      }
+
+      cali-run-info {
+        font-size: 28px;
+
+        --run-primary-color: #3298A0;
+        --run-secondary-color: #25646B;
       }
 
       cali-timer {
-        width: 100%;
-        height: 54px;
+        flex: 1;
+        font-family: 'Simply Rounded', 'Nunito', sans-serif;
         font-size: 42px;
       }
     </style>
@@ -164,77 +132,20 @@
       <img src="img/backgrounds/SF Bay.png">
       <div id="background-overlay"></div>
     </div>
-    <div id="left">
-      <svg id="webcam">
-        <defs>
-          <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stop-color="#2184A2"/>
-            <stop offset="100%" stop-color="#459997"/>
-          </linearGradient>
-        </defs>
-        <rect x="1.5" y="1.5" rx="10" ry="10" width="371" height="240"
-          style="stroke: url(#stroke); stroke-width: 3; fill: none"
-          />
-      </svg>
-      <cali-game></cali-game>
-      <div id="padding">
-        <cali-category></cali-category>
+    <div id="main">
+      <div id="middle">
         <cali-timer></cali-timer>
-        <cali-estimate></cali-estimate>
+        <cali-run-info></cali-run-info>
       </div>
+      <cali-nameplate index="0"></cali-nameplate>
+      <cali-nameplate index="1" right></cali-nameplate>
+      <cali-nameplate index="2"></cali-nameplate>
+      <cali-nameplate index="3" right></cali-nameplate>
+      <cali-finish-time index="0" attach="bottom"></cali-finish-time>
+      <cali-finish-time index="1" attach="bottom" reverse></cali-finish-time>
+      <cali-finish-time index="2" attach="top"></cali-finish-time>
+      <cali-finish-time index="3" attach="top" reverse></cali-finish-time>
     </div>
-    <cali-nameplate index="0"></cali-nameplate>
-    <cali-nameplate index="1"></cali-nameplate>
-    <cali-nameplate index="2"></cali-nameplate>
-    <cali-nameplate index="3"></cali-nameplate>
-    <cali-finish-time index="0" attach="top"></cali-finish-time>
-    <cali-finish-time index="1" attach="top"></cali-finish-time>
-    <cali-finish-time index="2" attach="bottom"></cali-finish-time>
-    <cali-finish-time index="3" attach="bottom"></cali-finish-time>
-    <svg id="game-1">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="433" height="245"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-    <svg id="game-2">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="433" height="245"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-    <svg id="game-3">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="433" height="245"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
-    <svg id="game-4">
-      <defs>
-        <linearGradient id="stroke" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"   stop-color="#2184A2"/>
-          <stop offset="100%" stop-color="#459997"/>
-        </linearGradient>
-      </defs>
-      <rect x="1.5" y="1.5" width="433" height="245"
-        style="stroke: url(#stroke); stroke-width: 3; fill: none"
-        />
-    </svg>
   </div>
 
   <script>

@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <defs>
-    <rect id="game-feed-1" x="396" y="68" width="430" height="242" />
-    <rect id="game-feed-2" x="837" y="68" width="430" height="242" />
-    <rect id="game-feed-3" x="396" y="319" width="430" height="242" />
-    <rect id="game-feed-4" x="837" y="319" width="430" height="242" />
-    <rect id="webcam" x="14" y="7" rx="8" ry="8" width="368" height="237" />
+    <rect id="game-feed-1" x="0" y="0" width="465" height="262" />
+    <rect id="game-feed-2" x="815" y="0" width="465" height="262" />
+    <rect id="game-feed-3" x="0" y="405" width="465" height="262" />
+    <rect id="game-feed-4" x="815" y="405" width="465" height="262" />
+    <rect id="webcam" x="465" y="0" width="350" height="262" />
     <mask id="image-mask">
       <rect x="0" y="0" width="1280" height="720" fill="white" />
       <use href="#game-feed-1" fill="black" />
