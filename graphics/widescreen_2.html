@@ -37,7 +37,7 @@
 
       cali-finish-time {
         position: absolute;
-        bottom: 361px;
+        bottom: 308px;
         width: 427px;
         font-size: 32px;
       }
@@ -64,7 +64,7 @@
 
       cali-run-info {
         position: absolute;
-        bottom: 53px;
+        bottom: 0px;
         left: 0px;
         width: 439px;
 
@@ -92,12 +92,14 @@
       <img src="img/backgrounds/La Jolla.png">
       <div id="background-overlay"></div>
     </div>
-    <cali-timer></cali-timer>
-    <cali-run-info></cali-run-info>
-    <cali-nameplate index="0"></cali-nameplate>
-    <cali-nameplate index="1" right></cali-nameplate>
-    <cali-finish-time index="0" attach="bottom"></cali-finish-time>
-    <cali-finish-time index="1" attach="bottom" reverse></cali-finish-time>
+    <div id="main-area">
+      <cali-timer></cali-timer>
+      <cali-run-info></cali-run-info>
+      <cali-nameplate index="0"></cali-nameplate>
+      <cali-nameplate index="1" right></cali-nameplate>
+      <cali-finish-time index="0" attach="bottom"></cali-finish-time>
+      <cali-finish-time index="1" attach="bottom" reverse></cali-finish-time>
+    </div>
   </div>
 
   <script>
