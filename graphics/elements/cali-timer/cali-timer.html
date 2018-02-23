@@ -22,6 +22,7 @@
         flex: 1;
         position: relative;
         width: 100%;
+        background-color: var(--timer-secondary-color);
       }
 
       :host([paused]) #display {
@@ -34,7 +35,7 @@
 
       #bar {
         height: 5px;
-        background-color: var(--timer-primary-color, #3298A0);
+        background-color: var(--timer-primary-color);
       }
 
       #startFlash {
@@ -53,7 +54,6 @@
         height: 100%;
         padding: 0 16px;
         box-sizing: border-box;
-        background-color: var(--timer-secondary-color, #25646B);
         text-align: center;
       }
     </style>
