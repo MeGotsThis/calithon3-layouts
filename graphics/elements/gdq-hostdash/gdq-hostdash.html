@@ -10,6 +10,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../bower_components/sc-fitted-text/sc-fitted-text.html">
 <link rel="import" href="../../../shared/elements/gdq-rundown/gdq-rundown.html">
+<link rel="import" href="dash-host-name.html">
 <link rel="import" href="gdq-hostdash-ads.html">
 <link rel="import" href="gdq-hostdash-bids.html">
 <link rel="import" href="gdq-hostdash-prizes.html">
@@ -53,9 +54,14 @@
         grid-gap: 10px;
       }
 
-      #totals {
+      #name-totals {
         grid-column: 1;
         grid-row: 1;
+        @apply --layout-vertical;
+      }
+
+      #totals {
+        @apply --layout-flex;
       }
 
       #prizes {
@@ -224,7 +230,10 @@
     </div>
 
     <div id="gridWrapper">
-      <gdq-hostdash-totals id="totals"></gdq-hostdash-totals>
+      <div id="name-totals">
+        <dash-host-name id="host-name"></dash-host-name>
+        <gdq-hostdash-totals id="totals"></gdq-hostdash-totals>
+      </div>
 
       <gdq-hostdash-prizes id="prizes" class="material"></gdq-hostdash-prizes>
 
