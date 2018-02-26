@@ -50,12 +50,17 @@
       if (this.offset > 0) {
         let runs = schedule.value.filter(
           (item) => item.type === 'run' && item.order >= baseGame.order);
-        game = runs[this.offset] || {};
+        game = runs[this.offset];
       } else if (this.offset < 0) {
         let runs = schedule.value.filter(
           (item) => item.type === 'run' && item.order <= baseGame.order);
-        game = runs.reverse()[-this.offset] || {};
+        game = runs.reverse()[-this.offset];
       }
+      if (!game) {
+        this.hidden = true;
+        return;
+      }
+      this.hidden = false;
       this.game = (game.name || '').replace('\\n', newLineReplace);
       this.category = game.category;
       if (game.runners.length) {
