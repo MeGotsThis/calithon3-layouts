@@ -20,6 +20,13 @@
         flex-direction: row-reverse;
       }
 
+      #left {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        background-color: rgba(9, 53, 71, 0.4);
+      }
+
       #icon {
         display: flex;
         align-items: center;
@@ -36,10 +43,13 @@
 
       #estimate span {
         flex: 1;
+        padding: 0 0.5em;
       }
     </style>
     <div id="estimate">
-      <div id="icon"><img src="[[importPath]]/../../../img/timer.svg" /></div>
+      <div id="left">
+        <div id="icon"><img src="[[importPath]]/../../../img/timer.svg" /></div>
+      </div>
       <span>[[estimate]]</span>
     </div>
   </template>

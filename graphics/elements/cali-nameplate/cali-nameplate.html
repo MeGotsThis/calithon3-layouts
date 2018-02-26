@@ -48,6 +48,16 @@
         @apply --layout-horizontal-reverse;
       }
 
+      .left {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        height: 100%;
+
+        background-color: rgba(9, 53, 71, 0.4);
+      }
+
       .glitch {
         display: flex;
         align-items: center;
@@ -55,8 +65,6 @@
 
         width: var(--icon-width, 1.5em);
         height: var(--icon-height, 1.5em);
-
-        background-color: rgba(9, 53, 71, 0.4);
       }
 
       .glitch img {
@@ -95,13 +103,17 @@
       </div>
       <div id="names">
         <div id="namesName">
-          <div class="glitch"></div>
+          <div class="left">
+            <div class="glitch"></div>
+          </div>
           <span class="name-pad">
             <div id="name">[[name]]</div>
           </span>
         </div>
         <div id="namesTwitch">
-          <div class="glitch"><img src="[[importPath]]/../../../img/twitch_white.svg" /></div>
+          <div class="left">
+            <div class="glitch"><img src="[[importPath]]/../../../img/twitch_white.svg" /></div>
+          </div>
           <span class="name-pad">
             <div id="twitch">[[twitch]]</div>
           </span>
