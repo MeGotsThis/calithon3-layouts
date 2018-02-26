@@ -33,7 +33,7 @@
       text: 'Hotel Del Coronado, CA',
     },
     {
-      img: 'img/backgrounds/Camino de la Costa.png',
+      img: 'img/backgrounds/Camina de la Costa.png',
       text: 'Camina de la Costa, CA',
     },
   ];

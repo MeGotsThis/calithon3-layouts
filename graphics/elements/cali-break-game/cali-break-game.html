@@ -5,60 +5,53 @@
   <template>
     <style include="gdq-text-styles">
       :host {
-        position: relative;
-        box-sizing: border-box;
-        background-color: rgba(33, 33, 43, 0.8);
         color: white;
       }
 
-      #game {
-        position: absolute;
-        top: 0;
-        left: 0;
+      #layout {
         width: 100%;
         height: 100%;
 
         display: flex;
-        align-items: center;
-        padding: 0 16px;
+        flex-direction: column;
         box-sizing: border-box;
       }
 
-      :host([right]) #game {
-        flex-direction: row-reverse;
+      #row1 {
+        background-color: var(--background-color);
+        padding: 0 0.5em;
       }
 
-      #icon {
-        margin-left: -4px;
-        width: 54px;
-        height: 54px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      :host([right]) #icon {
-        margin-right: -4px;
-        margin-left: 0;
-      }
-
-      #game span {
-        flex: 1;
-        margin-left: 6px;
+      #game {
         white-space: nowrap;
       }
 
-      :host([right]) #game span {
-        text-align: right;
-        margin-left: 0;
-        margin-right: 6px;
+      #row2 {
+        background-color: var(--other-color);
+        padding: 0 0.5em;
+      }
+
+      #text {
+        font-size: 80%;
+        white-space: nowrap;
+      }
+
+      #row3 {
+        background-color: var(--background-color);
+        height: 5px;
       }
     </style>
-    <div id="game">
-      <div id="icon"><img src="[[importPath]]/../../../img/controller.png" /></div>
-      <span id="text">[[name]]</span>
+    <div id="layout">
+      <div id="row1">
+        <div id="game">[[prefix]][[game]]</div>
+      </div>
+      <div id="row2">
+        <div id="text">[[category]] | [[runners]]</div>
+      </div>
     </div>
+    <div id="row3">
+    </div>
+  </div>
   </template>
 
   <script src="cali-break-game.js"></script>
