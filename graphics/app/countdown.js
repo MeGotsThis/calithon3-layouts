@@ -54,20 +54,20 @@
   });
 
   gpmd.on('change', (newVal, oldVal) => {
+    if (typeof newVal === 'undefined' || !newVal.playState) {
+      return;
+    }
+    if (typeof oldVal !== 'undefined'
+        && oldVal.playState
+        && newVal.track.title === oldVal.track.title
+        && newVal.track.album === oldVal.track.album) {
+      return;
+    }
+
     TweenLite.to(nowPlayingDisplay, 0.33, {
       opacity: 0,
       ease: Power1.easeInOut,
       onComplete() {
-        if (typeof newVal === 'undefined' || !newVal.playState) {
-          return;
-        }
-        if (typeof oldVal !== 'undefined'
-            && oldVal.playState
-            && newVal.track.title === oldVal.track.title
-            && newVal.track.album === oldVal.track.album) {
-          return;
-        }
-
         let {title, album} = newVal.track;
         if (album) {
           nowPlayingDisplay.innerText = `${title} - ${album}`;
