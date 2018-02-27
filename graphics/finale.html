@@ -14,65 +14,88 @@
 
       #logo {
         position: absolute;
-        top: 0;
+        top: 180px;
         left: 0;
         width: 1280px;
-        height: 163px;
-        background-color: rgba(33, 33, 43, 0.8);
 
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      #logo span {
+      #logo img {
+        width: 408px;
+      }
+
+      #thanks-soon {
+        position: absolute;
+        top: 320px;
+        left: 380px;
+        width: 520px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        font-size: 42px;
+        color: white;
         text-align: center;
-        color: #90DBE8;
-        font-size: 96px;
       }
 
       #thanks {
-        position: absolute;
-        left: 380px;
-        top: 265px;
-        width: 520px;
-        height: 65px;
+        background-color: var(--blue-1);
       }
 
       #soon {
-        position: absolute;
-        left: 380px;
-        top: 385px;
-        width: 520px;
-        height: 65px;
+        background-color: var(--blue-2);
       }
 
-      #thanks,
-      #soon {
+      #thanks-soon-bar {
+        height: 5px;
+        background-color: var(--blue-1);
+      }
+
+      #music-section {
+        position: absolute;
+        top: 471px;
+        left: 270px;
+        width: 740px;
+
+        color: white;
+        font-size: 36px;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      #music {
+        width: 100%;
+        height: 1.5em;
+
+        background-color: var(--teal-2);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      #note {
         display: flex;
         justify-content: center;
         align-items: center;
 
-        font-size: 50px;
-        color: white;
-        text-align: center;
+        width: 1.5em;
+        height: 1.5em;
       }
 
-      #music {
-        position: absolute;
-        top: 538px;
-        left: 286px;
-        width: 706px;
-        height: 65px;
+      #note img {
+        width: 50%;
+        height: 50%;
+      }
 
-        background-color: rgba(33, 33, 43, 0.8);
-        border-radius: 10px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        color: white;
-        font-size: 48px;
+      #nowPlayingPadding {
+        flex: 1;
+        min-width: 0;
+        padding: 0 0.2em 0 0;
       }
 
       #nowPlaying {
@@ -80,46 +103,9 @@
         transform-origin: left;
       }
 
-      #twitter {
-        position: absolute;
-        top: 623px;
-        left: 494px;
-        width: 293px;
-        height: 65px;
-
-        background-color: rgba(33, 33, 43, 0.8);
-        border-radius: 10px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        color: white;
-        font-size: 35px;
-        font-family: sans-serif;
-      }
-
-      #clock, #padding {
-        flex: 1;
-      }
-
-      #clock,
-      #note,
-      #bird {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-      }
-
-      #clock img {
-        margin: 18px;
-      }
-
-      #music img {
-        margin: 12px;
-      }
-
-      #twitter img {
-        height: 63px;
+      #music-bar {
+        height: 5px;
+        background-color: var(--teal-1);
       }
     </style>
   </custom-style>
@@ -131,25 +117,23 @@
     <div id="background-overlay"></div>
   </div>
   <div id="logo">
-    <span>Calithon</span>
+    <img src="img/logo/marathon-logo.png"></img>
   </div>
-  <div id="thanks">
-    <span>Thanks for watching!</span>
+  <div id="thanks-soon">
+    <div id="thanks">Thanks for watching!</div>
+    <div id="soon">See you dudes soon!</div>
+    <div id="thanks-soon-bar"></div>
   </div>
-  <div id="soon">
-    <span>See you dudes soon!</span>
-  </div>
-  <div id="music">
-    <div id="note">
-      <img src="img/music.png"></img>
+  <div id="music-section">
+    <div id="music">
+      <div id="note">
+        <img src="img/note.svg"></img>
+      </div>
+      <div id="nowPlayingPadding">
+        <div id="nowPlaying"></div>
+      </div>
     </div>
-    <span id="nowPlaying"></span>
-  </div>
-  <div id="twitter">
-    <div id="bird">
-      <img src="img/twitter.svg"></img>
-    </div>
-    <span id="twitter-id">@CalithonSR</span>
+    <div id="music-bar"></div>
   </div>
 </div>
 
