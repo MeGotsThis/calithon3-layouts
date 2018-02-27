@@ -5,8 +5,6 @@
   const countdownMinutes = document.getElementById('countdownMinutes');
   const countdownSeconds = document.getElementById('countdownSeconds');
   const countdownColon = document.getElementById('countdownColon');
-  const musicDivDisplay = document.getElementById('music');
-  const musicNoteDisplay = document.getElementById('note');
   const nowPlayingDisplay = document.getElementById('nowPlaying');
   const countdownTime = nodecg.Replicant('countdown');
   const countdownRunning = nodecg.Replicant('countdownRunning');
@@ -75,8 +73,7 @@
           nowPlayingDisplay.innerText = `${title}`;
         }
 
-        const MAX_NOW_PLAYING_WIDTH =
-          musicDivDisplay.clientWidth - musicNoteDisplay.clientWidth - 12;
+        const MAX_NOW_PLAYING_WIDTH = nowPlayingDisplay.clientWidth;
         const width = nowPlayingDisplay.scrollWidth;
         if (width > MAX_NOW_PLAYING_WIDTH) {
           TweenLite.set(nowPlayingDisplay, {

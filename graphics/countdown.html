@@ -12,75 +12,95 @@
         height: 720px;
       }
 
+      video {
+        width: 1280px;
+        height: 720px;
+      }
+
       #logo {
         position: absolute;
-        top: 0;
+        top: 180px;
         left: 0;
         width: 1280px;
-        height: 163px;
-        background-color: rgba(33, 33, 43, 0.8);
 
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      #logo span {
-        text-align: center;
-        color: #90DBE8;
-        font-size: 96px;
+      #logo img {
+        width: 408px;
       }
 
-      #starting {
+      #countdown-section {
         position: absolute;
-        left: 490px;
-        top: 247px;
-        width: 300px;
-        height: 65px;
+        left: 453px;
+        top: 352px;
+        width: 375px;
 
         display: flex;
-        justify-content: center;
-        align-items: center;
-
-        font-size: 40px;
-        color: white;
-        text-align: center;
+        flex-direction: column;
       }
 
       #countdown {
-        position: absolute;
-        left: 429px;
-        top: 318px;
-        width: 423px;
-        height: 82px;
-
-        background-color: rgba(33, 33, 43, 0.8);
-        border-radius: 10px;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
 
-        font-size: 75px;
+        background-color: var(--blue-2);
+
+        font-size: 56px;
         color: white;
         letter-spacing: 0.01em;
         text-align: center;
       }
 
-      #music {
-        position: absolute;
-        top: 538px;
-        left: 286px;
-        width: 706px;
-        height: 65px;
+      #countdown-bar {
+        height: 5px;
+        background-color: var(--blue-1);
+      }
 
-        background-color: rgba(33, 33, 43, 0.8);
-        border-radius: 10px;
+      #music-section {
+        position: absolute;
+        top: 471px;
+        left: 270px;
+        width: 740px;
+
+        color: white;
+        font-size: 36px;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      #music {
+        width: 100%;
+        height: 1.5em;
+
+        background-color: var(--teal-2);
         display: flex;
         justify-content: flex-start;
         align-items: center;
+      }
 
-        color: white;
-        font-size: 48px;
+      #note {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 1.5em;
+        height: 1.5em;
+      }
+
+      #note img {
+        width: 50%;
+        height: 50%;
+      }
+
+      #nowPlayingPadding {
+        flex: 1;
+        min-width: 0;
+        padding: 0 0.2em 0 0;
       }
 
       #nowPlaying {
@@ -88,46 +108,9 @@
         transform-origin: left;
       }
 
-      #twitter {
-        position: absolute;
-        top: 623px;
-        left: 494px;
-        width: 293px;
-        height: 65px;
-
-        background-color: rgba(33, 33, 43, 0.8);
-        border-radius: 10px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-
-        color: white;
-        font-size: 35px;
-        font-family: sans-serif;
-      }
-
-      #clock, #padding {
-        flex: 1;
-      }
-
-      #clock,
-      #note,
-      #bird {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-      }
-
-      #clock img {
-        margin: 18px;
-      }
-
-      #music img {
-        margin: 12px;
-      }
-
-      #twitter img {
-        height: 63px;
+      #music-bar {
+        height: 5px;
+        background-color: var(--teal-1);
       }
     </style>
   </custom-style>
@@ -135,36 +118,28 @@
 <body>
 <div id="container">
   <div id="background">
-    <img src="img/backgrounds/Oceanside Pier View.png">
+    <video autoplay loop muted="false" src="img/video/countdown.webm"></video>
     <div id="background-overlay"></div>
   </div>
-  <div id="starting">
-    <span>Starting Soon:</span>
-  </div>
   <div id="logo">
-    <span>Calithon</span>
+    <img src="img/logo/countdown-logo.png"></img>
   </div>
-  <div id="countdown">
-    <div id="clock">
-      <img src="img/clock.png"></img>
-    </div>
-    <span>
+  <div id="countdown-section">
+    <div id="countdown">
       <span id="countdownMinutes"></span><span id="countdownColon">:</span><span id="countdownSeconds"></span>
-    </span>
-    <div id="padding">
     </div>
+    <div id="countdown-bar"></div>
   </div>
-  <div id="music">
-    <div id="note">
-      <img src="img/music.png"></img>
+  <div id="music-section">
+    <div id="music">
+      <div id="note">
+        <img src="img/note.svg"></img>
+      </div>
+      <div id="nowPlayingPadding">
+        <div id="nowPlaying"></div>
+      </div>
     </div>
-    <span id="nowPlaying"></span>
-  </div>
-  <div id="twitter">
-    <div id="bird">
-      <img src="img/twitter.svg"></img>
-    </div>
-    <span id="twitter-id">@CalithonSR</span>
+    <div id="music-bar"></div>
   </div>
 </div>
 
