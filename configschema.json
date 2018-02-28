@@ -47,6 +47,25 @@
       "required": ["channelId", "oauthToken", "clientId", "bitsOffset", "debug"],
       "default": null
     },
+    "donation": {
+      "type": ["object", "null"],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "pusherKey": {
+          "type": "string"
+        },
+        "apiKey": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      },
+      "required": ["enabled", "pusherKey", "apiKey", "slug"],
+      "default": null
+    },
     "tracker": {
       "type": ["object", "null"],
       "properties": {

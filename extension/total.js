@@ -1,9 +1,10 @@
 'use strict';
 
-const DONATION_STATS_URL = 'https://gamesdonequick.com/tracker/20?json';
+const CAMPAIGN_URL = 'https://tiltify.com/api/v2/campaign?donations=true';
 
 // Packages
-const request = require('request');
+const Pusher = require('pusher-js');
+const request = require('request-promise');
 
 // Ours
 const formatDollars = require('../util/format-dollars');
@@ -21,63 +22,22 @@ autoUpdateTotal.on('change', (newVal) => {
   }
 });
 
-if (nodecg.bundleConfig && nodecg.bundleConfig.donationSocketUrl) {
-  const socket =
-    require('socket.io-client')(nodecg.bundleConfig.donationSocketUrl);
-  let loggedXhrPollError = false;
-
-  socket.on('connect', () => {
-    nodecg.log.info(
-      'Connected to donation socket', nodecg.bundleConfig.donationSocketUrl);
-    loggedXhrPollError = false;
-  });
-
-  socket.on('connect_error', (err) => {
-    if (err.message === 'xhr poll error') {
-      if (loggedXhrPollError) {
-        return;
-      }
-
-      loggedXhrPollError = true;
-    }
-
-    nodecg.log.error('Donation socket connect_error:', err);
-  });
+if (nodecg.bundleConfig && nodecg.bundleConfig.donation.enabled) {
+  const pusher = new Pusher(nodecg.bundleConfig.donation.pusherKey);
+  const pusherable_id = 'event-' + nodecg.bundleConfig.donation.slug;
 
   // Get initial data, then listen for donations.
   updateTotal().then(() => {
-    socket.on('donation', (data) => {
-      if (!data || !data.rawAmount) {
-        return;
-      }
-
-      const donation = formatDonation(data);
-      nodecg.sendMessage('donation', donation);
-
-      if (autoUpdateTotal.value) {
-        total.value = {
-          raw: donation.rawNewTotal,
-          formatted: donation.newTotal,
-        };
+    let channel = pusher.subscribe('donation_updates');
+    channel.bind('new_confirmed_donation', function(data) {
+      if(pusherable_id === data.pusherable_id) {
+        newDonation(data);
       }
     });
   });
-
-  socket.on('disconnect', () => {
-    nodecg.log.error(
-      'Disconnected from donation socket, can not receive donations!');
-  });
-
-  socket.on('error', (err) => {
-    nodecg.log.error('Donation socket error:', err);
-  });
 } else {
   nodecg.log.warn(
-    `cfg/${nodecg.bundleName}.json is missing the "donationSocketUrl" property.`
-     + '\n\tThis means that we cannot receive new incoming PayPal donations '
-     + 'from the tracker,'
-     + '\n\tand that donation notifications will not be displayed as a result. '
-     + 'The total also will not update.');
+    `cfg/${nodecg.bundleName}.json is missing the "donation" property.`);
 }
 
 nodecg.listenFor('setTotal', ({type, newValue}) => {
@@ -86,6 +46,7 @@ nodecg.listenFor('setTotal', ({type, newValue}) => {
       raw: parseFloat(newValue),
       formatted: formatDollars(newValue, {cents: false}),
     };
+    nodecg.sendMessage('total:manuallyUpdated', total.value);
   } else {
     nodecg.log.error('Unexpected "type" sent to setTotal: "%s"', type);
   }
@@ -125,43 +86,41 @@ function manuallyUpdateTotal(silent, cb = function() {}) {
  * Updates the "total" replicant with the latest value from the GDQ Tracker API.
  * @return {Promise} - A promise.
  */
-function updateTotal() {
-  return new Promise((resolve, reject) => {
-    request(DONATION_STATS_URL, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        let stats;
-        try {
-          stats = JSON.parse(body);
-        } catch (e) {
-          nodecg.log.error(
-            'Could not parse total, response not valid JSON:\n\t', body);
-          return;
-        }
-
-        const freshTotal = parseFloat(stats.agg.amount || 0);
-
-        if (freshTotal === total.value.raw) {
-          resolve(false);
-        } else {
-          total.value = {
-            raw: freshTotal,
-            formatted: formatDollars(freshTotal, {cents: false}),
-          };
-          resolve(true);
-        }
-      } else {
-        let msg = 'Could not get donation total, unknown error';
-        if (error) {
-          msg = `Could not get donation total:\n${error.message}`;
-        } else if (response) {
-          msg = `Could not get donation total, `
-            + `response code ${response.statusCode}`;
-        }
-        nodecg.log.error(msg);
-        reject(msg);
-      }
-    });
+async function updateTotal() {
+  let data = await request({
+    uri: CAMPAIGN_URL,
+    headers: {
+      Authorization: `Token token="${nodecg.bundleConfig.donation.apiKey}"`,
+    },
+    json: true,
   });
+
+  const freshTotal = parseFloat(data.total_raised || 0);
+
+  if (freshTotal === total.value.raw) {
+    return false;
+  }
+
+  total.value = {
+    raw: freshTotal,
+    formatted: formatDollars(freshTotal, {cents: false}),
+  };
+  return true;
+}
+
+function newDonation(data) {
+  const donation = formatDonation({
+    rawAmount: data.donation_amt,
+    newTotal: data.display_total_amt_raised,
+  });
+  nodecg.sendMessage('donation', donation);
+
+  if (autoUpdateTotal.value) {
+    total.value = {
+      raw: donation.rawNewTotal,
+      formatted: donation.newTotal,
+    };
+  }
 }
 
 /*

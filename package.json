@@ -22,6 +22,7 @@
     "numeral": "^2.0.6",
     "object-path": "^0.11.3",
     "parse-ms": "^1.0.1",
+    "pusher-js": "^4.2.2",
     "q": "^1.4.1",
     "request": "^2.67.0",
     "request-promise": "^4.2.1",
