@@ -3,6 +3,8 @@
 
   const BACKGROUND_DURATION = 300000;
 
+  const camera = nodecg.Replicant('break-cam');
+
   const backgrounds = [
     {
       img: 'img/backgrounds/Catalina Island.png',
@@ -39,6 +41,10 @@
   ];
 
   let backgroundIndex = -1;
+
+  camera.on('change', (value) => {
+    document.getElementById('scenery').hidden = value;
+  });
 
   const getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
