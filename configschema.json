@@ -61,6 +61,21 @@
         },
         "slug": {
           "type": "string"
+        },
+        "mock": {
+          "type": "boolean"
+        },
+        "mockAmount": {
+          "type": "number",
+          "default": 100,
+          "minimum": 0,
+          "exclusiveMinimum": true
+        },
+        "mockInterval": {
+          "type": "number",
+          "default": 30,
+          "minimum": 0,
+          "exclusiveMinimum": true
         }
       },
       "required": ["enabled", "pusherKey", "apiKey", "slug"],

@@ -158,3 +158,18 @@ function formatDonation({rawAmount, newTotal}) {
     rawNewTotal,
   };
 }
+
+if (nodecg.bundleConfig && nodecg.bundleConfig.donation.mock)
+{
+  let totalAmount = 0;
+
+  setInterval(() => {
+    const maxAmount = nodecg.bundleConfig.donation.mockAmount;
+    let amount = Math.floor(Math.random() * (maxAmount - 1)) + 1;
+    totalAmount += amount;
+    newDonation({
+      donation_amt: amount,
+      display_total_amt_raised: totalAmount,
+    });
+  }, nodecg.bundleConfig.donation.mockInterval * 1000);
+}
