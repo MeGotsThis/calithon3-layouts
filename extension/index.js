@@ -30,11 +30,13 @@ module.exports = function(nodecg) {
 
   // Be careful when re-ordering these.
   // Some of them depend on Replicants initialized in others.
+  require('./tiltify').loadCsfrToken().then(() => {
+    require('./prizes');
+    require('./bids');
+    require('./total');
+  });
   require('./timekeeping');
   require('./obs');
-  require('./prizes');
-  require('./bids');
-  require('./total');
   require('./countdown');
 
   require('./google-play-music-desktop-replicants');

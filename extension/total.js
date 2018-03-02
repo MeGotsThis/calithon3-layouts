@@ -1,7 +1,5 @@
 'use strict';
 
-const CAMPAIGN_URL = 'https://tiltify.com/api/v2/campaign?donations=true';
-
 // Packages
 const Pusher = require('pusher-js');
 const request = require('request-promise');
@@ -9,6 +7,7 @@ const request = require('request-promise');
 // Ours
 const formatDollars = require('../util/format-dollars');
 const nodecg = require('./util/nodecg-api-context').get();
+const tiltify = require('./tiltify');
 
 const autoUpdateTotal = nodecg.Replicant('autoUpdateTotal');
 const total = nodecg.Replicant('total');
@@ -87,19 +86,15 @@ function manuallyUpdateTotal(silent, cb = function() {}) {
  * @return {Promise} - A promise.
  */
 async function updateTotal() {
-  let data = await request({
-    uri: CAMPAIGN_URL,
-    headers: {
-      Authorization: `Token token="${nodecg.bundleConfig.donation.apiKey}"`,
-    },
-    json: true,
-  });
+  let data = await tiltify.getEvent();
 
-  const freshTotal = parseFloat(data.total_raised || 0);
+  const freshTotal = parseFloat(data.totalAmountRaised || 0);
 
   if (freshTotal === total.value.raw) {
     return false;
   }
+
+  mockTotalAmount = freshTotal;
 
   total.value = {
     raw: freshTotal,
@@ -159,17 +154,17 @@ function formatDonation({rawAmount, newTotal}) {
   };
 }
 
+let mockTotalAmount = 0;
+
 if (nodecg.bundleConfig && nodecg.bundleConfig.donation.mock)
 {
-  let totalAmount = 0;
-
   setInterval(() => {
     const maxAmount = nodecg.bundleConfig.donation.mockAmount;
     let amount = Math.floor(Math.random() * (maxAmount - 1)) + 1;
-    totalAmount += amount;
+    mockTotalAmount += amount;
     newDonation({
       donation_amt: amount,
-      display_total_amt_raised: totalAmount,
+      display_total_amt_raised: mockTotalAmount,
     });
   }, nodecg.bundleConfig.donation.mockInterval * 1000);
 }
