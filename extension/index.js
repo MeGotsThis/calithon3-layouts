@@ -30,11 +30,6 @@ module.exports = function(nodecg) {
 
   // Be careful when re-ordering these.
   // Some of them depend on Replicants initialized in others.
-  require('./tiltify').loadCsfrToken().then(() => {
-    require('./prizes');
-    require('./bids');
-    require('./total');
-  });
   require('./timekeeping');
   require('./obs');
   require('./countdown');
@@ -49,13 +44,18 @@ module.exports = function(nodecg) {
 
   const {loginToTracker} = require('./horaro');
   loginToTracker().then(() => {
+    require('./tiltify').loadCsfrToken().then(() => {
+      require('./prizes');
+      require('./bids');
+      require('./total');
+    });
     const schedule = require('./schedule');
     schedule.on('permissionDenied', () => {
       loginToTracker().then(schedule.update);
     });
 
-      // Tracker logins expire every 2 hours. Re-login every 90 minutes.
-      setInterval(loginToTracker, 90 * 60 * 1000);
+    // Tracker logins expire every 2 hours. Re-login every 90 minutes.
+    setInterval(loginToTracker, 90 * 60 * 1000);
   });
 
   if (nodecg.bundleConfig.twitch) {
