@@ -136,11 +136,14 @@
               "minItems": 1,
               "maxItems": 4,
               "items": {
-                "runner": {
-                  "type": "string"
-                },
-                "twitch": {
-                  "type": "string"
+                "type": "object",
+                "properties": {
+                  "runner": {
+                    "type": "string"
+                  },
+                  "twitch": {
+                    "type": "string"
+                  }
                 }
               }
             },
