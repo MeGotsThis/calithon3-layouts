@@ -72,15 +72,8 @@
 
       #prizes {
         grid-column: 3;
-        grid-row: 2 / 4;
+        grid-row: 1 / 4;
         flex-grow: 1;
-      }
-
-      #metroid {
-        grid-column: 2 / 4;
-        grid-row: 1;
-        box-sizing: border-box;
-        @apply --layout-vertical;
       }
 
       #metroid-state {
@@ -130,7 +123,7 @@
 
       #bids {
         grid-column: 2;
-        grid-row: 2 / 4;
+        grid-row: 1 / 4;
         box-sizing: border-box;
       }
 
@@ -239,31 +232,6 @@
       <gdq-hostdash-donations id="donations" class="material"></gdq-hostdash-donations>
 
       <gdq-hostdash-prizes id="prizes" class="material"></gdq-hostdash-prizes>
-
-      <div id="metroid">
-        <div id="metroid-state">[[calcMetroidStateText(metroidBid.state)]]</div>
-
-        <div id="metroid-results" class="material">
-          <div id="metroid-save" class="metroid-category">
-            <div class="metroid-category-name">SAVE THE ANIMALS</div>
-            <div class="layout horizontal center justified">
-              <div>[[saveTheAnimalsTotal.formatted]]</div>
-              <div class="metroid-category-ahead">
-                [[calcMetroidAheadText('save', saveTheAnimalsTotal, killTheAnimalsTotal)]]
-              </div>
-            </div>
-          </div>
-          <div id="metroid-kill" class="metroid-category">
-            <div class="metroid-category-name">KILL THE ANIMALS</div>
-            <div class="layout horizontal center justified">
-              <div class="metroid-category-ahead">
-                [[calcMetroidAheadText('kill', saveTheAnimalsTotal, killTheAnimalsTotal)]]
-              </div>
-              <div>[[killTheAnimalsTotal.formatted]]</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <gdq-hostdash-bids id="bids" class="material"></gdq-hostdash-bids>
       <gdq-hostdash-twitch-ads id="twitch" class="material"></gdq-hostdash-twitch-ads>

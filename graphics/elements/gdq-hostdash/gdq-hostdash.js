@@ -24,16 +24,6 @@
         elapsedTime: {
           type: String,
         },
-        metroidBid: {
-          type: Object,
-          observer: 'metroidBidChanged',
-        },
-        saveTheAnimalsTotal: {
-          type: Object,
-        },
-        killTheAnimalsTotal: {
-          type: Object,
-        },
         bidFilterString: {
           type: String,
           value: '',
@@ -78,45 +68,6 @@
         this.stopwatchTime = newVal.time.formatted;
         this.stopwatchResults = newVal.results;
       });
-    }
-
-    metroidBidChanged(newVal) {
-      if (newVal) {
-        const saveOpt =
-          newVal.options
-          .find((opt) => opt.name.toLowerCase().indexOf('save') >= 0);
-        const killOpt =
-          newVal.options
-          .find((opt) => opt.name.toLowerCase().indexOf('kill') >= 0);
-        this.saveTheAnimalsTotal = {
-          formatted: saveOpt.total,
-          raw: saveOpt.rawTotal,
-        };
-        this.killTheAnimalsTotal = {
-          formatted: killOpt.total,
-          raw: killOpt.rawTotal,
-        };
-      } else {
-        this.saveTheAnimalsTotal = {
-          formatted: '?',
-          raw: 0,
-        };
-        this.killTheAnimalsTotal = {
-          formatted: '?',
-          raw: 0,
-        };
-      }
-
-      if (this.saveTheAnimalsTotal.raw > this.killTheAnimalsTotal.raw) {
-        this.$['metroid-save'].setAttribute('ahead', 'true');
-        this.$['metroid-kill'].removeAttribute('ahead');
-      } else if (this.saveTheAnimalsTotal.raw < this.killTheAnimalsTotal.raw) {
-        this.$['metroid-save'].removeAttribute('ahead');
-        this.$['metroid-kill'].setAttribute('ahead', 'true');
-      } else {
-        this.$['metroid-save'].removeAttribute('ahead');
-        this.$['metroid-kill'].removeAttribute('ahead');
-      }
     }
 
     calcRunnersString(runners) {
@@ -180,50 +131,6 @@
       }
 
       this.elapsedTime = timeString;
-    }
-
-    calcMetroidStateText(bidState) {
-      if (bidState && bidState.toLowerCase() === 'opened') {
-        this.$['metroid-state'].style.backgroundColor = '#CFFFD0';
-        return 'INCENTIVE OPEN';
-      }
-
-      this.$['metroid-state'].style.backgroundColor = '#FFE2E4';
-      return 'INCENTIVE CLOSED';
-    }
-
-    calcMetroidAheadText(saveOrKill, saveTheAnimalsTotal, killTheAnimalsTotal) {
-      if (!saveOrKill || !saveTheAnimalsTotal || !killTheAnimalsTotal) {
-        return;
-      }
-
-      const diffVal = Math.abs(
-        saveTheAnimalsTotal.raw - killTheAnimalsTotal.raw);
-      const diff = diffVal.toLocaleString('en-US', {
-        maximumFractionDigits: 2,
-        style: 'currency',
-        currency: 'USD',
-      });
-
-      if (saveOrKill === 'save') {
-        if (saveTheAnimalsTotal.raw > killTheAnimalsTotal.raw) {
-          return `Ahead by ${diff}`;
-        } else if (killTheAnimalsTotal.raw > saveTheAnimalsTotal.raw) {
-          return '---';
-        }
-        return 'TIED';
-      } else if (saveOrKill === 'kill') {
-        if (killTheAnimalsTotal.raw > saveTheAnimalsTotal.raw) {
-          return `Ahead by ${diff}`;
-        } else if (saveTheAnimalsTotal.raw > killTheAnimalsTotal.raw) {
-          return '---';
-        }
-        return 'TIED';
-      }
-
-      throw new Error(
-        `Unexpected calcAheadText first argument: "${saveOrKill}". `
-        + `Acceptable values are "save" and "kill".`);
     }
 
     calcRunnerName(runners, index) {
