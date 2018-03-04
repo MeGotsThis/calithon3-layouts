@@ -90,6 +90,10 @@ async function updateTotal() {
 
   const freshTotal = parseFloat(data.totalAmountRaised || 0);
 
+  if (mockTotalAmount == 0) {
+    mockTotalAmount = freshTotal;
+  }
+
   if (freshTotal === total.value.raw) {
     return false;
   }
