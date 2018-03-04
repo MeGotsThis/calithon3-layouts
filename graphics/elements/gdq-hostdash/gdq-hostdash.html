@@ -11,8 +11,8 @@
 <link rel="import" href="../../../bower_components/sc-fitted-text/sc-fitted-text.html">
 <link rel="import" href="../../../shared/elements/gdq-rundown/gdq-rundown.html">
 <link rel="import" href="dash-host-name.html">
-<link rel="import" href="gdq-hostdash-ads.html">
 <link rel="import" href="gdq-hostdash-bids.html">
+<link rel="import" href="gdq-hostdash-donations.html">
 <link rel="import" href="gdq-hostdash-prizes.html">
 <link rel="import" href="gdq-hostdash-styles.html">
 <link rel="import" href="gdq-hostdash-totals.html">
@@ -64,8 +64,14 @@
         @apply --layout-flex;
       }
 
-      #prizes {
+      #donations {
         grid-column: 1;
+        grid-row: 2 / 4;
+        flex-grow: 1;
+      }
+
+      #prizes {
+        grid-column: 3;
         grid-row: 2 / 4;
         flex-grow: 1;
       }
@@ -126,11 +132,6 @@
         grid-column: 2;
         grid-row: 2 / 4;
         box-sizing: border-box;
-      }
-
-      #ads {
-        grid-column: 3;
-        grid-row: 2 / 4;
       }
 
       #twitch {
@@ -235,6 +236,8 @@
         <gdq-hostdash-totals id="totals"></gdq-hostdash-totals>
       </div>
 
+      <gdq-hostdash-donations id="donations" class="material"></gdq-hostdash-donations>
+
       <gdq-hostdash-prizes id="prizes" class="material"></gdq-hostdash-prizes>
 
       <div id="metroid">
@@ -263,7 +266,6 @@
       </div>
 
       <gdq-hostdash-bids id="bids" class="material"></gdq-hostdash-bids>
-      <gdq-hostdash-ads id="ads" class="material"></gdq-hostdash-ads>
       <gdq-hostdash-twitch-ads id="twitch" class="material"></gdq-hostdash-twitch-ads>
 
       <div id="schedule" class="material">

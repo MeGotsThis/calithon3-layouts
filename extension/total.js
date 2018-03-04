@@ -17,6 +17,9 @@ const recentDonations = nodecg.Replicant('recentDonations', {
   defaultValue: [],
   persistent: false,
 });
+const readDonations = nodecg.Replicant('readDonations', {
+  defaultValue: [],
+});
 
 autoUpdateTotal.on('change', (newVal) => {
   if (newVal) {
