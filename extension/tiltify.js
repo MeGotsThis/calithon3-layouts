@@ -53,7 +53,41 @@ const getEvent = async () => {
   return data.data;
 };
 
+const getChallenges = async () => {
+  if (!campaignId) {
+    return undefined;
+  }
+
+  let data = await request({
+    method: 'GET',
+    uri: `https://tiltify.com/api/v3/campaigns/${campaignId}/challenges`,
+    headers: {
+      'X-CSRF-Token': csfrToken,
+    },
+    json: true,
+  });
+  return data.data;
+};
+
+const getPolls = async () => {
+  if (!campaignId) {
+    return undefined;
+  }
+
+  let data = await request({
+    method: 'GET',
+    uri: `https://tiltify.com/api/v3/campaigns/${campaignId}/polls`,
+    headers: {
+      'X-CSRF-Token': csfrToken,
+    },
+    json: true,
+  });
+  return data.data;
+};
+
 module.exports = {
   loadCsfrToken,
   getEvent,
+  getChallenges,
+  getPolls,
 };

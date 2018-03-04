@@ -74,9 +74,12 @@
       }
 
       this.relevantBids = allBids.value.filter((bid) => {
-        return runOrderMap.value[bid.speedrun] >= currentRun.value.order;
+        if (bid.speedrun == null) {
+          return false;
+        }
+        return bid.speedrun >= currentRun.value.order;
       }).sort((a, b) => {
-        return runOrderMap.value[a.speedrun] - runOrderMap.value[b.speedrun];
+        return a.speedrun - b.speedrun;
       });
     }
   }
