@@ -2,6 +2,8 @@
 
 // Packages
 const Pusher = require('pusher-js');
+const equal = require('deep-equal');
+const numeral = require('numeral');
 const request = require('request-promise');
 
 // Ours
@@ -11,6 +13,10 @@ const tiltify = require('./tiltify');
 
 const autoUpdateTotal = nodecg.Replicant('autoUpdateTotal');
 const total = nodecg.Replicant('total');
+const recentDonations = nodecg.Replicant('recentDonations', {
+  defaultValue: [],
+  persistent: false,
+});
 
 autoUpdateTotal.on('change', (newVal) => {
   if (newVal) {
@@ -26,7 +32,7 @@ if (nodecg.bundleConfig && nodecg.bundleConfig.donation.enabled) {
   const pusherable_id = 'event-' + nodecg.bundleConfig.donation.slug;
 
   // Get initial data, then listen for donations.
-  updateTotal().then(() => {
+  Promise.all([updateTotal(), loadRecentDonations()]).then(() => {
     let channel = pusher.subscribe('donation_updates');
     channel.bind('new_confirmed_donation', function(data) {
       if(pusherable_id === data.pusherable_id) {
@@ -120,6 +126,14 @@ function newDonation(data) {
       formatted: donation.newTotal,
     };
   }
+
+  // Update recent donations
+  const recentDonations_ = [...recentDonations.value];
+  recentDonations_.unshift(formatDonationFromPusher(data));
+  while(recentDonations_.length > nodecg.bundleConfig.donation.recent) {
+    recentDonations_.pop();
+  }
+  recentDonations.value = recentDonations_;
 }
 
 /*
@@ -158,17 +172,78 @@ function formatDonation({rawAmount, newTotal}) {
   };
 }
 
+async function loadRecentDonations() {
+  const recentDonations_ =
+    await tiltify.getDonations(nodecg.bundleConfig.donation.recent);
+
+  const donations = recentDonations_.map(formatDonationFromApi);
+
+  if (!equal(recentDonations.value, donations)) {
+    recentDonations.value = donations;
+  }
+}
+
+function formatDonationFromApi(donation) {
+  return {
+    id: donation.id,
+    name: donation.name,
+    comment: donation.comment,
+    amount: numeral(donation.amount).format('$0,0[.]00'),
+    rawAmount: donation.amount,
+    when: donation.completedAt,
+  };
+}
+
+function formatDonationFromPusher(donation) {
+  return {
+    id: parseInt(donation.id),
+    name: donation.donor_name,
+    comment: donation.donor_comment,
+    amount: numeral(donation.donation_amt).format('$0,0[.]00'),
+    rawAmount: donation.donation_amt,
+    when: new Date(donation.display_created_at).getTime(),
+  };
+}
+
 let mockTotalAmount = 0;
 
 if (nodecg.bundleConfig && nodecg.bundleConfig.donation.mock)
 {
+  let mockId = 0;
+  const mockDonationComments = [
+    null,
+    null, // Double the chances to getting no messages
+    'Best Game EVER',
+    'I like donating to charity',
+    "First time watching this. I'm loving the runs",
+    'Another great marathon! Keep up the good work!',
+    'Thanks for the great event guys!',
+    'FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ',
+    'nice',
+    'I want to see the run!',
+    'Chat said we should do this!',
+    "Money goes to runner's choice",
+    "Can't wait to see the VODs",
+    "It's dangerous to go alone my dude, take this!",
+    'Hey all, long time viewer here. Its so great to see how far much this '
+      + 'event has grown over the years and how much you have raised',
+    'You all rule! Long time watcher, first time donator!',
+  ];
+
   setInterval(() => {
+    mockId -= 1;
     const maxAmount = nodecg.bundleConfig.donation.mockAmount;
     let amount = Math.floor(Math.random() * (maxAmount - 1)) + 1;
+    let commentIdx = Math.floor(Math.random() * mockDonationComments.length);
+    let comment = mockDonationComments[commentIdx];
     mockTotalAmount += amount;
     newDonation({
+      id: mockId,
+      donor_name: 'Mocked Donation',
+      donor_comment: comment,
       donation_amt: amount,
       display_total_amt_raised: mockTotalAmount,
+      display_created_at: new Date().toString(),
     });
   }, nodecg.bundleConfig.donation.mockInterval * 1000);
 }

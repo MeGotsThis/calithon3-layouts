@@ -101,10 +101,29 @@ const getRewards = async () => {
   return data.data;
 };
 
+const getDonations = async (count = 10) => {
+  if (!campaignId) {
+    return undefined;
+  }
+
+  let data = await request({
+    method: 'GET',
+    uri:
+      `https://tiltify.com/api/v3/campaigns/${campaignId}/donations?`
+      + `count=${count}`,
+    headers: {
+      'X-CSRF-Token': csfrToken,
+    },
+    json: true,
+  });
+  return data.data;
+};
+
 module.exports = {
   loadCsfrToken,
   getEvent,
   getChallenges,
   getPolls,
   getRewards,
+  getDonations,
 };

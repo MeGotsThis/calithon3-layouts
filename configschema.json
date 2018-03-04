@@ -85,6 +85,10 @@
         "slug": {
           "type": "string"
         },
+        "recent": {
+          "type": "number",
+          "default": 10
+        },
         "mock": {
           "type": "boolean"
         },
