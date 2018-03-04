@@ -47,6 +47,29 @@
       "required": ["channelId", "oauthToken", "clientId", "bitsOffset", "debug"],
       "default": null
     },
+    "prizes": {
+      "type": ["object", "null"],
+      "properties": {
+        "sum": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "default": []
+        },
+        "grand": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "default": []
+        }
+      },
+      "default": {
+        "sum": [],
+        "grand": []
+      }
+    },
     "donation": {
       "type": ["object", "null"],
       "properties": {

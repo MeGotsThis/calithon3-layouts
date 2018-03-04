@@ -1,21 +1,15 @@
 'use strict';
 
 // Packages
+const clone = require('clone');
 const equal = require('deep-equal');
 const numeral = require('numeral');
-const Q = require('q');
-const request = require('request');
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
+const tiltify = require('./tiltify');
 
 const POLL_INTERVAL = 60 * 1000;
-const PRIZES_URL = nodecg.bundleConfig.useMockData ?
-  'https://www.dropbox.com/s/xu92eivaxyu9a5i/allPrizes.json?dl=1' :
-  'https://gamesdonequick.com/tracker/search/?type=prize&event=20';
-const CURRENT_PRIZES_URL = nodecg.bundleConfig.useMockData ?
-  'https://www.dropbox.com/s/rpiisscgszwhguc/currentPrizes.json?dl=1' :
-  'https://gamesdonequick.com/tracker/search/?type=prize&feed=current&event=20';
 
 const currentPrizes = nodecg.Replicant('currentPrizes', {defaultValue: []});
 const allPrizes = nodecg.Replicant('allPrizes', {defaultValue: []});
@@ -48,72 +42,19 @@ nodecg.listenFor('updatePrizes', (data, cb) => {
 
 /**
  * Grabs the latest prizes from the tracker.
- * @return {Promise} - A Q.all promise.
  */
-function update() {
-  const currentPromise = Q.defer();
-  request(CURRENT_PRIZES_URL, (err, res, body) => {
-    handleResponse(err, res, body, currentPromise, {
-      label: 'current prizes',
-      replicant: currentPrizes,
-    });
-  });
+async function update() {
+  const rewards = await tiltify.getRewards();
 
-  const allPromise = Q.defer();
-  request(PRIZES_URL, (err, res, body) => {
-    handleResponse(err, res, body, allPromise, {
-      label: 'all prizes',
-      replicant: allPrizes,
-    });
-  });
+  const _allPrizes = rewards.map(formatPrize);
+  const _currentPrizes = clone(_allPrizes.filter((prize) => prize.active));
 
-  return Q.all([
-    currentPromise.promise,
-    allPromise.promise,
-  ]);
-}
+  if (!equal(allPrizes.value, _allPrizes)) {
+    allPrizes.value = _allPrizes;
+  }
 
-/**
- * A kind of weird and slightly polymorphic function to handle the various
- * responses from the tracker that we receive.
- * @param {Error} [error] - The error (if any) encountered during the request.
- * @param {Object} response - The request response.
- * @param {Object} body - The request body.
- * @param {Object} deferred - A deferred promise object.
- * @param {Object} opts - Options.
- * @return {undefined}
- */
-function handleResponse(error, response, body, deferred, opts) {
-  if (!error && response.statusCode === 200) {
-    let prizes;
-    try {
-      prizes = JSON.parse(body);
-    } catch (e) {
-      nodecg.log.error(
-        'Could not parse %s, response not valid JSON:\n\t', opts.label, body);
-      return;
-    }
-
-    // The response we get has a tremendous amount of cruft that we just don't
-    // need. We filter that out.
-    const relevantData = prizes.map(formatPrize);
-
-    if (equal(relevantData, opts.replicant.value)) {
-      deferred.resolve(false);
-    } else {
-      opts.replicant.value = relevantData;
-      deferred.resolve(true);
-    }
-  } else {
-    let msg = `Could not get ${opts.label}, unknown error`;
-    if (error) {
-      msg = `Could not get ${opts.label}:\n${error.message}`;
-    } else if (response) {
-      msg = `Could not get ${opts.label}, response code ${response.statusCode}`;
-    }
-
-    nodecg.log.error(msg);
-    deferred.reject(msg);
+  if (!equal(currentPrizes.value, _currentPrizes)) {
+    currentPrizes.value = _currentPrizes;
   }
 }
 
@@ -136,15 +77,20 @@ function handleResponse(error, response, body, deferred, opts) {
  * The formatted prize object.
  */
 function formatPrize(prize) {
+  const active = prize.alwaysActive || (prize.active
+    && (prize.startsAt === 0 || Date.now() >= prize.startsAt)
+    && (prize.endsAt === 0 || Date.now() <= prize.endsAt)
+    && (prize.remaining === null || prize.remaining > 0));
   return {
     id: prize.pk,
-    name: prize.fields.name,
-    provided: prize.fields.provider || prize.fields.provided || 'Anonymous',
-    description: prize.fields.shortdescription || prize.fields.name,
-    image: prize.fields.altimage,
-    minimumbid: numeral(prize.fields.minimumbid).format('$0,0[.]00'),
-    grand: prize.fields.category__name === 'Grand',
-    sumdonations: prize.fields.sumdonations,
+    name: prize.name,
+    provided: 'Unknown',
+    description: prize.description || prize.fields.name,
+    image: prize.image.src,
+    minimumbid: numeral(prize.amount).format('$0,0[.]00'),
+    grand: nodecg.bundleConfig.prizes.grand.includes(prize.id),
+    sumdonations: nodecg.bundleConfig.prizes.sum.includes(prize.id),
+    active,
     type: 'prize',
   };
 }
