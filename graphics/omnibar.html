@@ -5,6 +5,7 @@
   <title>Omnibar</title>
   <link rel="stylesheet" href="style/base.css">
   <link rel="import" href="../shared/imports/gsap.html">
+  <link rel="import" href="elements/cali-omnibar/cali-omnibar-content.html">
   <link rel="import" href="elements/cali-omnibar/cali-omnibar-total.html">
   <style>
     #container {
@@ -23,11 +24,13 @@
 
     #total {
       width: 198px;
-      background-color: #3998A0;
+      background-color: #3298A0;
     }
 
     #bar {
       flex: 1;
+      font-size: 20px;
+      min-width: 0px;
     }
 
     #logo {
@@ -51,6 +54,7 @@
       <cali-omnibar-total></cali-omnibar-total>
     </div>
     <div id="bar">
+      <cali-omnibar-content></cali-omnibar-content>
     </div>
     <div id="logo">
       <img src="img/logo/marathon-logo.png"></img>
