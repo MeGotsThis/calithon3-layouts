@@ -34,15 +34,6 @@
         height: 180px;
       }
 
-      cali-break-total {
-        position: absolute;
-        top: 621px;
-        left: 101px;
-        width: 470px;
-        height: 64px;
-        background-color: var(--blue-1);
-      }
-
       cali-break-game {
         position: absolute;
         left: 750px;
@@ -152,6 +143,30 @@
         justify-content: center;
       }
 
+      #total {
+        position: absolute;
+        top: 599px;
+        left: 101px;
+        width: 470px;
+      }
+
+      cali-break-total {
+        background-color: var(--blue-1);
+        font-size: 48px;
+      }
+
+      #donate {
+        background-color: var(--blue-2);
+        color: white;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      #total-row {
+        height: 5px;
+        background-color: var(--blue-1);
+      }
+
       [hidden] {
         display: none !important;
       }
@@ -188,7 +203,11 @@
     <cali-break-game offset="0" prefix="Up Next: "></cali-break-game>
     <cali-break-game offset="1" prefix="On Deck: "></cali-break-game>
     <cali-break-game offset="2" prefix="On Deck: "></cali-break-game>
-    <cali-break-total></cali-break-total>
+    <div id="total">
+      <cali-break-total></cali-break-total>
+      <div id="donate">Donate at calithon.com</div>
+      <div id="total-row"></div>
+    </div>
   </div>
 
   <script src="app/break.js"></script>
