@@ -50,7 +50,7 @@
     return Math.floor(Math.random() * Math.floor(max));
   };
 
-  const randomBackground = () => {
+  const randomBackground = (delay = 100) => {
     let index = getRandomInt(backgrounds.length);
     while (index == backgroundIndex) {
       index = getRandomInt(backgrounds.length);
@@ -59,14 +59,18 @@
     backgroundIndex = index;
     let background = backgrounds[index];
 
-    document.getElementById('background-image').src = background.img;
-    document.getElementById('scenery').style.backgroundImage =
+    document.getElementById('background-load').style.backgroundImage =
       `url('${background.img}')`;
-    document.getElementById('location-text').innerHTML = background.text;
+    setTimeout(() => {
+      document.getElementById('background-image').src = background.img;
+      document.getElementById('scenery').style.backgroundImage =
+        `url('${background.img}')`;
+      document.getElementById('location-text').innerHTML = background.text;
+    }, delay);
   };
 
   setTimeout(randomBackground, BACKGROUND_DURATION);
-  randomBackground();
+  randomBackground(0);
 
   window.addEventListener('DOMContentLoaded', () => {
     TweenLite.to(document.body, 0.333, {
