@@ -7,6 +7,7 @@
   <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
   <link rel="import" href="../bower_components/polymer/lib/elements/custom-style.html">
   <link rel="import" href="../shared/imports/gsap-ModifiersPlugin.html">
+  <link rel="import" href="elements/cali-break-content/cali-break-content.html">
   <link rel="import" href="elements/cali-break-total/cali-break-total.html">
   <link rel="import" href="elements/cali-break-game/cali-break-game.html">
   <link rel="import" href="elements/cali-break-host/cali-break-host.html">
@@ -95,6 +96,16 @@
         background-color: var(--teal-1);
       }
 
+      cali-break-content {
+        position: absolute;
+        top: 605px;
+        left: 46px;
+        width: 581px;
+        font-size: 24px;
+        --color-1: var(--blue-1);
+        --color-2: var(--blue-2);
+      }
+
       #scenery {
         position: absolute;
         top: 140px;
@@ -145,9 +156,9 @@
 
       #total {
         position: absolute;
-        top: 599px;
-        left: 101px;
-        width: 470px;
+        top: 564px;
+        left: 750px;
+        width: 397px;
       }
 
       cali-break-total {
@@ -199,7 +210,7 @@
       <cali-break-song></cali-break-song>
       <div id="host-music-row"></div>
     </div>
-    <cali-break-game offset="-1" prefix="Just Played: "></cali-break-game>
+    <cali-break-content></cali-break-content>
     <cali-break-game offset="0" prefix="Up Next: "></cali-break-game>
     <cali-break-game offset="1" prefix="On Deck: "></cali-break-game>
     <cali-break-game offset="2" prefix="On Deck: "></cali-break-game>
