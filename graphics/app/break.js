@@ -28,7 +28,7 @@
       text: 'Oceanside Pier, CA',
     },
     {
-      img: 'img/backgrounds/SF Bay.png',
+      img: 'img/backgrounds/SF Bay.jpg',
       text: 'San Francisco Bay, CA',
     },
     {
@@ -99,7 +99,8 @@
     document.getElementById('background-load').style.backgroundImage =
       `url('${background.img}')`;
     setTimeout(() => {
-      document.getElementById('background-image').src = background.img;
+      document.getElementById('background-image').style.backgroundImage =
+        `url('${background.img}')`;
       document.getElementById('scenery').style.backgroundImage =
         `url('${background.img}')`;
       document.getElementById('location-text').innerHTML = background.text;
