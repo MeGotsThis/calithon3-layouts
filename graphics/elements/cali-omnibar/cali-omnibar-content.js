@@ -1,9 +1,6 @@
 (function () {
   'use strict';
 
-  const CALITHON_TOTAL = 15603.00;
-  window.CALITHON_TOTAL = CALITHON_TOTAL;
-
   const currentBids = nodecg.Replicant('currentBids');
   const currentPrizes = nodecg.Replicant('currentPrizes');
   const currentRun = nodecg.Replicant('currentRun');

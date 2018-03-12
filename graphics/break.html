@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="style/layout.css">
   <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
   <link rel="import" href="../bower_components/polymer/lib/elements/custom-style.html">
+  <link rel="import" href="../shared/imports/constants.html">
   <link rel="import" href="../shared/imports/gsap-ModifiersPlugin.html">
   <link rel="import" href="elements/cali-break-content/cali-break-content.html">
   <link rel="import" href="elements/cali-break-total/cali-break-total.html">
@@ -171,11 +172,19 @@
         font-size: 48px;
       }
 
-      #donate {
+      #donate, #record {
         background-color: var(--blue-2);
         color: white;
-        font-size: 20px;
         text-align: center;
+      }
+
+      #donate {
+        font-size: 20px;
+      }
+
+      #record {
+        display: none;
+        font-size: 24px;
       }
 
       #total-row {
@@ -223,6 +232,7 @@
     <div id="total">
       <cali-break-total></cali-break-total>
       <div id="donate">Donate at calithon.com</div>
+      <div id="record"><span id="record-text">NEW RECORD DONATION TOTAL FOR CALITHON!</span></div>
       <div id="total-row"></div>
     </div>
   </div>

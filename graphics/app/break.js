@@ -4,6 +4,7 @@
   const BACKGROUND_DURATION = 300000;
 
   const camera = nodecg.Replicant('break-cam');
+  const total = nodecg.Replicant('total');
 
   const backgrounds = [
     {
@@ -45,6 +46,42 @@
   camera.on('change', (value) => {
     document.getElementById('scenery').hidden = value;
   });
+
+  total.on('change', (newVal, oldVal) => {
+    if (oldVal
+        && newVal.raw >= CALITHON_TOTAL
+        && oldVal.raw < CALITHON_TOTAL) {
+      alertNewRecord();
+    }
+  });
+
+  const alertNewRecord = () => {
+    const donate = document.getElementById('donate');
+    const record = document.getElementById('record');
+    const text = document.getElementById('record-text');
+    const tl = new TimelineMax({
+    });
+    tl.set(donate, {
+      display: 'none',
+    });
+    tl.set(record, {
+      display: 'block',
+    });
+    tl.add(TweenMax.fromTo(text, 1, {
+      opacity: 0,
+    }, {
+      repeat: 30,
+      opacity: 1,
+      yoyo: true,
+      repeatDelay: 0.5,
+    }).totalDuration(30));
+    tl.set(donate, {
+      display: 'block',
+    });
+    tl.set(record, {
+      display: 'none',
+    });
+  };
 
   const getRandomInt = (max) => {
     return Math.floor(Math.random() * Math.floor(max));
