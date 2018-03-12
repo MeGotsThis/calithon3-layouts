@@ -99,7 +99,7 @@
     return Math.floor(Math.random() * Math.floor(max));
   };
 
-  const randomBackground = (delay = 100) => {
+  const randomBackground = (delay = 500) => {
     let index = getRandomInt(backgrounds.length);
     while (index == backgroundIndex) {
       index = getRandomInt(backgrounds.length);
