@@ -9,18 +9,18 @@
   const backgrounds = [
     {
       img: 'img/backgrounds/Catalina Island.png',
-      text: 'Santa Catalina Island, CA',
+      text: 'Catalina Island, CA',
     },
     {
       img: 'img/backgrounds/La Jolla.png',
       text: 'La Jolla, CA',
     },
     {
-      img: 'img/backgrounds/Yosemite Valley.png',
+      img: 'img/backgrounds/Yosemite Valley.jpg',
       text: 'Yosemite National Park, CA',
     },
     {
-      img: 'img/backgrounds/Calaveras Big Trees.png',
+      img: 'img/backgrounds/Calaveras Big Trees.jpg',
       text: 'Calaveras Big Trees State Park, CA',
     },
     {
@@ -38,6 +38,18 @@
     {
       img: 'img/backgrounds/Camina de la Costa.png',
       text: 'Camina de la Costa, CA',
+    },
+    {
+      img: 'img/backgrounds/Balboa Park.jpg',
+      text: 'Balboa Park in San Diego, CA',
+    },
+    {
+      img: 'img/backgrounds/La Jolla Shores.jpeg',
+      text: 'Shores at La Jolla, CA',
+    },
+    {
+      img: 'img/backgrounds/Mt Shasta.jpg',
+      text: 'Mt Shasta, CA',
     },
   ];
 
@@ -107,7 +119,7 @@
     }, delay);
   };
 
-  setTimeout(randomBackground, BACKGROUND_DURATION);
+  setInterval(randomBackground, BACKGROUND_DURATION);
   randomBackground(0);
 
   window.addEventListener('DOMContentLoaded', () => {
