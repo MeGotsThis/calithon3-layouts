@@ -34,6 +34,7 @@
   background-size: cover;
   background-position: center center;
 }
+
 #container > #background > #background-overlay {
   position: absolute;
   top: 0;
