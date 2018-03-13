@@ -209,6 +209,19 @@
       "required": ["enabled"],
       "default": null
     },
+    "marioMaker": {
+      "type": "object",
+      "properties": {
+        "streamer": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string"
+        }
+      },
+      "required": ["streamer", "secretKey"],
+      "default": {}
+    },
     "techDashboardShowAudioEngineer": {
       "type": "boolean",
       "default": false
