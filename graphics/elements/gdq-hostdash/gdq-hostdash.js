@@ -145,8 +145,10 @@
       return runners[index].name;
     }
 
-    isValidResult(result, index, runners) {
-      return result && result !== null && runners[index] && runners[index].name;
+    isValidResult(result, index, runners, currentRun) {
+      return result && result !== null
+        && runners[index] && runners[index].name
+        && currentRun && !currentRun.coop;
     }
   }
 

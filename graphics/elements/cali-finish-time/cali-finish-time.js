@@ -35,6 +35,10 @@
           type: Number,
           readOnly: true,
         },
+        coop: {
+          type: Boolean,
+          readOnly: true,
+        },
         placement: {
           type: String,
           computed: 'calcPlacement(place, forfeit)',
@@ -51,12 +55,12 @@
 
     static get observers() {
       return [
-        'handleNewPlace(place, forfeit)',
+        'handleNewPlace(place, forfeit, coop)',
       ];
     }
 
-    handleNewPlace(place, forfeit) {
-      if (place || forfeit) {
+    handleNewPlace(place, forfeit, coop) {
+      if ((place || forfeit) && !coop) {
         this.showTime();
       } else {
         this.hideTime();
@@ -134,17 +138,22 @@
       this._timeShowing = true;
 
       stopwatch.on('change', this.stopwatchChanged.bind(this));
+      currentRun.on('change', this.currentRunChanged.bind(this));
     }
 
-    stopwatchChanged(newVal) {
-      if (newVal.results[this.index]) {
-        this._setForfeit(newVal.results[this.index].forfeit);
-        this._setPlace(newVal.results[this.index].place);
-        this._setTime(newVal.results[this.index].time.formatted);
+    stopwatchChanged(value) {
+      if (value.results[this.index]) {
+        this._setForfeit(value.results[this.index].forfeit);
+        this._setPlace(value.results[this.index].place);
+        this._setTime(value.results[this.index].time.formatted);
       } else {
         this._setForfeit(false);
         this._setPlace(0);
       }
+    }
+
+    currentRunChanged(value) {
+      this._setCoop(value.coop);
     }
   }
 

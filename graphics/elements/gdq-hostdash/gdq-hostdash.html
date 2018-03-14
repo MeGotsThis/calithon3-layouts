@@ -243,7 +243,7 @@
           <div id="stopwatch-time">[[stopwatchTime]]</div>
           <div id="stopwatch-results">
             <template is="dom-repeat" items="[[stopwatchResults]]" as="result" mutable-data>
-              <div class="result" display$="[[isValidResult(result, index, runners)]]">
+              <div class="result" display$="[[isValidResult(result, index, runners, currentRun)]]">
                 <div class="result-time">[[result.time.formatted]]</div>
                 <sc-fitted-text
                   class="result-name"
