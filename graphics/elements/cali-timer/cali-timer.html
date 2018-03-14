@@ -26,11 +26,27 @@
       }
 
       :host([paused]) #display {
-        background: linear-gradient(to right, #212121 0%,#353535 13.5%,#9d9d9d 50%,#353535 86.5%,#212121 100%);
+        background: #616161;
       }
 
       :host([finished]) #display {
-        background: linear-gradient(to right, #012006 0%,#013705 13.5%,#2ab641 50%,#013705 86.5%,#012006 100%);
+        background: #7cb342;
+      }
+
+      :host([finished][forfeit]) #display {
+        background: #ff5252;
+      }
+
+      :host([paused]) #bar {
+        background: #8e8e8e;
+      }
+
+      :host([finished]) #bar {
+        background: #aee571;
+      }
+
+      :host([finished][forfeit]) #bar {
+        background: #ff867f;
       }
 
       #bar {
@@ -41,7 +57,7 @@
       #startFlash {
         position: absolute;
         display: flex;
-        background-color: #a5ffa9;
+        background-color: #546e7a;
         top: 0;
         left: 0;
         width: 100%;

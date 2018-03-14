@@ -20,6 +20,10 @@
           observer: 'finishedChanged',
           reflectToAttribute: true,
         },
+        forfeit: {
+          type: Boolean,
+          reflectToAttribute: true,
+        },
       };
     }
 
@@ -59,6 +63,7 @@
         this.notStarted = newVal.state === 'not_started';
         this.paused = newVal.state === 'paused';
         this.finished = newVal.state === 'finished';
+        this.forfeit = newVal.results.every((r) => r == null || r.forfeit);
       });
     }
   }
