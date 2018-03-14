@@ -9,6 +9,7 @@
   <link rel="import" href="elements/cali-estimate/cali-estimate.html">
   <link rel="import" href="elements/cali-multi-game/cali-multi-game.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
+  <link rel="import" href="elements/cali-sponsors/cali-sponsors.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -89,6 +90,15 @@
         --timer-primary-color: var(--info-color-1);
         --timer-secondary-color: var(--info-color-2);
       }
+
+      cali-sponsors {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        width: 470px;
+        height: 147px;
+        padding: 25px;
+      }
     </style>
   </custom-style>
 </head>
@@ -111,6 +121,7 @@
       </div>
       <cali-multi-game index="0" name="Pokémon Red"></cali-multi-game>
       <cali-multi-game index="1" name="Pokémon Blue" right></cali-multi-game>
+      <cali-sponsors></cali-sponsors>
     </div>
   </div>
 

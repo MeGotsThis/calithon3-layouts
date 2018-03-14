@@ -8,6 +8,7 @@
   <link rel="import" href="elements/cali-finish-time/cali-finish-time.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
   <link rel="import" href="elements/cali-run-info/cali-run-info.html">
+  <link rel="import" href="elements/cali-sponsors/cali-sponsors.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -108,6 +109,15 @@
         --timer-primary-color: var(--info-color-1);
         --timer-secondary-color: var(--info-color-2);
       }
+
+      cali-sponsors {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        width: 439px;
+        height: 226px;
+        padding: 25px;
+      }
     </style>
   </custom-style>
 </head>
@@ -127,6 +137,7 @@
       <cali-nameplate index="1" right></cali-nameplate>
       <cali-finish-time index="0" attach="bottom"></cali-finish-time>
       <cali-finish-time index="1" attach="bottom" reverse></cali-finish-time>
+      <cali-sponsors></cali-sponsors>
     </div>
   </div>
 

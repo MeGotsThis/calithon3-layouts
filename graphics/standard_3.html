@@ -8,6 +8,7 @@
   <link rel="import" href="elements/cali-finish-time/cali-finish-time.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
   <link rel="import" href="elements/cali-run-info/cali-run-info.html">
+  <link rel="import" href="elements/cali-sponsors/cali-sponsors.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -17,13 +18,16 @@
         mask-image: url(img/backgrounds/standard_3_mask.svg);
       }
 
+      #middle, cali-sponsors {
+        position: absolute;
+        left: 437px;
+        right: 437px;
+      }
+
       #middle {
         display: flex;
         flex-direction: column;
-        position: absolute;
         top: 0px;
-        left: 437px;
-        width: 406px;
       }
 
       .game, #webcam {
@@ -139,6 +143,12 @@
         --timer-primary-color: var(--info-color-1);
         --timer-secondary-color: var(--info-color-2);
       }
+
+      cali-sponsors {
+        bottom: 0px;
+        height: 265px;
+        padding: 25px;
+      }
     </style>
   </custom-style>
 </head>
@@ -163,6 +173,7 @@
       <div class="game" index="1"></div>
       <div class="game" index="2"></div>
       <div id="webcam"></div>
+      <cali-sponsors></cali-sponsors>
     </div>
   </div>
 

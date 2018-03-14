@@ -198,7 +198,72 @@
         "height": 1080
       }
     ],
-    "assetCategories": []
+    "assetCategories": [
+      {
+        "name": "sponsors-gameboy_1",
+        "title": "Sponsors Gameboy, 1 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsors-gba_1",
+        "title": "Sponsors GBA, 1 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsors-standard_1",
+        "title": "Sponsors Standard, 1 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsors-standard_2",
+        "title": "Sponsors Standard, 2 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsors-standard_3",
+        "title": "Sponsors Standard, 3 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsors-widescreen_1",
+        "title": "Sponsors Widescreen, 1 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsors-widescreen_2",
+        "title": "Sponsors Widescreen, 2 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      },
+      {
+        "name": "sponsors-widescreen_4",
+        "title": "Sponsors Widescreen, 4 Player",
+        "allowedTypes": [
+          "png",
+          "svg"
+        ]
+      }
+    ]
   },
   "scripts": {
     "static": "eslint ./**/*.js ./**/*.html --ignore-path .eslintignore",

@@ -7,6 +7,7 @@
   <link rel="import" href="../shared/imports/gsap.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
   <link rel="import" href="elements/cali-run-info/cali-run-info.html">
+  <link rel="import" href="elements/cali-sponsors/cali-sponsors.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -56,6 +57,15 @@
         --timer-primary-color: var(--info-color-1);
         --timer-secondary-color: var(--info-color-2);
       }
+
+      cali-sponsors {
+        position: absolute;
+        top: 270px;
+        left: 0px;
+        bottom: 0px;
+        width: 280px;
+        padding: 25px;
+      }
     </style>
   </custom-style>
 </head>
@@ -73,6 +83,7 @@
         </div>
         <cali-run-info></cali-run-info>
       </div>
+      <cali-sponsors></cali-sponsors>
     </div>
   </div>
 

@@ -7,6 +7,7 @@
   <link rel="import" href="../shared/imports/gsap.html">
   <link rel="import" href="elements/cali-nameplate/cali-nameplate.html">
   <link rel="import" href="elements/cali-run-info/cali-run-info.html">
+  <link rel="import" href="elements/cali-sponsors/cali-sponsors.html">
   <link rel="import" href="elements/cali-timer/cali-timer.html">
 
   <custom-style>
@@ -22,13 +23,18 @@
         position: absolute;
         top: 247px;
         left: 0px;
+        bottom: 0px;
         width: 392px;
       }
 
       #runners {
         display: flex;
         flex-direction: column;
-        position: relative;
+      }
+
+      #sponsors {
+        padding: 25px;
+        flex: 1;
       }
 
       cali-nameplate {
@@ -38,24 +44,24 @@
       }
 
       /* One runner */
-      #runners[num-runners="1"] {
+      [num-runners="1"] #runners {
       }
 
-      #runners[num-runners="1"] cali-nameplate:not([index="0"]) {
+      [num-runners="1"] #runners cali-nameplate:not([index="0"]) {
         display: none;
       }
 
       /* Two runners */
-      #runners[num-runners="2"] {
+      [num-runners="2"] #runners {
       }
 
-      #runners[num-runners="2"] cali-nameplate[index="2"],
-      #runners[num-runners="2"] cali-nameplate[index="3"] {
+      [num-runners="2"] #runners cali-nameplate[index="2"],
+      [num-runners="2"] #runners cali-nameplate[index="3"] {
         display: none;
       }
 
       /* Four runners */
-      #runners[num-runners="4"] {
+      [num-runners="4"] #runners {
       }
 
       cali-timer {
@@ -71,6 +77,15 @@
 
         --run-primary-color: var(--runner-1-color-1);
         --run-secondary-color: var(--runner-1-color-2);
+      }
+
+      cali-sponsors {
+        width: 100%;
+        height: 100%;
+      }
+
+      [num-runners="4"] cali-sponsors {
+        display: none;
       }
     </style>
   </custom-style>
@@ -91,6 +106,9 @@
         </div>
         <cali-timer></cali-timer>
         <cali-run-info></cali-run-info>
+        <div id="sponsors">
+          <cali-sponsors></cali-sponsors>
+        </div>
       </div>
     </div>
   </div>
@@ -109,10 +127,10 @@
         return;
       }
 
+      document.body.setAttribute('num-runners', 1);
       const runners = newVal.runners || [];
       if (runners.length !== 3 && runners.length <= 4) {
-        document.getElementById('runners')
-          .setAttribute('num-runners', runners.length || 1);
+        document.body.setAttribute('num-runners', runners.length || 1);
       }
     });
   </script>
