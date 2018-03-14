@@ -2,6 +2,7 @@
   'use strict';
 
   const BACKGROUND_DURATION = 300000;
+  const FADE_DURATION = 0.33;
 
   const camera = nodecg.Replicant('break-cam');
   const total = nodecg.Replicant('total');
@@ -68,31 +69,46 @@
   });
 
   const alertNewRecord = () => {
+    const total = document.getElementById('total');
     const donate = document.getElementById('donate');
     const record = document.getElementById('record');
     const text = document.getElementById('record-text');
     const tl = new TimelineMax({
     });
-    tl.set(donate, {
-      display: 'none',
-    });
-    tl.set(record, {
-      display: 'block',
-    });
-    tl.add(TweenMax.fromTo(text, 1, {
-      opacity: 0,
-    }, {
-      repeat: 30,
-      opacity: 1,
-      yoyo: true,
-      repeatDelay: 0.5,
-    }).totalDuration(30));
-    tl.set(donate, {
-      display: 'block',
-    });
-    tl.set(record, {
-      display: 'none',
-    });
+    tl.fromTo(total, FADE_DURATION, {
+        opacity: 1,
+      }, {
+        opacity: 0,
+      })
+      .set(donate, {
+        display: 'none',
+      })
+      .set(record, {
+        display: 'block',
+      })
+      .to(total, FADE_DURATION, {
+        opacity: 1,
+      })
+      .add(TweenMax.fromTo(text, 1, {
+        opacity: 0,
+      }, {
+        repeat: 30,
+        opacity: 1,
+        yoyo: true,
+        repeatDelay: 0.5,
+      }).totalDuration(30))
+      .to(total, FADE_DURATION, {
+        opacity: 0,
+      })
+      .set(donate, {
+        display: 'block',
+      })
+      .set(record, {
+        display: 'none',
+      })
+      .to(total, FADE_DURATION, {
+        opacity: 1,
+      });
   };
 
   const getRandomInt = (max) => {
