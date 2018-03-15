@@ -2,7 +2,6 @@
   'use strict';
 
   const NUM_RUNS_TO_SHOW_IN_RUNDOWN = 4;
-  const currentIntermission = nodecg.Replicant('currentIntermission');
   const currentRun = nodecg.Replicant('currentRun');
   const schedule = nodecg.Replicant('schedule');
   const stopwatch = nodecg.Replicant('stopwatch');
@@ -26,7 +25,6 @@
         this._debounceUpdateScheduleSlice.bind(this);
       this._updateScheduleSlice = this._updateScheduleSlice.bind(this);
 
-      currentIntermission.on('change', this._debounceUpdateScheduleSlice);
       currentRun.on('change', this._debounceUpdateScheduleSlice);
       schedule.on('change', this._debounceUpdateScheduleSlice);
       stopwatch.on('change', (newVal, oldVal) => {
@@ -49,17 +47,11 @@
       if (currentRun.status !== 'declared'
           || schedule.status !== 'declared'
           || stopwatch.status !== 'declared'
-          || currentIntermission.status !== 'declared'
           || !schedule.value) {
         return;
       }
 
       let currentItems = currentRun.value.name ? [currentRun.value] : [];
-      if (currentIntermission.value.preOrPost === 'pre') {
-        currentItems = currentIntermission.value.content.concat(currentItems);
-      } else {
-        currentItems = currentItems.concat(currentIntermission.value.content);
-      }
 
       const sched = schedule.value || [];
 
