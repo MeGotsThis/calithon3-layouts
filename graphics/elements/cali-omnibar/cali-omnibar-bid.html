@@ -41,15 +41,6 @@
         @apply --layout-center;
       }
 
-      #bitsIcon {
-        position: relative;
-        margin-right: 3px;
-        width: 24px;
-        height: 1px;
-        @apply --layout-horizontal;
-        @apply --layout-center-center;
-      }
-
       #total {
         font-size: 75%;
       }
@@ -78,9 +69,6 @@
     <div id="text">
       <div id="description">[[formatDescription(bid)]]</div>
       <div id="totalAndDelta">
-        <div id="bitsIcon" hidden>
-          <img id="bitsIcon-image" width="24" src="img/bitsicon.png">
-        </div>
         <div id="total">[[formatTotal(bid)]]</div>
         <div id="delta">[[delta]]</div>
       </div>
