@@ -14,8 +14,7 @@ module.exports = {
         "Polymer",
         "Polymer.GestureEventListeners",
         "Polymer.MutableData",
-        "nodecg.Replicant",
-        "SteppedGradientMixin"
+        "nodecg.Replicant"
       ]
     }],
     "operator-linebreak": ["error", "after", {
