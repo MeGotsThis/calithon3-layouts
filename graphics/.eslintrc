@@ -16,7 +16,6 @@
     "Power4": true,
     "Elastic": true,
     "Back": true,
-    "Sine": true,
-    "textFit": true
+    "Sine": true
   }
 }
