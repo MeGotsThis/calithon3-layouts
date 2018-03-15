@@ -89,10 +89,7 @@
 
       <template is="dom-if" if="[[bidIsChallenge(bid)]]">
         <div class="layout horizontal center">
-          <img src="img/bitsicon.png" width="22" hidden="[[!bid.isBitsChallenge]]">
-          [[bid.total]] /
-          <img src="img/bitsicon.png" width="22" hidden="[[!bid.isBitsChallenge]]">
-          [[bid.goal]]
+          [[bid.total]] / [[bid.goal]]
         </div>
       </template>
 
