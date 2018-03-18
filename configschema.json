@@ -92,6 +92,11 @@
         "mock": {
           "type": "boolean"
         },
+        "mockInitialTotal": {
+          "type": ["null", "number"],
+          "default": null,
+          "minimum": 0
+        },
         "mockAmount": {
           "type": "number",
           "default": 100,

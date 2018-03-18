@@ -97,9 +97,17 @@ function manuallyUpdateTotal(silent, cb = function() {}) {
 async function updateTotal() {
   let data = await tiltify.getEvent();
 
-  const freshTotal = parseFloat(data.totalAmountRaised || 0);
+  let freshTotal = parseFloat(data.totalAmountRaised || 0);
 
-  if (mockTotalAmount == 0) {
+  if (nodecg.bundleConfig
+        && nodecg.bundleConfig.donation.mockInitialTotal !== null) {
+    if (mockTotalAmount !== null) {
+      return false;
+    }
+    freshTotal = nodecg.bundleConfig.donation.mockInitialTotal;
+  }
+
+  if (mockTotalAmount === null) {
     mockTotalAmount = freshTotal;
   }
 
@@ -208,7 +216,7 @@ function formatDonationFromPusher(donation) {
   };
 }
 
-let mockTotalAmount = 0;
+let mockTotalAmount = null;
 
 if (nodecg.bundleConfig && nodecg.bundleConfig.donation.mock)
 {
