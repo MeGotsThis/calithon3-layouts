@@ -280,12 +280,7 @@
     showUpNext() {
       const tl = new TimelineLite();
 
-      let upNextRun;
-      if (stopwatch.value.state === 'finished') {
-        upNextRun = nextRun.value;
-      } else {
-        upNextRun = currentRun.value;
-      }
+      let upNextRun = nextRun.value;
 
       // If we're at the final run, bail out and just skip straight to showing
       // the next item in the rotation.
