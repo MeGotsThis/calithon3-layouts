@@ -73,7 +73,7 @@ function calcOriginalValues(run, original) {
               break;
             case 'D':
               originalValues.runners[difference.index] =
-                original.runners[difference.index];
+                clone(original.runners[difference.index]);
               break;
               // eslint-disable-next-line max-len
             /* istanbul ignore next: shouldn't be possible to enter default path */
