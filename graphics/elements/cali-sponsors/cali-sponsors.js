@@ -27,6 +27,7 @@
           sponsors = nodecg.Replicant('assets:sponsors-standard_1');
           break;
         case ('standard_2.html'):
+        case ('standard_2-lttp.html'):
         case ('standard_2g1c.html'):
         case ('gameboy_2.html'):
         case ('gameboy_2g1c.html'):

@@ -118,6 +118,11 @@
         "height": 720
       },
       {
+        "file": "standard_2-lttp.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
         "file": "standard_3.html",
         "width": 1280,
         "height": 720
@@ -191,6 +196,11 @@
         "file": "audio_dashboard.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "lttp_tracker.html",
+        "width": 300,
+        "height": 469
       }
     ],
     "assetCategories": [
