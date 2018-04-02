@@ -100,6 +100,7 @@ async function updateTotal() {
   let freshTotal = parseFloat(data.totalAmountRaised || 0);
 
   if (nodecg.bundleConfig
+        && nodecg.bundleConfig.donation.mock
         && nodecg.bundleConfig.donation.mockInitialTotal !== null) {
     if (mockTotalAmount !== null) {
       return false;
