@@ -58,6 +58,7 @@
         this.showRecordTracker,
         this.showCTA,
         this.showUpNext,
+        this.showMilestones,
         this.showChallenges,
         this.showChoices,
         this.showCurrentPrizes
@@ -311,6 +312,59 @@
       this.setMainContent(tl, elements);
 
       tl.add(this.showLabel('COMING UP NEXT', '100%'), '+=0.03');
+
+      this.showMainContent(tl, elements);
+      this.hideMainContent(tl, elements);
+      tl.add(this.hideLabel(), 'afterContentExit');
+
+      return tl;
+    }
+
+    showMilestones() {
+      const tl = new TimelineLite();
+
+      // If there's no bids whatsoever, bail out.
+      if (currentBids.value.length < 0) {
+        return tl;
+      }
+
+      // Figure out what bids to display in this batch
+      const bidsToDisplay = [];
+      currentBids.value.forEach(bid => {
+        // Don't show closed bids in the automatic rotation.
+        if (bid.state.toLowerCase() === 'closed') {
+          return;
+        }
+
+        // Only show milestones.
+        if (bid.type !== 'milestone') {
+          return;
+        }
+
+        const bidLength = bidsToDisplay.length;
+        if (bidLength < 1) {
+          bidsToDisplay.push(bid);
+        }
+      });
+
+      // If there's no challenges to display, bail out.
+      if (bidsToDisplay.length <= 0) {
+        return tl;
+      }
+
+      const elements = bidsToDisplay.map(bid => {
+        const element = document.createElement('cali-omnibar-bid');
+        element.bid = {
+          ...bid,
+          total: total.value.formatted,
+          totalRaw: total.value.raw,
+        };
+        return element;
+      });
+
+      this.setMainContent(tl, elements);
+
+      tl.add(this.showLabel('UNLOCK', '120%'), '+=0.03');
 
       this.showMainContent(tl, elements);
       this.hideMainContent(tl, elements);

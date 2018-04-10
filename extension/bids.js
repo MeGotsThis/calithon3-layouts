@@ -13,6 +13,7 @@ const POLL_INTERVAL = 60 * 1000;
 const currentBidsRep = nodecg.Replicant('currentBids', {defaultValue: []});
 const allBidsRep = nodecg.Replicant('allBids', {defaultValue: []});
 const schedule = nodecg.Replicant('schedule');
+const total = nodecg.Replicant('total');
 
 // Get latest bid data every POLL_INTERVAL milliseconds
 update();
@@ -26,13 +27,14 @@ async function update() {
 
   const challengesPromise = tiltify.getChallenges();
   const pollsPromise = tiltify.getPolls();
+  const milestonesPromise = tiltify.getMilestones();
 
   try
   {
-    let [challengesJSON, pollsJSON] = await Promise.all([
-      challengesPromise, pollsPromise,
+    let [challengesJSON, pollsJSON, milestonesJSON] = await Promise.all([
+      challengesPromise, pollsPromise, milestonesPromise,
     ]);
-    const allBids = processRawBids(challengesJSON, pollsJSON);
+    const allBids = processRawBids(challengesJSON, pollsJSON, milestonesJSON);
     const currentBids = clone(allBids.filter((bid) => bid.state != 'CLOSED'));
 
     if (!equal(allBidsRep.value, allBids)) {
@@ -50,13 +52,14 @@ async function update() {
   };
 }
 
-function processRawBids(challenges, polls) {
+function processRawBids(challenges, polls, milestones) {
   const {challenges: challengesSchedule, polls: pollsSchedule} =
     getSpeedrunBids();
 
   return []
     .concat(challenges.map(formatChallenge(challengesSchedule)))
     .concat(polls.map(formatPoll(pollsSchedule)))
+    .concat(milestones.map(formatMilestone))
     .sort(sortBidsBySpeedrunOrder);
 }
 
@@ -151,7 +154,7 @@ const _formatPoll = (poll, pollsSchedule) => {
   let extra = ((run.extra || {}).polls || {})[poll.id] || {};
   const pollId = 'p-' + poll.id;
   const state = !poll.active ? 'CLOSED' : 'OPEN';
-  let total = 0;
+  let total_ = 0;
   let options = poll.options
     .map(formatOptions(pollId, extra))
     .sort((a, b) => b.rawTotal - a.rawTotal);
@@ -161,8 +164,8 @@ const _formatPoll = (poll, pollsSchedule) => {
     rawId: poll.id,
     name: extra.name || poll.name,
     description: extra.description || poll.name,
-    total: numeral(total).format('$0,0[.]00'),
-    rawTotal: parseFloat(total),
+    total: numeral(total_).format('$0,0[.]00'),
+    rawTotal: parseFloat(total_),
     state,
     speedrun: run.order,
     type: options.length === 2 ? 'choice-binary' : 'choice-many',
@@ -210,3 +213,19 @@ function sortBidsBySpeedrunOrder(a, b) {
   }
   return diff;
 }
+
+const formatMilestone = (milestone) => {
+  const milestoneId = 'm-' + milestone.id;
+  const state = total.value.raw > milestone.amount ? 'CLOSED' : 'OPEN';
+
+  return {
+    id: milestoneId,
+    rawId: milestone.id,
+    name: milestone.name,
+    goal: numeral(milestone.amount).format('$0,0[.]00'),
+    rawGoal: parseFloat(milestone.amount),
+    state,
+    speedrun: null,
+    type: 'milestone',
+  };
+};

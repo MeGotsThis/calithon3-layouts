@@ -43,6 +43,7 @@
       const self = this;
       const parts = [
         this.showRecordTracker,
+        this.showMilestones,
         this.showChallenges,
         this.showChoices,
         this.showCurrentPrizes,
@@ -165,6 +166,57 @@
         style: 'currency',
         currency: 'USD'
       });
+    }
+
+    showMilestones() {
+      const tl = new TimelineLite();
+
+      // If there's no bids whatsoever, bail out.
+      if (currentBids.value.length < 0) {
+        return tl;
+      }
+
+      // Figure out what bids to display in this batch
+      const bidsToDisplay = [];
+      currentBids.value.forEach(bid => {
+        // Don't show closed bids in the automatic rotation.
+        if (bid.state.toLowerCase() === 'closed') {
+          return;
+        }
+
+        // Only show challenges.
+        if (bid.type !== 'milestone') {
+          return;
+        }
+
+        // If we have already have our three bids determined, we still need to
+        // check if any of the remaining bids are for the same speedrun as the
+        // third bid. This ensures that we are never displaying a partial list
+        // of bids for a given speedrun.
+        const bidLength = bidsToDisplay.length;
+        if (bidLength < 1) {
+          bidsToDisplay.push(bid);
+        }
+      });
+
+      // If there's no challenges to display, bail out.
+      if (bidsToDisplay.length <= 0) {
+        return tl;
+      }
+
+      tl.add(
+        this.showMainContent(
+          bidsToDisplay.map((bid) => {
+            return {
+              label: 'UNLOCK',
+              title: bid.name.replace('||', ' -- '),
+              content: `Donation Total ${total.value.formatted} / ${bid.goal}`,
+            };
+          })
+        )
+      );
+
+      return tl;
     }
 
     showChallenges() {

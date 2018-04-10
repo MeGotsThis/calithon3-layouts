@@ -43,6 +43,8 @@ class CaliOmnibarBid extends Polymer.Element {
 
   formatTotal(bid) {
     switch (bid.type) {
+      case 'milestone':
+        return `Total Donations ${bid.total} / ${bid.goal}`;
       case 'challenge':
         return `${bid.total} / ${bid.goal}`;
       default:

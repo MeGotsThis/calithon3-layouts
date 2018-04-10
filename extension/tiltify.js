@@ -85,6 +85,22 @@ const getPolls = async () => {
   return data.data;
 };
 
+const getMilestones = async () => {
+  if (!campaignId) {
+    return undefined;
+  }
+
+  let data = await request({
+    method: 'GET',
+    uri: `https://tiltify.com/api/v3/campaigns/${campaignId}/milestones`,
+    headers: {
+      'X-CSRF-Token': csfrToken,
+    },
+    json: true,
+  });
+  return data.data;
+};
+
 const getRewards = async () => {
   if (!campaignId) {
     return undefined;
@@ -124,6 +140,7 @@ module.exports = {
   getEvent,
   getChallenges,
   getPolls,
+  getMilestones,
   getRewards,
   getDonations,
 };
