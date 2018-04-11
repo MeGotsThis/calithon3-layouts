@@ -69,8 +69,7 @@ const getSpeedrunBids = () => {
 
   schedule.value.forEach((run, i) => {
     if (run.extra.challenges) {
-      run.extra.challenges.forEach((c) => {
-        let id = c.id || c;
+      for (const id in run.extra.challenges) {
         if (challenges[id]) {
           nodecg.log.warn(
             `Challenge id ${id} has already beed used by run `
@@ -78,11 +77,10 @@ const getSpeedrunBids = () => {
             + ` and will be overwritten by ${run.name}`);
         }
         challenges[id] = i;
-      });
+      }
     }
     if (run.extra.polls) {
-      run.extra.polls.forEach((p) => {
-        let id = p.id || p;
+      for (const id in run.extra.polls) {
         if (polls[id]) {
           nodecg.log.warn(
             `Poll id ${id} has already beed used by run `
@@ -90,7 +88,7 @@ const getSpeedrunBids = () => {
             + ` and will be overwritten by ${run.name}`);
         }
         polls[id] = i;
-      });
+      }
     }
   });
 
