@@ -112,7 +112,7 @@ const _formatChallenge = (challenge, challengesSchedule) => {
     order = run.order;
   }
   let extra = ((run.extra || {}).challenges || {})[challenge.id] || {};
-  const goalMet = challenge.totalAmountRaised > challenge.total;
+  const goalMet = challenge.totalAmountRaised >= challenge.amount;
   const state = goalMet || Date.now() > challenge.endsAt || !challenge.active
     ? 'CLOSED' : 'OPEN';
   return {
