@@ -73,7 +73,7 @@ nodecg.listenFor('twitch:playAd', (durationSeconds) => {
     } else {
       log.info(
         'Successfully started %d second Twitch Ad, but we requested'
-        + ' %d seconds.', res.Length, duration);
+        + ' %d seconds.', res.Length, durationSeconds);
     }
   }).catch((err) => {
     log.error('Failed to start %d second Twitch Ad:\n\t', durationSeconds, err);
