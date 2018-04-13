@@ -85,7 +85,7 @@ function formatPrize(prize) {
     id: prize.pk,
     name: prize.name,
     provided: 'Unknown',
-    description: prize.description || prize.fields.name,
+    description: prize.name || prize.description,
     image: prize.image.src,
     minimumbid: numeral(prize.amount).format('$0,0[.]00'),
     grand: nodecg.bundleConfig.prizes.grand.includes(prize.id),
