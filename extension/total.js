@@ -112,6 +112,14 @@ async function updateTotal() {
     mockTotalAmount = freshTotal;
   }
 
+  if (total.value.goalRaw != data.fundraiserGoalAmount) {
+    total.value = {
+      ...total.value,
+      goalRaw: data.fundraiserGoalAmount,
+      goalFormatted: formatDollars(data.fundraiserGoalAmount, {cents: false}),
+    }
+  }
+
   if (freshTotal === total.value.raw) {
     return false;
   }
@@ -121,6 +129,8 @@ async function updateTotal() {
   total.value = {
     raw: freshTotal,
     formatted: formatDollars(freshTotal, {cents: false}),
+    goalRaw: data.fundraiserGoalAmount,
+    goalFormatted: formatDollars(data.fundraiserGoalAmount, {cents: false}),
   };
   return true;
 }

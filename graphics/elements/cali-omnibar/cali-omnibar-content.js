@@ -237,16 +237,25 @@
         return tl;
       }
 
-      // If we have passed the previous event's donation total, return.
-      if (total.value.raw >= CALITHON_TOTAL) {
+      const elements = [];
+      let label = 'RECORD TRACKER';
+      if (total.value.raw < CALITHON_TOTAL) {
+        elements.push(document.createElement('cali-omnibar-record'));
+      } else if (total.value.raw < total.value.goalRaw) {
+        label = 'GOAL TRACKER';
+        elements.push(document.createElement('cali-omnibar-goal'));
+      }
+
+      // If we have passed the previous event's donation total and current goal,
+      // return.
+      if (total.value.raw >= CALITHON_TOTAL
+          && total.value.raw >= total.value.goalRaw) {
         return tl;
       }
 
-      const elements = [document.createElement('cali-omnibar-record')];
-
       this.setMainContent(tl, elements);
 
-      tl.add(this.showLabel('RECORD TRACKER', '100%'), '+=0.03');
+      tl.add(this.showLabel(label, '100%'), '+=0.03');
 
       this.showMainContent(tl, elements);
       this.hideMainContent(tl, elements);

@@ -43,6 +43,7 @@
       const self = this;
       const parts = [
         this.showRecordTracker,
+        this.showGoalTracker,
         this.showMilestones,
         this.showChallenges,
         this.showChoices,
@@ -153,6 +154,35 @@
           title: 'ALMOST THERE!!!',
           content: this.formatRawValue(newRawValue)
             + ' to a new Calithon record! Donate now!',
+        }
+      ]));
+
+      return tl;
+    }
+
+    showGoalTracker() {
+      const tl = new TimelineLite();
+
+      // If we have manually disabled this feature, return.
+      if (!recordTrackerEnabled.value) {
+        return tl;
+      }
+
+      // If we have passed the previous event's donation total, return.
+      if (total.value.raw >= CALITHON_TOTAL
+          && total.value.raw >= total.value.goalRaw) {
+        return tl;
+      }
+
+      const newRawValue = Math.max(total.value.goalRaw - total.value.raw, 0);
+
+      tl.add(this.showMainContent([
+        {
+          label: 'GOAL TRACKER',
+          title: 'BEAT THE GOAL!!!!!',
+          content: this.formatRawValue(newRawValue)
+            + ' to beat Calithon 2018 goal of ' + total.value.goalFormatted
+            + '! Donate now!',
         }
       ]));
 
