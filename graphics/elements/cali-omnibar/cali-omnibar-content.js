@@ -248,8 +248,7 @@
 
       // If we have passed the previous event's donation total and current goal,
       // return.
-      if (total.value.raw >= CALITHON_TOTAL
-          && total.value.raw >= total.value.goalRaw) {
+      if (!elements.length) {
         return tl;
       }
 

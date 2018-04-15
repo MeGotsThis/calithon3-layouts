@@ -51,6 +51,7 @@ if (nodecg.bundleConfig && nodecg.bundleConfig.donation.enabled) {
 nodecg.listenFor('setTotal', ({type, newValue}) => {
   if (type === 'cash') {
     total.value = {
+      ...total.value,
       raw: parseFloat(newValue),
       formatted: formatDollars(newValue, {cents: false}),
     };
@@ -127,6 +128,7 @@ async function updateTotal() {
   mockTotalAmount = freshTotal;
 
   total.value = {
+    ...total.value,
     raw: freshTotal,
     formatted: formatDollars(freshTotal, {cents: false}),
     goalRaw: data.fundraiserGoalAmount,
@@ -144,6 +146,7 @@ function newDonation(data) {
 
   if (autoUpdateTotal.value) {
     total.value = {
+      ...total.value,
       raw: donation.rawNewTotal,
       formatted: donation.newTotal,
     };
