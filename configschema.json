@@ -110,7 +110,7 @@
           "exclusiveMinimum": true
         }
       },
-      "required": ["enabled", "pusherKey", "apiKey", "slug"],
+      "required": ["enabled", "pusherKey", "slug"],
       "default": null
     },
     "tracker": {
