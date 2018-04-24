@@ -20,7 +20,7 @@
 
     ready() {
       super.ready();
-      currentHost.on('change', newVal => {
+      currentHost.on('change', (newVal) => {
         this.currentHost = newVal;
 
         if (this.initialized || !Polymer.RenderStatus) {
@@ -42,7 +42,7 @@
       const textWidth = textSpan.scrollWidth;
       if (textWidth > MAX_TEXT_WIDTH) {
         TweenLite.set(textSpan, {
-          scaleX: MAX_GAME_WIDTH / gameWidth,
+          scaleX: MAX_TEXT_WIDTH / textWidth,
           transformOrigin: 'left',
       });
       } else {

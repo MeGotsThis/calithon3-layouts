@@ -10,10 +10,10 @@ const {STOPWATCH_STATES} = require('./timekeeping');
 
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
 const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {
-  defaultValue: TimeUtils.createTimeStruct()
+  defaultValue: TimeUtils.createTimeStruct(),
 });
 const timeLeft = nodecg.Replicant('twitch:timeLeftInAd', {
-  defaultValue: TimeUtils.createTimeStruct()
+  defaultValue: TimeUtils.createTimeStruct(),
 });
 const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd', {
   defaultValue: {},
@@ -23,7 +23,7 @@ const CANT_PLAY_REASONS = {
   AD_IN_PROGRESS: 'ad in progress',
   RUN_IN_PROGRESS: 'run in progress',
   ON_COOLDOWN: 'on cooldown',
-  NONE: ''
+  NONE: '',
 };
 let timeSinceTimer;
 let timeLeftTimer;
@@ -87,7 +87,7 @@ function resetTimeSinceTicker(startingMilliseconds = 0) {
   }
   timeSince.value = TimeUtils.createTimeStruct(startingMilliseconds);
   timeSinceTimer = new TimeUtils.CountupTimer({offset: startingMilliseconds});
-  timeSinceTimer.on('tick', elapsedTimeStruct => {
+  timeSinceTimer.on('tick', (elapsedTimeStruct) => {
     timeSince.value = elapsedTimeStruct;
   });
 }
@@ -104,8 +104,9 @@ function resetTimeLeftTicker(durationMilliseconds) {
   }
 
   timeLeft.value = TimeUtils.createTimeStruct(durationMilliseconds);
-  timeLeftTimer = new TimeUtils.CountdownTimer(Date.now() + durationMilliseconds);
-  timeLeftTimer.on('tick', elapsedTimeStruct => {
+  timeLeftTimer = new TimeUtils.CountdownTimer(
+    Date.now() + durationMilliseconds);
+  timeLeftTimer.on('tick', (elapsedTimeStruct) => {
     timeLeft.value = elapsedTimeStruct;
   });
 }
@@ -114,7 +115,7 @@ function resetTimeLeftTicker(durationMilliseconds) {
 /**
  * Updates the value of the canPlayTwitchAd replicant, based on the state of
  * the timeLeft, timeSince, and stopwatch Replicants.
- * @returns {undefined}
+ * @return {undefined}
  */
 function updateCanPlay() {
   if (timeLeft.value.raw > 0) {
@@ -129,8 +130,8 @@ function updateCanPlay() {
     return;
   }
 
-  if (stopwatch.value.state !== STOPWATCH_STATES.NOT_STARTED &&
-    stopwatch.value.state !== STOPWATCH_STATES.FINISHED) {
+  if (stopwatch.value.state !== STOPWATCH_STATES.NOT_STARTED
+    && stopwatch.value.state !== STOPWATCH_STATES.FINISHED) {
     canPlayTwitchAd.value.canPlay = false;
     canPlayTwitchAd.value.reason = CANT_PLAY_REASONS.RUN_IN_PROGRESS;
     return;

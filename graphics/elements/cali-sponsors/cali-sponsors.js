@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   const FADE_DURATION = 0.66;
@@ -45,6 +45,7 @@
           break;
         case ('widescreen_4.html'):
           sponsors = nodecg.Replicant('assets:sponsors-widescreen_4');
+          break;
         case ('gba_1.html'):
           sponsors = nodecg.Replicant('assets:sponsors-gba_1');
           break;
@@ -65,7 +66,7 @@
 
           TweenLite.to(this.$.image, FADE_DURATION, {
             opacity: 1,
-            ease: FADE_IN_EASE
+            ease: FADE_IN_EASE,
           });
         }
       });
@@ -107,15 +108,15 @@
       tl.to(this.$.image, FADE_DURATION, {
         opacity: 0,
         ease: FADE_OUT_EASE,
-        onComplete: function () {
+        onComplete: function() {
           this.currentSponsor = nextSponsor;
           this.$.image.src = nextSponsor.url;
-        }.bind(this)
+        }.bind(this),
       });
 
       tl.to(this.$.image, FADE_DURATION, {
         opacity: 1,
-        ease: FADE_IN_EASE
+        ease: FADE_IN_EASE,
       }, 'start');
     }
   }

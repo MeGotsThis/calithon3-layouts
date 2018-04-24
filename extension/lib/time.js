@@ -26,7 +26,8 @@ const TimeUtils = {
    * Constructs a new TimeStruct with the provided number of milliseconds.
    * @param {Number} [milliseconds = 0] - The value to instantiate this
    * TimeObject with, in milliseconds.
-   * @returns {TimeStruct} - A populated TimeStruct object.
+   * @param {Object} options
+   * @return {TimeStruct} - A populated TimeStruct object.
    */
   createTimeStruct(milliseconds = 0, options) {
     const parsedTime = TimeUtils.parseMilliseconds(milliseconds);
@@ -35,14 +36,14 @@ const TimeUtils = {
     return Object.assign({}, parsedTime, {
       formatted: TimeUtils.formatMilliseconds(milliseconds, options),
       raw: milliseconds,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   },
 
   /**
    * Formats a number of seconds into a string ([hh:]mm:ss).
    * @param {number} inputSeconds - The number of econds to format.
-   * @returns {string} - The formatted time sting.
+   * @return {string} - The formatted time sting.
    */
   formatSeconds(inputSeconds, {showHours=false}) {
     let str = '';
@@ -72,7 +73,7 @@ const TimeUtils = {
   /**
    * Formats a number of milliseconds into a string ([hh:]mm:ss).
    * @param {number} inputMs - The number of milliseconds to format.
-   * @returns {string} - The formatted time sting.
+   * @return {string} - The formatted time sting.
    */
   formatMilliseconds(inputMs, {showHours = false} = {}) {
     const {days, hours, minutes, seconds, milliseconds} =
@@ -98,7 +99,7 @@ const TimeUtils = {
   /**
    * Parses a number of milliseconds into a ParsedTime object.
    * @param {number} milliseconds - A number of milliseconds.
-   * @returns {ParsedTime} - An object representing each dimension of the time.
+   * @return {ParsedTime} - An object representing each dimension of the time.
    */
   parseMilliseconds(milliseconds) {
     return parseMsToObj(milliseconds);
@@ -107,7 +108,7 @@ const TimeUtils = {
   /**
    * Parses a number of seconds into a ParsedTime object.
    * @param {number} seconds - A number of seconds.
-   * @returns {ParsedTime} - An object representing each dimension of the time.
+   * @return {ParsedTime} - An object representing each dimension of the time.
    */
   parseSeconds(seconds) {
     return TimeUtils.parseMilliseconds(seconds * 1000);
@@ -117,7 +118,7 @@ const TimeUtils = {
    * Parses a formatted time string into an integer of milliseconds.
    * @param {string} timeString - The formatted time string to parse.
    * Accepts the following: hh:mm:ss.sss, hh:mm:ss, hh:mm, hh
-   * @returns {number} - The parsed time string represented as milliseconds.
+   * @return {number} - The parsed time string represented as milliseconds.
    */
   parseTimeString(timeString) {
     let factor = 1;
@@ -126,7 +127,7 @@ const TimeUtils = {
       timeString = timeString.substring(1);
     }
     let ms = 0;
-    const timeParts = timeString.split(':').filter(part => part.trim());
+    const timeParts = timeString.split(':').filter((part) => part.trim());
     if (timeParts.length === 3) {
       ms += convertUnitToMs.hours(parseInt(timeParts[0], 10));
       ms += convertUnitToMs.minutes(parseInt(timeParts[1], 10));

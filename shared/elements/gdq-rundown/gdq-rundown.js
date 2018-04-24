@@ -106,7 +106,8 @@
       const offset = -4;
 
       this.$.tooltip.style.opacity = 1;
-      this.$.tooltip.style.top = `${itemRect.top - thisRect.top - tooltipRect.height + offset}px`;
+      this.$.tooltip.style.top =
+        `${itemRect.top - thisRect.top - tooltipRect.height + offset}px`;
     }
 
     _hideTooltip() {

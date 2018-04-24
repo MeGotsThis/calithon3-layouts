@@ -6,7 +6,7 @@ const TimeUtils = require('./lib/time');
 
 const time = nodecg.Replicant('countdown', {
   defaultValue: TimeUtils.createTimeStruct(600 * 1000),
-  persistent: false
+  persistent: false,
 });
 const running = nodecg.Replicant('countdownRunning', {
   defaultValue: false,
@@ -29,9 +29,9 @@ function start(startTime) {
   }
 
   const durationMs = TimeUtils.parseTimeString(startTime);
-	if (durationMs <= 0) {
-		return;
-	}
+  if (durationMs <= 0) {
+    return;
+  }
 
   running.value = true;
   time.value = TimeUtils.createTimeStruct(durationMs);
@@ -42,9 +42,10 @@ function start(startTime) {
   }
 
   countdownTimer = new TimeUtils.CountdownTimer(Date.now() + durationMs);
-  countdownTimer.on('tick', remainingTimeStruct => {
+  countdownTimer.on('tick', (remainingTimeStruct) => {
     time.value = remainingTimeStruct;
-  });}
+  });
+}
 
 /**
  * Stops the countdown.

@@ -163,7 +163,7 @@
         if (typeof newWidth === 'number' && !isNaN(newWidth)) {
           TweenLite.set(this.$.twitch, {
             scaleX: scale,
-            width: newWidth
+            width: newWidth,
           });
         }
       } else {

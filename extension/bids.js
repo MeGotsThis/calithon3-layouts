@@ -20,7 +20,6 @@ update();
 
 /**
  * Grabs the latest bids from the Tracker.
- * @return {Promise} - A Q.all promise.
  */
 async function update() {
   nodecg.sendMessage('bids:updating');
@@ -29,8 +28,7 @@ async function update() {
   const pollsPromise = tiltify.getPolls();
   const milestonesPromise = tiltify.getMilestones();
 
-  try
-  {
+  try {
     let [challengesJSON, pollsJSON, milestonesJSON] = await Promise.all([
       challengesPromise, pollsPromise, milestonesPromise,
     ]);
@@ -44,12 +42,12 @@ async function update() {
     if (!equal(currentBidsRep.value, currentBids)) {
       currentBidsRep.value = currentBids;
     }
-  } catch(err) {
+  } catch (err) {
     nodecg.log.error('Error updating bids:', err);
   } finally {
     nodecg.sendMessage('bids:updated');
     setTimeout(update, POLL_INTERVAL);
-  };
+  }
 }
 
 function processRawBids(challenges, polls, milestones) {
@@ -97,7 +95,7 @@ const getSpeedrunBids = () => {
 
 const formatChallenge = (challengesSchedule) => {
   return (challenge) => _formatChallenge(challenge, challengesSchedule);
-}
+};
 
 const _formatChallenge = (challenge, challengesSchedule) => {
   let idx = challengesSchedule[challenge.id];
@@ -113,8 +111,8 @@ const _formatChallenge = (challenge, challengesSchedule) => {
   }
   let extra = ((run.extra || {}).challenges || {})[challenge.id] || {};
   const goalMet = challenge.totalAmountRaised >= challenge.amount;
-  const state = goalMet || Date.now() > challenge.endsAt || !challenge.active
-    ? 'CLOSED' : 'OPEN';
+  const state = goalMet || Date.now() > challenge.endsAt || !challenge.active ?
+    'CLOSED' : 'OPEN';
   return {
     id: 'c-' + challenge.id,
     rawId: challenge.id,
@@ -135,7 +133,7 @@ const _formatChallenge = (challenge, challengesSchedule) => {
 
 const formatPoll = (pollsSchedule) => {
   return (poll) => _formatPoll(poll, pollsSchedule);
-}
+};
 
 const _formatPoll = (poll, pollsSchedule) => {
   let idx = pollsSchedule[poll.id];
@@ -186,7 +184,7 @@ const _formatOptions = (option, pollId, runExtra) => {
     name: optionExtra.name || option.name,
     description: optionExtra.description || option.name,
     total: numeral(option.totalAmountRaised).format('$0,0[.]00'),
-    rawTotal: parseFloat(option.totalAmountRaised)
+    rawTotal: parseFloat(option.totalAmountRaised),
   };
 };
 

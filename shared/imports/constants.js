@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   const CALITHON_TOTAL = 15603.00;

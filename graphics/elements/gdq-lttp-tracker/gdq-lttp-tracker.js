@@ -1,67 +1,60 @@
-(function () {
+(function() {
   'use strict';
 
   const trackerItems = nodecg.Replicant('lttp-tracker-items');
   const trackerPrizes = nodecg.Replicant('lttp-tracker-prizes');
   const trackerMedallions = nodecg.Replicant('lttp-tracker-medallions');
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const GAME_ID = urlParams.has('game_id') ? urlParams.get('game_id') : 'supportclass';
-
-  function getBooleanUrlParam(urlParams, paramName) {
-    return urlParams.has(paramName) && urlParams.get(paramName) !== 'false' && urlParams.get(paramName) !== '0';
-  }
-
   const ITEM_ROWS = [[
     {name: 'hookshot'},
     {name: 'silvers'},
     {name: 'bow'},
-    {name: 'boss0'}
+    {name: 'boss0'},
   ], [
     {name: 'firerod'},
     {name: 'somaria'},
     {name: 'hammer'},
-    {name: 'boss1'}
+    {name: 'boss1'},
   ], [
     {name: 'icerod'},
     {name: 'byrna'},
     {name: 'flute'},
-    {name: 'boss2'}
+    {name: 'boss2'},
   ], [
     {name: 'quake'},
     {name: 'ether'},
     {name: 'bombos'},
-    {name: 'boss3'}
+    {name: 'boss3'},
   ], [
     {name: 'boots'},
     {name: 'moonpearl'},
     {name: 'glove', maxLevels: 2}, // has 2 variants (0-2)
-    {name: 'boss4'}
+    {name: 'boss4'},
   ], [
     {name: 'flippers'},
     {name: 'mirror'},
     {name: 'lantern'},
-    {name: 'boss5'}
+    {name: 'boss5'},
   ], [
     {name: 'powder'},
     {name: 'book'},
     {name: 'bottle', maxLevels: 4}, // can be 0-4
-    {name: 'boss6'}
+    {name: 'boss6'},
   ], [
     {name: 'mushroom'},
     {name: 'shovel'},
     {name: 'net'},
-    {name: 'boss7'}
+    {name: 'boss7'},
   ], [
     {name: 'tunic', startLevel: 1, maxLevels: 3}, // can be 1-3
     {name: 'shield', maxLevels: 3}, // can be 0-3
     {name: 'sword', maxLevels: 4}, // can be 0-4
-    {name: 'boss8'}
+    {name: 'boss8'},
   ], [
     {name: 'cape'},
     {name: 'boomerang', maxLevels: 3}, // can be 0-3
     {name: 'boss10'},
-    {name: 'boss9'}
+    {name: 'boss9'},
   ]];
 
   /**
@@ -77,21 +70,17 @@
       return {
         importPath: String,
         itemsAndPrizes: {
-          type: Array
-        },
-        gameId: {
-          type: String,
-          value: GAME_ID
+          type: Array,
         },
         gameIndex: {
           type: Number,
-          value: 0
+          value: 0,
         },
         mirrored: {
           type: Boolean,
           reflectToAttribute: true,
-          value: false
-        }
+          value: false,
+        },
       };
     }
 
@@ -117,9 +106,9 @@
       const prizes = trackerPrizes.value;
       const medallions = trackerMedallions.value;
 
-      if (!items || items.length <= 0 ||
-        !prizes || prizes.length <= 0 ||
-        !medallions || medallions.length <= 0) {
+      if (!items || items.length <= 0
+        || !prizes || prizes.length <= 0
+        || !medallions || medallions.length <= 0) {
         this.itemsAndPrizes = finalArray;
         return;
       }
@@ -149,7 +138,7 @@
           hasLevels: true,
           level: prizes[rowIndex],
           dimmed: false,
-          rowIndex
+          rowIndex,
         };
 
         // Only these two bosses have medallion info.

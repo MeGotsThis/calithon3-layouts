@@ -16,6 +16,7 @@
     "Power4": true,
     "Elastic": true,
     "Back": true,
-    "Sine": true
+    "Sine": true,
+    "CALITHON_TOTAL": true
   }
 }

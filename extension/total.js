@@ -32,13 +32,13 @@ autoUpdateTotal.on('change', (newVal) => {
 
 if (nodecg.bundleConfig && nodecg.bundleConfig.donation.enabled) {
   const pusher = new Pusher(nodecg.bundleConfig.donation.pusherKey);
-  const pusherable_id = 'event-' + nodecg.bundleConfig.donation.slug;
+  const pusherableId = 'event-' + nodecg.bundleConfig.donation.slug;
 
   // Get initial data, then listen for donations.
   Promise.all([updateTotal(), loadRecentDonations()]).then(() => {
     let channel = pusher.subscribe('donation_updates');
     channel.bind('new_confirmed_donation', function(data) {
-      if(pusherable_id === data.pusherable_id) {
+      if (pusherableId === data.pusherable_id) {
         newDonation(data);
       }
     });
@@ -118,7 +118,7 @@ async function updateTotal() {
       ...total.value,
       goalRaw: data.fundraiserGoalAmount,
       goalFormatted: formatDollars(data.fundraiserGoalAmount, {cents: false}),
-    }
+    };
   }
 
   if (freshTotal === total.value.raw) {
@@ -155,7 +155,7 @@ function newDonation(data) {
   // Update recent donations
   const recentDonations_ = [...recentDonations.value];
   recentDonations_.unshift(formatDonationFromPusher(data));
-  while(recentDonations_.length > nodecg.bundleConfig.donation.recent) {
+  while (recentDonations_.length > nodecg.bundleConfig.donation.recent) {
     recentDonations_.pop();
   }
   recentDonations.value = recentDonations_;
@@ -232,24 +232,23 @@ function formatDonationFromPusher(donation) {
 
 let mockTotalAmount = null;
 
-if (nodecg.bundleConfig && nodecg.bundleConfig.donation.mock)
-{
+if (nodecg.bundleConfig && nodecg.bundleConfig.donation.mock) {
   let mockId = 0;
   const mockDonationComments = [
     null,
     null, // Double the chances to getting no messages
     'Best Game EVER',
     'I like donating to charity',
-    "First time watching this. I'm loving the runs",
+    'First time watching this. I\'m loving the runs',
     'Another great marathon! Keep up the good work!',
     'Thanks for the great event guys!',
     'FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ FrankerZ',
     'nice',
     'I want to see the run!',
     'Chat said we should do this!',
-    "Money goes to runner's choice",
-    "Can't wait to see the VODs",
-    "It's dangerous to go alone my dude, take this!",
+    'Money goes to runner\'s choice',
+    'Can\'t wait to see the VODs',
+    'It\'s dangerous to go alone my dude, take this!',
     'Hey all, long time viewer here. Its so great to see how far much this '
       + 'event has grown over the years and how much you have raised',
     'You all rule! Long time watcher, first time donator!',

@@ -6,8 +6,8 @@ class CaliOmnibarPrize extends Polymer.Element {
   static get properties() {
     return {
       prize: {
-        type: Object
-      }
+        type: Object,
+      },
     };
   }
 
@@ -16,7 +16,7 @@ class CaliOmnibarPrize extends Polymer.Element {
     enterTL.set(this.$.text, {y: '100%'});
     enterTL.to(this.$.text, 0.334, {
       y: '0%',
-      ease: Power1.easeInOut
+      ease: Power1.easeInOut,
     }, 0.2);
     return enterTL;
   }
@@ -25,7 +25,7 @@ class CaliOmnibarPrize extends Polymer.Element {
     const exitTL = new TimelineLite();
     exitTL.to(this.$.text, 0.334, {
       y: '-100%',
-      ease: Power1.easeInOut
+      ease: Power1.easeInOut,
     }, 0.2);
     return exitTL;
   }

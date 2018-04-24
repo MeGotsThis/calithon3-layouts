@@ -28,7 +28,7 @@ const timeTracking = nodecg.Replicant('timeTracking', {
       firstDuration: null,
       last: null,
       lastDuration: null,
-    }
+    },
   },
 });
 const updateHoraro = nodecg.Replicant('updateHoraro', {
@@ -39,7 +39,7 @@ const STOPWATCH_STATES = {
   NOT_STARTED: 'not_started',
   RUNNING: 'running',
   PAUSED: 'paused',
-  FINISHED: 'finished'
+  FINISHED: 'finished',
 };
 
 const SCHEDULE_MODE = {
@@ -152,9 +152,9 @@ const getScheduleModeFromRun = (run) => {
     return SCHEDULE_MODE.CUSTOM;
   }
   return mode;
-}
+};
 
-const getSchedule = async(scheduleId) => {
+const getSchedule = async (scheduleId) => {
   let {runs, csrfName: csrfName_, csrfToken: csrfToken_,
       startTime, setupTime} =
     await HoraroUtils.getSchedule(scheduleId);
@@ -184,7 +184,7 @@ const validatedEstimates = async (rawRuns, scheduleId) => {
       changed = true;
       nodecg.log.info(
         `Updated Run Id ${run.id} (${run.name}) for not having matching `
-        + `estimate/setup/duration`)
+        + `estimate/setup/duration`);
     }
   }));
   return !changed;
@@ -268,7 +268,7 @@ const updateStartTime = async () => {
     csrfToken,
   });
   events.emit('horaro-updated');
-}
+};
 
 const updateFinishTime = async () => {
   if (!checklistComplete.value) {
@@ -306,7 +306,7 @@ const updateFinishTime = async () => {
     timeTracking.value.finishTime.first = now;
     timeTracking.value.finishTime.firstDuration = bestFinishTime;
   }
-}
+};
 
 
 const updateFinalFinishTime = async () => {
@@ -359,7 +359,7 @@ const updateFinalFinishTime = async () => {
     csrfToken,
   });
   events.emit('horaro-updated');
-}
+};
 
 const runChanging = async () => {
   await updateFinalFinishTime();
@@ -375,9 +375,9 @@ const runChanging = async () => {
       firstDuration: null,
       last: null,
       lastDuration: null,
-    }
+    },
   };
-}
+};
 
 module.exports = {
   on: events.on.bind(events),

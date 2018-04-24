@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   const currentBids = nodecg.Replicant('currentBids');
@@ -29,11 +29,11 @@
         recordTrackerEnabled,
         schedule,
         stopwatch,
-        total
+        total,
       ];
 
       let numDeclared = 0;
-      replicants.forEach(replicant => {
+      replicants.forEach((replicant) => {
         replicant.once('change', () => {
           numDeclared++;
 
@@ -61,7 +61,7 @@
         this.showMilestones,
         this.showChallenges,
         this.showChoices,
-        this.showCurrentPrizes
+        this.showCurrentPrizes,
       ];
 
       function processNextPart() {
@@ -69,7 +69,7 @@
           const part = parts.shift().bind(self);
           promisifyTimeline(part())
             .then(processNextPart)
-            .catch(error => {
+            .catch((error) => {
               nodecg.log.error('Error when running main loop:', error);
             });
         } else {
@@ -78,7 +78,7 @@
       }
 
       function promisifyTimeline(tl) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           tl.call(resolve, null, null, '+=0.03');
         });
       }
@@ -94,22 +94,22 @@
       tl.set(this.$.newRecord, {visibility: 'visible'});
       tl.to([this.$.main, this.$.label], 0.25, {
         opacity: 0,
-        ease: Power1.easeIn
+        ease: Power1.easeIn,
       });
       tl.to(this.$['newRecord-text'], 0.334, {
         y: '0%',
-        ease: Power1.easeInOut
+        ease: Power1.easeInOut,
       }, 0.2);
 
       // Exit
       tl.addLabel('exit', '+=20');
       tl.to(this.$['newRecord-text'], 0.334, {
         y: '100%',
-        ease: Power1.easeInOut
+        ease: Power1.easeInOut,
       }, 'exit+=0.2');
       tl.to([this.$.main, this.$.label], 0.25, {
         opacity: 1,
-        ease: Power1.easeOut
+        ease: Power1.easeOut,
       }, 'exit+=0.2');
     }
 
@@ -118,7 +118,7 @@
         onStart() {
           this.$.label.show(...args);
         },
-        callbackScope: this
+        callbackScope: this,
       });
     }
 
@@ -137,7 +137,7 @@
       tl.call(() => {
         tl.pause();
         this.$['main-content'].innerHTML = '';
-        elements.forEach(element => {
+        elements.forEach((element) => {
           this.$['main-content'].appendChild(element);
         });
         // Might not be necessary, but better safe than sorry.
@@ -198,7 +198,7 @@
                 tl.resume(null, false);
               }, holdTime * 1000);
             },
-            callbackScope: this
+            callbackScope: this,
           });
         } else {
           setTimeout(() => {
@@ -270,17 +270,17 @@
 
       tl.to(this.$.cta, 0.55, {
         y: '0%',
-        ease: Power2.easeOut
+        ease: Power2.easeOut,
       }, '+=1');
 
       tl.to(this.$.cta, 0.8, {
         y: '-100%',
-        ease: Power2.easeInOut
+        ease: Power2.easeInOut,
       }, `+=${displayDuration}`);
 
       tl.to(this.$.cta, 0.55, {
         y: '-200%',
-        ease: Power2.easeIn
+        ease: Power2.easeIn,
       }, `+=${displayDuration}`);
 
       return tl;
@@ -298,7 +298,7 @@
       }
 
       const upcomingRuns = [upNextRun];
-      schedule.value.some(item => {
+      schedule.value.some((item) => {
         if (item.type !== 'run') {
           return false;
         }
@@ -311,7 +311,7 @@
         return upcomingRuns.length >= 3;
       });
 
-      const elements = upcomingRuns.map(run => {
+      const elements = upcomingRuns.map((run) => {
         const element = document.createElement('cali-omnibar-run');
         element.run = run;
         return element;
@@ -338,7 +338,7 @@
 
       // Figure out what bids to display in this batch
       const bidsToDisplay = [];
-      currentBids.value.forEach(bid => {
+      currentBids.value.forEach((bid) => {
         // Don't show closed bids in the automatic rotation.
         if (bid.state.toLowerCase() === 'closed') {
           return;
@@ -360,7 +360,7 @@
         return tl;
       }
 
-      const elements = bidsToDisplay.map(bid => {
+      const elements = bidsToDisplay.map((bid) => {
         const element = document.createElement('cali-omnibar-bid');
         element.bid = {
           ...bid,
@@ -391,7 +391,7 @@
 
       // Figure out what bids to display in this batch
       const bidsToDisplay = [];
-      currentBids.value.forEach(bid => {
+      currentBids.value.forEach((bid) => {
         // Don't show closed bids in the automatic rotation.
         if (bid.state.toLowerCase() === 'closed') {
           return;
@@ -419,7 +419,7 @@
         return tl;
       }
 
-      const elements = bidsToDisplay.map(bid => {
+      const elements = bidsToDisplay.map((bid) => {
         const element = document.createElement('cali-omnibar-bid');
         element.bid = bid;
         return element;
@@ -447,7 +447,7 @@
       // Figure out what bids to display in this batch
       const bidsToDisplay = [];
 
-      currentBids.value.forEach(bid => {
+      currentBids.value.forEach((bid) => {
         // Don't show closed bids in the automatic rotation.
         if (bid.state.toLowerCase() === 'closed') {
           return;
@@ -524,7 +524,7 @@
 
     /**
      * Adds an animation to the global timeline for showing the current prizes
-     * @returns {undefined}
+     * @return {undefined}
      */
     showCurrentPrizes() {
       const tl = new TimelineLite();
@@ -535,7 +535,7 @@
       }
 
       const specialPrizesToDisplayLast = [];
-      const prizesToDisplay = currentPrizes.value.filter(prize => {
+      const prizesToDisplay = currentPrizes.value.filter((prize) => {
         if (prize.grand) {
           specialPrizesToDisplayLast.push(prize);
           return false;
@@ -544,7 +544,7 @@
         return true;
       }).concat(specialPrizesToDisplayLast);
 
-      const elements = prizesToDisplay.map(prize => {
+      const elements = prizesToDisplay.map((prize) => {
         const element = document.createElement('cali-omnibar-prize');
         element.prize = prize;
         return element;

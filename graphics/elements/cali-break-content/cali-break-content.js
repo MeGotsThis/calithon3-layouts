@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   const FADE_DURATION = 0.334;
@@ -23,11 +23,11 @@
         currentBids,
         currentPrizes,
         recordTrackerEnabled,
-        total
+        total,
       ];
 
       let numDeclared = 0;
-      replicants.forEach(replicant => {
+      replicants.forEach((replicant) => {
         replicant.once('change', () => {
           numDeclared++;
 
@@ -55,7 +55,7 @@
           const part = parts.shift().bind(self);
           promisifyTimeline(part())
             .then(processNextPart)
-            .catch(error => {
+            .catch((error) => {
               nodecg.log.error('Error when running main loop:', error);
             });
         } else {
@@ -64,7 +64,7 @@
       }
 
       function promisifyTimeline(tl) {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           tl.call(resolve, null, null, '+=0.03');
         });
       }
@@ -76,7 +76,7 @@
       const tl = new TimelineMax();
       contents.forEach((content) => {
         tl.add(this.showContent(content));
-      })
+      });
       return tl;
     }
 
@@ -154,7 +154,7 @@
           title: 'ALMOST THERE!!!',
           content: this.formatRawValue(newRawValue)
             + ' to a new Calithon record! Donate now!',
-        }
+        },
       ]));
 
       return tl;
@@ -183,7 +183,7 @@
           content: this.formatRawValue(newRawValue)
             + ' to beat Calithon 2018 goal of ' + total.value.goalFormatted
             + '! Donate now!',
-        }
+        },
       ]));
 
       return tl;
@@ -194,7 +194,7 @@
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
         style: 'currency',
-        currency: 'USD'
+        currency: 'USD',
       });
     }
 
@@ -208,7 +208,7 @@
 
       // Figure out what bids to display in this batch
       const bidsToDisplay = [];
-      currentBids.value.forEach(bid => {
+      currentBids.value.forEach((bid) => {
         // Don't show closed bids in the automatic rotation.
         if (bid.state.toLowerCase() === 'closed') {
           return;
@@ -259,7 +259,7 @@
 
       // Figure out what bids to display in this batch
       const bidsToDisplay = [];
-      currentBids.value.forEach(bid => {
+      currentBids.value.forEach((bid) => {
         // Don't show closed bids in the automatic rotation.
         if (bid.state.toLowerCase() === 'closed') {
           return;
@@ -313,7 +313,7 @@
       // Figure out what bids to display in this batch
       const bidsToDisplay = [];
 
-      currentBids.value.forEach(bid => {
+      currentBids.value.forEach((bid) => {
         // Don't show closed bids in the automatic rotation.
         if (bid.state.toLowerCase() === 'closed') {
           return;
@@ -373,7 +373,7 @@
       }
 
       const specialPrizesToDisplayLast = [];
-      const prizesToDisplay = currentPrizes.value.filter(prize => {
+      const prizesToDisplay = currentPrizes.value.filter((prize) => {
         if (prize.grand) {
           specialPrizesToDisplayLast.push(prize);
           return false;

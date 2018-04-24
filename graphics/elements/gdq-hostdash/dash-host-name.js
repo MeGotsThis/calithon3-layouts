@@ -1,4 +1,4 @@
-(function () {
+(function() {
   const currentHost = nodecg.Replicant('currentHost');
 
   /**
@@ -15,14 +15,14 @@
         currentHost: String,
         _enteredName: {
           type: String,
-          value: ''
-        }
+          value: '',
+        },
       };
     }
 
     ready() {
       super.ready();
-      currentHost.on('change', newVal => {
+      currentHost.on('change', (newVal) => {
         this.currentHost = newVal;
       });
     }

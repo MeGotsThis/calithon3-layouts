@@ -41,9 +41,9 @@
         }
       });
       let startTime =
-        `${new String(runStartTime.getHours()).padStart(2, '0')}:`
-        + `${new String(runStartTime.getMinutes()).padStart(2, '0')}:`
-        + `${new String(runStartTime.getSeconds()).padStart(2, '0')}`;
+        `${runStartTime.getHours().toString().padStart(2, '0')}:`
+        + `${runStartTime.getMinutes().toString().padStart(2, '0')}:`
+        + `${runStartTime.getSeconds().toString().padStart(2, '0')}`;
       this.$.startTimeValue.value = startTime;
       this.$.startTimeDialog.open();
     }

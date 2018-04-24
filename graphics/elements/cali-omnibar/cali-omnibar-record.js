@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   const TIME_PER_DOLLAR = 0.03;
@@ -12,8 +12,8 @@
     static get properties() {
       return {
         bid: {
-          type: Object
-        }
+          type: Object,
+        },
       };
     }
 
@@ -30,7 +30,7 @@
       enterTL.set(this.$.text, {y: '100%'});
       enterTL.to(this.$.text, 0.334, {
         y: '0%',
-        ease: Power1.easeInOut
+        ease: Power1.easeInOut,
       }, 0.2);
       return enterTL;
     }
@@ -39,7 +39,7 @@
       const exitTL = new TimelineLite();
       exitTL.to(this.$.text, 0.334, {
         y: '-100%',
-        ease: Power1.easeInOut
+        ease: Power1.easeInOut,
       }, 0.2);
       return exitTL;
     }
@@ -49,7 +49,7 @@
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
         style: 'currency',
-        currency: 'USD'
+        currency: 'USD',
       });
     }
 
@@ -70,7 +70,7 @@
         onUpdate() {
           this.$.total.text = this.formatRawValue(this.$.total.rawValue);
         },
-        callbackScope: this
+        callbackScope: this,
       });
     }
   }
